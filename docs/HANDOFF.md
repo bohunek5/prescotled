@@ -8,7 +8,7 @@ Własna marka PRESCOT LED i polska produkcja taśm są głównym tematem strony.
 
 Gotowe funkcje: 15 serii i podstrony, filtrowanie gwarancji 7/5/3, wyszukiwanie, 11 podglądów 3D zasilaczy/sterowników, prezentacja autodetekcji 12/24 V i regulacji światła, pokaz montażu DELUX 3 w 1, zastosowania w kuchni/schodach/meblach, produkcja z filmem, laboratorium, dokumenty oraz kontakt.
 
-Przekroje, akcesoria i pełne modelowanie są obsługiwane przez istniejący zewnętrzny konfigurator. Pokaz korzysta z jego opublikowanej wersji `e64a20d5c820`. Nowa strona nie modyfikuje jego źródeł ani katalogu produktów.
+Przekroje, akcesoria i pełne modelowanie są obsługiwane przez istniejący zewnętrzny konfigurator. Pokaz korzysta z jego opublikowanej wersji `a9d8f23925dd`. Nowa strona nie modyfikuje jego źródeł ani katalogu produktów.
 
 ## Źródła i ograniczenia
 
