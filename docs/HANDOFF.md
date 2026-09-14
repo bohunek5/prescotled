@@ -1,4 +1,4 @@
-# Stan projektu — 14 września 2026
+# Stan projektu — 15 września 2026
 
 Docelowa strona: https://bohunek5.github.io/prescotled/ ; osobne repozytorium `bohunek5/prescotled`.
 
@@ -8,7 +8,7 @@ Własna marka PRESCOT LED i polska produkcja taśm są głównym tematem strony.
 
 Gotowe funkcje: 15 serii i podstrony, filtrowanie gwarancji 7/5/3, wyszukiwanie, 11 podglądów 3D zasilaczy/sterowników, prezentacja autodetekcji 12/24 V i regulacji światła, pokaz montażu DELUX 3 w 1, zastosowania w kuchni/schodach/meblach, produkcja z filmem, laboratorium, dokumenty oraz kontakt.
 
-Przekroje, akcesoria i pełne modelowanie są obsługiwane przez istniejący zewnętrzny konfigurator. Pokaz korzysta z jego opublikowanej wersji `a9d8f23925dd`. Nowa strona nie modyfikuje jego źródeł ani katalogu produktów.
+Przekroje, akcesoria i pełne modelowanie są obsługiwane przez istniejący zewnętrzny konfigurator. Pokaz korzysta z jego wersji `1deadf165ec6`: sześć sekund montażu, usunięcie podkładu 3M, wklejenie PCB, osłona, zaślepki i jedno łagodne zapalenie światła. Na ostatnią prośbę użytkownika nie ma pokazu LOW/MEDIUM/HIGH. Zachować opisowe podpisy montażu i zgodność wersji w config.js oraz preview.js. Nowa strona nie modyfikuje jego źródeł ani katalogu produktów.
 
 ## Źródła i ograniczenia
 

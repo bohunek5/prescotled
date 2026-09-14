@@ -1,8 +1,8 @@
-import {configuratorUrl,configuratorVersion} from './config.js?v=2';
+import {configuratorUrl,configuratorVersion} from './config.js?v=3';
 
 export async function mountAssemblyPreview(host,button,caption,{auto=false}={}){
  const fallback=host.querySelector('.film-fallback'),loading=host.querySelector('.film-loading');
- const captions={tape:'4 przewody · 3 poziomy mocy',turn:'PRESCOT DELUX 3 w 1',profile:'Profil KLUŚ MICRO-PLUS',peel:'Odklej podkład 3M',seat:'Wklej taśmę w profil',cover:'Zatrzaśnij osłonę',caps:'Zaślepki i cztery przewody',light:'Włącz światło',low:'LOW · 3 W/m',medium:'MEDIUM · 6 W/m',high:'HIGH · 11 W/m',complete:'Zobacz, jakie to proste!'};
+ const captions={tape:'Taśma. Profil. Światło.',turn:'Czas na montaż',profile:'Profil KLUŚ MICRO-PLUS',peel:'Odklej podkład 3M',seat:'Wklej taśmę w profil',cover:'Zatrzaśnij osłonę',caps:'Zaślepki i cztery przewody',light:'Włącz światło',complete:'Zobacz, jakie to proste!'};
  loading.hidden=false;button.disabled=true;host.dataset.state='loading';let film=null;
  try{
   const {createWelcomeFilm}=await import(`${configuratorUrl}welcome-film.js?v=${configuratorVersion}`);

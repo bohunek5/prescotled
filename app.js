@@ -43,7 +43,7 @@ if(document.body.dataset.page==='home'){
  videoDialog.addEventListener('close',()=>{video.pause();document.body.classList.remove('modal-open');videoOpener?.focus();});
 
  let previewPromise;
- function startPreview(auto=false){return previewPromise??=(async()=>{const {mountAssemblyPreview}=await import('./preview.js?v=2');return mountAssemblyPreview($('assembly-film'),$('film-play'),$('film-phase'),{auto});})();}
+ function startPreview(auto=false){return previewPromise??=(async()=>{const {mountAssemblyPreview}=await import('./preview.js?v=3');return mountAssemblyPreview($('assembly-film'),$('film-play'),$('film-phase'),{auto});})();}
  $('film-play').addEventListener('click',()=>{if(!previewPromise)startPreview(true);});
  const observer=new IntersectionObserver(entries=>{if(entries.some(e=>e.isIntersecting)){observer.disconnect();startPreview(!reduced.matches).catch(()=>{});}},{rootMargin:'100px 0px',threshold:.08});observer.observe($('pokaz'));
  window.siteDebug={get warranty(){return warranty;},get application(){return application;},get visibleSeries(){return[...document.querySelectorAll('.series-card:not([hidden])')].map(c=>c.dataset.series);}};
