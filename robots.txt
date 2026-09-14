@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://bohunek5.github.io/prescotled/sitemap.xml

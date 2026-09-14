@@ -1,0 +1,330 @@
+[
+  {
+    "file": "assets/logo.svg",
+    "source": "prescotpl/konfigurator/assets/logo.svg",
+    "intent": "Logo PRESCOT LED do jasnego nagłówka",
+    "size": 2713,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/logo-white.svg",
+    "source": "prescotpl/konfigurator/assets/logo-white.svg",
+    "intent": "Logo PRESCOT LED do ciemnej stopki",
+    "size": 2410,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/d-pattern.svg",
+    "source": "prescotpl/konfigurator/assets/d-pattern.svg",
+    "intent": "Oryginalny znak D marki, animacja ładowania",
+    "size": 342,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/hero-tape.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/katalog-wspolne_2katalog-wspolne-tasmy-delux-4014-biala-ciepla-2.webp",
+    "intent": "Ogólne zdjęcie taśm PRESCOT i podkładu 3M; nie przypisywać modelu 3 w 1",
+    "size": 104536,
+    "dimensions": "1620 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/hero-detail.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/DELUX-5.webp",
+    "intent": "Ogólny detal taśmy DELUX z przezroczystym tłem",
+    "size": 29162,
+    "dimensions": "1453 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/hero-reels.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/katalog-wspolne_13katalog-wspolne-tasmy-delux-4014-biala-ciepla-2.webp",
+    "intent": "Ogólne zdjęcie szpulek z odklejonym niebieskim podkładem",
+    "size": 54230,
+    "dimensions": "1620 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/laboratory.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/lab2.webp",
+    "intent": "Rzeczywiste stanowisko pomiarowe PRESCOT, kula całkująca",
+    "size": 63958,
+    "dimensions": "1536 × 1024",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/production.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/maszyny.webp",
+    "intent": "Rzeczywista hala i maszyna produkcyjna PRESCOT",
+    "size": 168778,
+    "dimensions": "1920 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/application-stairs.webp",
+    "source": "prescotpl/wp-content/uploads/2026/03/wooden-stairs-with-light-strips-in-a-modern-interi-2025-12-30-20-24-06-utc.webp",
+    "intent": "Inspiracja: oświetlenie schodów; istniejący stock, nie nazywać realizacją PRESCOT",
+    "size": 95200,
+    "dimensions": "1620 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/application-kitchen.webp",
+    "source": "prescotpl/assets/prmad/pr-mad-kitchen-hero.webp",
+    "intent": "Inspiracja: liniowe oświetlenie pod górnymi szafkami oświetla blat kuchenny; dodatkowo podświetlenie wyspy. Materiał z dotychczasowej strony, nie opisywać jako realizacji PRESCOT",
+    "size": 100170,
+    "dimensions": "1376 × 768",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/application-bedroom.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/low-brightness-1-scaled-1.webp",
+    "intent": "Inspiracja: dyskretne oświetlenie sypialni; ilustracja z serii LowBrightness",
+    "size": 114356,
+    "dimensions": "1607 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/klus-logo.svg",
+    "source": "prescotpl/konfigurator/assets/klus.svg",
+    "intent": "Logo KLUŚ: marka dystrybuowana, osobna od własnych taśm PRESCOT",
+    "size": 12755,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/klus-distributor.webp",
+    "source": "prescotpl/konfigurator/assets/klus-distributor.webp",
+    "intent": "Oryginalny lockup autoryzowanego dystrybutora KLUŚ",
+    "size": 6994,
+    "dimensions": "758 × 135",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/klus-profile.webp",
+    "source": "prescotpl/assets/offer/klus-profile.webp",
+    "intent": "Zdjęcie profilu KLUŚ do części dystrybucyjnej",
+    "size": 96840,
+    "dimensions": "1024 × 635",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/elba-logo.webp",
+    "source": "prescotpl/wp-content/uploads/2026/elba/elba_logo.webp",
+    "intent": "Logo ELBA, część dystrybucyjna",
+    "size": 11826,
+    "dimensions": "950 × 108",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/elba-luminaire.webp",
+    "source": "prescotpl/wp-content/uploads/2026/elba/elba_parkowa_01.webp",
+    "intent": "Oprawa parkowa ELBA, część dystrybucyjna",
+    "size": 55086,
+    "dimensions": "1240 × 828",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/power-supply.webp",
+    "source": "prescotpl/assets/prmad/pr-mad-family.webp",
+    "intent": "Własna oferta zasilaczy PR-MAD",
+    "size": 237358,
+    "dimensions": "1800 × 1200",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/controllers.webp",
+    "source": "prescotpl/assets/controllers/family-hero.webp",
+    "intent": "Własna oferta sterowania PRESCOT",
+    "size": 270204,
+    "dimensions": "1600 × 1600",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/sleeve.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/standard-z-tasma_7.webp",
+    "intent": "Taśma w koszulce silikonowej STANDARD, uzupełnienie systemu",
+    "size": 156228,
+    "dimensions": "1620 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/production-desktop.mp4",
+    "source": "prescotpl/assets/production/hero-desktop.mp4",
+    "intent": "Istniejący film z produkcji, wariant desktop, ładować po interakcji lub wejściu sekcji",
+    "size": 2478742,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/production-mobile.mp4",
+    "source": "prescotpl/assets/production/hero-mobile.mp4",
+    "intent": "Istniejący film z produkcji, wariant mobile",
+    "size": 792486,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/threeinone.webp",
+    "source": "prescotpl/konfigurator/assets/sources/delux-3in1.pdf · obraz xref 427, strona 1",
+    "intent": "Dokładne zdjęcie modelu DELUX 3 w 1; nadruki +24V/L/M/H",
+    "size": 50548,
+    "dimensions": "1196 × 841",
+    "method": "Oryginalny obraz z PDF → WebP quality90, bez retuszu"
+  },
+  {
+    "file": "assets/delux-pro.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/4l-i-4p-2-1.webp",
+    "intent": "Zdjęcie rodziny delux-pro; powiązanie z istniejącą stroną prescotpl/dpro/index.html",
+    "size": 26024,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/delux-low-brightness.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/dlowww.webp",
+    "intent": "Zdjęcie rodziny delux-low-brightness; powiązanie z istniejącą stroną prescotpl/dlow/index.html",
+    "size": 18264,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/delux-slim.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/24DS002-050-4-W_2-2-scaled-1.webp",
+    "intent": "Zdjęcie rodziny delux-slim; powiązanie z istniejącą stroną prescotpl/dslim4/index.html",
+    "size": 14416,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/delux-standard.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/24d160-9-4080-1010_2124d160-9-4080-1010-2-scaled.png",
+    "intent": "Zdjęcie rodziny delux-standard; powiązanie z istniejącą stroną prescotpl/d160s/index.html",
+    "size": 42946,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/true-color.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/dtrue.webp",
+    "intent": "Zdjęcie rodziny true-color; powiązanie z istniejącą stroną prescotpl/truecolor/index.html",
+    "size": 46192,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/delux-high-brightness.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/DHIGH.webp",
+    "intent": "Zdjęcie rodziny delux-high-brightness; powiązanie z istniejącą stroną prescotpl/dhigh/index.html",
+    "size": 36768,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/onecut.webp",
+    "source": "prescotpl/wp-content/uploads/2026/03/12d018-010-10-wl_4-2.webp",
+    "intent": "Zdjęcie rodziny onecut; powiązanie z istniejącą stroną prescotpl/onecut/index.html",
+    "size": 32528,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/bread.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/B070-BREAD-1.webp",
+    "intent": "Zdjęcie rodziny bread; powiązanie z istniejącą stroną prescotpl/produkt/index.html",
+    "size": 42450,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/premium-dense.webp",
+    "source": "prescotpl/wp-content/uploads/2026/03/OKLA-70-140-210_770-140-210.webp",
+    "intent": "Zdjęcie rodziny premium-dense; powiązanie z istniejącą stroną prescotpl/p70140210/index.html",
+    "size": 44192,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/premium-classic.webp",
+    "source": "prescotpl/wp-content/uploads/2026/03/E008-025-8-NW_15E008-025-8-NW-tasmy-delux-4014-biala-ciepla-2.webp",
+    "intent": "Zdjęcie rodziny premium-classic; powiązanie z istniejącą stroną prescotpl/p60120/index.html",
+    "size": 30174,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/premium-s-shape.webp",
+    "source": "prescotpl/wp-content/uploads/2026/03/s-shape_12s-shape.webp",
+    "intent": "Zdjęcie rodziny premium-s-shape; powiązanie z istniejącą stroną prescotpl/special/index.html",
+    "size": 45456,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/premium-rgbw.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/rgbw-4w1.webp",
+    "intent": "Zdjęcie rodziny premium-rgbw; powiązanie z istniejącą stroną prescotpl/prgbw/index.html",
+    "size": 64772,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/cob.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/EC320-025-8-WW-IP67N_4EC320-025-8-WW-IP67N.webp",
+    "intent": "Zdjęcie rodziny cob; powiązanie z istniejącą stroną prescotpl/dslim4-copy/index.html",
+    "size": 90958,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/cob-digital.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/24EC784-071-RGBWW-nw-IC_7.webp",
+    "intent": "Zdjęcie rodziny cob-digital; powiązanie z istniejącą stroną prescotpl/cobdigital/index.html",
+    "size": 36226,
+    "dimensions": "1000 × 667",
+    "method": "Zmniejszenie maks. 1000 × 750 i WebP quality85; bez retuszu"
+  },
+  {
+    "file": "assets/scharfer-logo.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/scharfer_pure_logo.png",
+    "intent": "Logo Scharfer do części dystrybucyjnej",
+    "size": 85720,
+    "dimensions": "1048 × 384",
+    "method": "Bezstratna konwersja PNG → WebP"
+  },
+  {
+    "file": "assets/miboxer-logo.webp",
+    "source": "prescotpl/wp-content/uploads/2026/01/Miboxer_web.webp",
+    "intent": "Logo MiBoxer do części dystrybucyjnej",
+    "size": 10448,
+    "dimensions": "975 × 217",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/application-furniture.webp",
+    "source": "prescotpl/wp-content/uploads/2026/02/light-rail-open-drawers-blue-fronts-2026-01-08-21-49-53-utc-scaled-1.webp",
+    "intent": "Inspiracja: oświetlenie wnętrza szuflad; istniejący stock, nie nazywać realizacją PRESCOT",
+    "size": 35528,
+    "dimensions": "1620 × 1080",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/delux-3in1.pdf",
+    "source": "prescotpl/konfigurator/assets/sources/delux-3in1.pdf",
+    "intent": "Rzeczywista karta katalogowa DELUX 3 w 1 24D160-11-3080-1010",
+    "size": 2137206,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  },
+  {
+    "file": "assets/premium-catalog.pdf",
+    "source": "prescotpl/konfigurator/assets/sources/premium-catalog.pdf",
+    "intent": "Oryginalny katalog taśm PRESCOT z rodzinami DELUX i PREMIUM",
+    "size": 1231217,
+    "dimensions": "",
+    "method": "Kopia bez zmian"
+  }
+]

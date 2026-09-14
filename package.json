@@ -1,0 +1,13 @@
+{
+  "name": "prescotled",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "python3 -m http.server 4186 --bind 127.0.0.1",
+    "build": "node scripts/build.mjs",
+    "check": "node --check app.js && node --check preview.js && node --check components.js && node --check products3d.js && node --check scripts/build.mjs && node scripts/check-content.mjs",
+    "test:browser": "node scripts/check-browser.mjs"
+  },
+  "devDependencies": {"playwright": "1.62.1"}
+}
