@@ -1,3 +1,15 @@
+# Aktualizacja — 16 września 2026
+
+Na prośbę użytkownika dopracowano nawigację i dodano 9 pełnych podstron, zachowując wygląd strony głównej i istniejący pokaz sześciu sekund. Menu Produkty / O firmie jest wspólne dla strony głównej, 15 stron serii i nowych podstron. Mobile: rozwijanie grup, Escape, fokus, blokada przewijania tła. Stopka zawiera mapę podstron. Strona 404 ma tę samą nawigację.
+
+Konfigurator otwiera się teraz wewnątrz `/prescotled/konfigurator/` jako iframe istniejącego studia, z zachowaniem `#config=…`. Silnik nie został skopiowany ani zmieniony. Na wspólnym origin GitHub Pages link powrotu i logo ramki kierują do nowej witryny. Pełne warunki gwarancji, prywatność i dokumentacja źródłowa otwierają się jako jawnie opisane linki w nowej karcie; główna nawigacja, marki i karty oferty pozostają lokalne.
+
+Źródła: `scripts/site-layout.mjs`, `scripts/build-pages.mjs`, `navigation.js/css`, `app.js`; generacja `npm run build`. Nowy test `npm run test:navigation`. Domyślna strona katalogu pokazuje wszystkie 15 serii, strona główna zachowuje filtr 7 lat. Wyszukiwanie i gwarancja są w query string, dzięki czemu wracają po przejściu z produktu.
+
+Weryfikacja lokalna: `npm run check` — 26 dokumentów HTML i 1165 lokalnych odnośników. Oba zestawy testów przeglądarkowych PASS: Chromium 320/390/768/1024/1440, WebKit 390. Raporty i zrzuty: `/private/tmp/prescotled-navigation-qa/`. Test wspólnego origin obejmuje osadzenie wybranego modelu i powrót ze środka ramki do katalogu.
+
+Poniżej stan sprzed tej aktualizacji; uwagi o zewnętrznym przejściu do konfiguratora są historyczne.
+
 # Stan projektu — 15 września 2026
 
 Docelowa strona: https://bohunek5.github.io/prescotled/ ; osobne repozytorium `bohunek5/prescotled`.

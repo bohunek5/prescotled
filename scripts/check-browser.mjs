@@ -58,13 +58,17 @@ async function run({ engine, width }) {
 
     const menu = page.locator('.menu-toggle');
     if (await menu.isVisible()) {
-      assert.equal(await menu.getAttribute('aria-expanded'), 'false');
       await menu.click();
       assert.equal(await menu.getAttribute('aria-expanded'), 'true');
-      await page.locator('#site-nav a[href="#tasmy"]').click();
-      await page.waitForFunction(() => document.querySelector('.menu-toggle')?.getAttribute('aria-expanded') === 'false');
-    } else await page.locator('#site-nav a[href="#tasmy"]').click();
-    result.checks.push('navigation and mobile menu');
+    }
+    await page.locator('#site-nav summary').first().click();
+    await page.locator('#site-nav a[href="tasmy-led/"]').click();
+    await page.waitForURL(new URL('tasmy-led/',base).href);
+    await visibleCards(page,15);
+    await assertLayout(page,'Catalogue page');
+    await page.goto(base.href);
+    await visibleCards(page,7);
+    result.checks.push('product dropdown, mobile menu and dedicated catalogue page');
 
     for (const [warranty, count] of [['5', 6], ['3', 2], ['all', 15], ['7', 7]]) {
       await page.locator(`[data-warranty="${warranty}"]`).click();
@@ -138,7 +142,7 @@ async function run({ engine, width }) {
       assert.equal(await page.locator(`[data-application="${key}"]`).getAttribute('aria-pressed'), 'true');
       const href = await page.locator('#application-config').getAttribute('href');
       const target = new URL(href, base);
-      assert.equal(target.origin + target.pathname, 'https://bohunek5.github.io/prescotpl/konfigurator/');
+      assert.equal(target.origin + target.pathname, new URL('konfigurator/',base).href);
       const state = JSON.parse(decodeURIComponent(target.hash.split('#config=')[1]));
       assert.equal(state.zone, zone);
       assert.equal(state.view, 'zone');
@@ -148,7 +152,7 @@ async function run({ engine, width }) {
         return img?.complete && img.naturalWidth > 0 && new URL(img.currentSrc).pathname.endsWith(expected);
       }, `application-${key}.webp`);
     }
-    result.checks.push('kitchen, stairs and furniture carry their assembly into external configurator');
+    result.checks.push('kitchen, stairs and furniture carry their assembly into local configurator');
 
     await page.locator('#production-play').click();
     await page.waitForFunction(() => document.querySelector('#video-dialog')?.open);
@@ -185,7 +189,7 @@ async function run({ engine, width }) {
       assert.equal((await page.locator('h1').innerText()).replace(/\s+/g, ' ').trim(), name);
       assert.match(await page.locator('.detail-warranty').innerText(), new RegExp(`\\b${years}\\b`));
       await assertLayout(page, `${name} detail`);
-      assert.ok(await page.locator('a[href^="https://bohunek5.github.io/prescotpl/konfigurator/"]').count(), 'Missing external configurator CTA');
+      assert.ok(await page.locator('a[href^="../../konfigurator/"]').count(), 'Missing local configurator CTA');
     }
     result.checks.push('direct series routes and correct visible 7/5/3 year guarantees');
     assert.deepEqual(failedRequests, [], 'Failed assets or pages');

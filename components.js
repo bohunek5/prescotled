@@ -2,15 +2,15 @@ import {powerSupplies,controllers} from './data/components.js';
 
 export function mountComponents(){
  const $=id=>document.getElementById(id),host=$('component-viewer'),loading=host.querySelector('.product-viewer-loading'),fallback=$('component-fallback');
- let type='power',selected=powerSupplies.find(m=>m.watts===100),viewer=null,viewerPromise=null,revision=0,voltage=12,lightColor='#ffd7a0';
+ let type=document.body.dataset.component==='controller'?'controller':'power',selected=type==='controller'?controllers[0]:powerSupplies.find(m=>m.watts===100),viewer=null,viewerPromise=null,revision=0,voltage=12,lightColor='#ffd7a0';
  const list=()=>type==='power'?powerSupplies:controllers;
  function updateText(){
   const power=type==='power';
   $('component-name').textContent=selected.name;$('component-visual-name').textContent=selected.ref||selected.name;
   $('component-eyebrow').textContent=power?'AUTODETEKCJA 12 / 24 V':'STEROWANIE PRESCOT LED';
   $('component-description').textContent=selected.description;
-  $('component-source').href=selected.sourceUrl;
-  fallback.src=selected.image;fallback.alt=selected.name;
+  $('component-source').href=new URL(selected.sourceUrl,import.meta.url).href;
+  fallback.src=new URL(selected.image,import.meta.url).href;fallback.alt=selected.name;
   $('power-demo').hidden=!power;$('controller-demo').hidden=power;
   const facts=power?[['Moc',`${selected.watts} W`],['Napięcie wyjściowe','12 / 24 V DC · auto'],['Wymiary',selected.dimensionsLabel],['Gwarancja',`${selected.warrantyYears} lata`]]:[['Napięcie',selected.voltage],['Obciążenie',`${selected.maxCurrentA} A łącznie`],['Komunikacja','RF 2,4 GHz'],['Gwarancja',`${selected.warrantyYears} lata`]];
   $('component-facts').replaceChildren(...facts.map(([label,value])=>{const div=document.createElement('div'),dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=label;dd.textContent=value;div.append(dt,dd);return div;}));

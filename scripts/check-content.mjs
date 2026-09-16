@@ -90,6 +90,15 @@ for (const [file, html] of pages) {
   check(!/<video\b[^>]*\bautoplay(?:\s|>|=)/i.test(html), `${label}: production video must wait for interaction`);
 }
 
+for (const route of ['tasmy-led','zasilacze','sterowniki','zastosowania','produkcja','dystrybucja','do-pobrania','kontakt','konfigurator']) {
+  check(pages.has(path.join(root,route,'index.html')), `Missing main route: ${route}`);
+}
+for (const [file, html] of pages) {
+ if (file.endsWith('404.html')) continue;
+ const nav=html.match(/<header[\s\S]*?<\/header>/)?.[0] || '';
+ check(nav.includes('class="nav-group"'), `${file}: shared product menu missing`);
+ check(!/href="https?:/.test(nav), `${file}: navigation must remain on this site`);
+}
 for (const item of series) {
   const file = path.join(root, 'serie', item.id, 'index.html');
   const html = pages.get(file);
@@ -100,7 +109,7 @@ for (const item of series) {
   check(text.includes(item.description), `${item.id}: series description is missing`);
   const warrantyRegion = html.match(/class=["'][^"']*detail-warranty[^"']*["'][^>]*>([\s\S]*?)<\/div>/i)?.[1];
   check(Boolean(warrantyRegion) && new RegExp(`\\b${item.warrantyYears}\\b`).test(visibleText(warrantyRegion || '')), `${item.id}: visible guarantee must show ${item.warrantyYears} years`);
-  check(html.includes('https://bohunek5.github.io/prescotpl/konfigurator/'), `${item.id}: external configurator link missing`);
+  check(html.includes('../../konfigurator/'), `${item.id}: local configurator link missing`);
   if (item.configStrip) {
     const configLinks = [...html.matchAll(/\bhref\s*=\s*(["'])(.*?)\1/g)].map(match => decode(match[2])).filter(value => value.includes('#config='));
     check(configLinks.some(value => {
@@ -109,7 +118,7 @@ for (const item of series) {
   }
 }
 
-for (const name of ['style.css', 'app.js', 'preview.js', 'config.js']) {
+for (const name of ['style.css', 'navigation.css', 'app.js', 'navigation.js', 'preview.js', 'config.js']) {
   const file = path.join(root, name);
   if (!await exists(file)) { check(name !== 'style.css' && name !== 'app.js', `Required asset missing: ${name}`); continue; }
   const text = await readFile(file, 'utf8');

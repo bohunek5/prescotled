@@ -1,4 +1,4 @@
-import {configuratorUrl,configuratorVersion} from './config.js?v=3';
+import {configuratorUrl,configuratorVersion} from './config.js?v=4';
 
 export async function mountAssemblyPreview(host,button,caption,{auto=false}={}){
  const fallback=host.querySelector('.film-fallback'),loading=host.querySelector('.film-loading');
@@ -16,7 +16,7 @@ export async function mountAssemblyPreview(host,button,caption,{auto=false}={}){
   return{inspect:film.inspect,dispose};
  }catch{
   loading.hidden=true;button.disabled=false;host.dataset.state='fallback';button.textContent='Otwórz pokaz w konfiguratorze ↗';caption.textContent='DELUX 3 w 1 · MICRO-PLUS';
-  button.onclick=()=>location.assign(configuratorUrl);film?.dispose();
+  button.onclick=()=>location.assign(new URL('./konfigurator/',import.meta.url).href);film?.dispose();
   return null;
  }
 }
