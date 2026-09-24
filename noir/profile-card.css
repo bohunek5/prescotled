@@ -7,57 +7,59 @@
 .category-card[data-card-motion=profile].klus-ready :is(.category-picture,.category-copy,.category-arrow,.category-number){display:none}
 .klus-heading{display:flex;align-items:center;justify-content:space-between;gap:30px;margin-bottom:25px}
 .category-card[data-card-motion=profile] .klus-logo{width:207px;height:78px;object-fit:contain;padding:12px 15px;background:#f9f8f2;filter:none;transform:none}
-.klus-heading>div>span{display:block;font-size:8px;letter-spacing:.15em;color:var(--klus-muted);margin-bottom:9px}
+.klus-heading>div>span{display:block;font-size:10px;letter-spacing:.15em;color:var(--klus-muted);margin-bottom:10px}
 .klus-heading h3{font-size:clamp(25px,3.1vw,41px);font-weight:400;letter-spacing:-.045em;line-height:1.08;margin:0}
 .klus-heading h3 em{font-style:normal;color:#cbb28e}
 .klus-selectors{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;margin-bottom:30px}
 .klus-selectors button{position:relative;z-index:8;pointer-events:auto;border:0;border-top:1px solid var(--klus-line);background:transparent;min-width:0;min-height:75px;padding:13px 0 5px;color:var(--klus-muted);display:grid;grid-template-columns:22px 1fr;gap:4px 8px;text-align:left;cursor:pointer;align-content:start}
-.klus-selectors button>span{font-size:8px;letter-spacing:.07em;grid-row:1/3;padding-top:3px}
+.klus-selectors button>span{font-size:10px;letter-spacing:.07em;grid-row:1/3;padding-top:3px;font-variant-numeric:tabular-nums}
 .klus-selectors button>strong{font-size:15px;letter-spacing:-.025em;font-weight:400;line-height:1.3}
-.klus-selectors button>small{grid-column:2;font-size:9px;color:var(--klus-muted)}
+.klus-selectors button>small{grid-column:2;font-size:10px;color:var(--klus-muted)}
 .klus-selectors button[aria-pressed=true]{border-top-color:#d6b27c;color:var(--klus-ink)}
 .klus-selectors button[aria-pressed=true]>span{color:#d6b27c}
-.klus-split-body{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.08fr);gap:40px;align-items:start}
+.klus-split-body{display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.1fr);gap:38px;align-items:start}
 .klus-product-zone{min-width:0}
 .klus-model-line{display:flex;align-items:flex-end;justify-content:space-between;gap:15px;margin-bottom:17px}
-.klus-model-line>div>span{display:block;color:var(--klus-muted);font-size:9px;letter-spacing:.04em;margin-bottom:7px}
+.klus-model-line>div>span{display:block;color:var(--klus-muted);font-size:10px;letter-spacing:.04em;margin-bottom:7px}
 .klus-model-line h4{font-size:31px;line-height:1.05;font-weight:400;letter-spacing:-.035em;margin:0}
-.klus-model-line>span{font-size:10px;color:var(--klus-muted);padding-bottom:3px}
-.klus-product-viewport{height:203px;position:relative;background:transparent;display:flex;align-items:center;justify-content:center;padding:21px 20px 29px;overflow:hidden}
-.category-card[data-card-motion=profile] .klus-product-art{display:block;position:static;inset:auto;max-width:420px;width:100%;height:100%;overflow:visible;transform:none;filter:none}
-.klus-product-viewport>span{position:absolute;left:17px;bottom:12px;font-size:8px;color:var(--klus-muted);letter-spacing:.015em}
-.klus-technical{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:center;margin-top:20px;min-height:115px;padding-bottom:16px;border-bottom:1px solid var(--klus-line)}
-.klus-section{height:108px;max-width:205px;min-width:0}
+.klus-model-line>span{font-size:11px;color:var(--klus-muted);padding-bottom:3px;font-variant-numeric:tabular-nums}
+.klus-product-viewport{height:205px;position:relative;background:transparent;display:flex;align-items:center;justify-content:center;padding:12px 0 31px;overflow:hidden}
+.category-card[data-card-motion=profile] .klus-product-art{display:block;position:static;inset:auto;max-width:none;width:100%;height:100%;overflow:visible;transform:none;filter:none}
+.klus-product-viewport>span{position:absolute;left:0;bottom:9px;font-size:10px;color:var(--klus-muted);letter-spacing:.015em}
+.klus-technical{display:grid;grid-template-columns:minmax(0,.88fr) minmax(0,1.12fr);gap:24px;align-items:center;margin-top:18px;min-height:119px;padding:17px 0;border-top:1px solid var(--klus-line);border-bottom:1px solid var(--klus-line)}
+.klus-section{height:103px;max-width:200px;min-width:0}
 .category-card[data-card-motion=profile] .klus-section svg{display:block;position:static;inset:auto;width:100%;height:100%;overflow:visible}
 .klus-section .profile-section-body{fill:#8d9c91;stroke:#d5ddd5;stroke-width:.13;stroke-linejoin:round}
 .klus-section .profile-section-emitter{fill:none;stroke:#ffe7bd;stroke-width:.55;stroke-linecap:round}
 .klus-section .profile-section-glow{opacity:.5;transition:opacity .2s}
 .category-card[data-card-motion=profile].is-active .profile-section-glow{opacity:1}
 .klus-section-info{display:flex;flex-direction:column;gap:8px}
-.klus-section-info>span:first-child{font-size:8px;letter-spacing:.13em;color:var(--klus-muted)}
-.klus-section-info>strong{font-size:19px;font-weight:400;letter-spacing:-.02em}
-.klus-section-info>span{font-size:10px;color:var(--klus-muted)}
-.klus-section-info>small{font-size:8px;color:#c1ad8e;margin-top:1px}
+.klus-section-info>span:first-child{font-size:9px;letter-spacing:.12em;color:var(--klus-muted)}
+.klus-section-info>strong{font-size:22px;font-weight:400;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.klus-section-info>span{font-size:12px;color:var(--klus-muted)}
+.klus-section-info>small{font-size:10px;color:#c1ad8e;margin-top:1px}
 .klus-description{padding-top:20px}
 .klus-description h5{font-size:23px;font-weight:400;line-height:1.12;letter-spacing:-.035em;margin:0 0 10px}
 .category-card[data-card-motion=profile] .klus-description p{font-size:14px;line-height:1.65;color:var(--klus-muted);max-width:445px;margin:0}
 .klus-application{min-width:0;margin:0}
-.klus-application-label{display:flex;justify-content:space-between;gap:15px;margin:2px 0 14px;font-size:8px;line-height:1.4;letter-spacing:.12em;color:var(--klus-muted)}
-.klus-photo-frame{width:100%;height:445px;background:#0b100d;display:grid;place-items:center;overflow:hidden}
-.category-card[data-card-motion=profile] .klus-application-image{position:static;inset:auto;display:block;width:100%;height:100%;max-width:550px;overflow:hidden}
-.klus-location{opacity:.58;transition:opacity .18s;pointer-events:none}
+.klus-application-label{display:flex;justify-content:space-between;gap:15px;margin:2px 0 14px;font-size:9px;line-height:1.4;letter-spacing:.11em;color:var(--klus-muted)}
+/* The frame and SVG have one geometry; slice fills it while source-space paths
+   stay attached to the photographed luminaires. Each photo chooses its anchor. */
+.klus-photo-frame{width:100%;height:auto;aspect-ratio:4/3;background:#0b100d;display:block;overflow:hidden;position:relative}
+.category-card[data-card-motion=profile] .klus-application-image{position:absolute;inset:0;display:block;width:100%;height:100%;max-width:none;max-height:none;overflow:hidden}
+.klus-location{opacity:.72;transition:opacity .18s;pointer-events:none}
 .category-card[data-card-motion=profile].is-active .klus-location{opacity:1}
-.klus-location-halo{fill:none;stroke:#11241ce0;stroke-width:9;stroke-linecap:round;stroke-linejoin:round}
-.klus-location-line{fill:none;stroke:#ffbd65;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.klus-location circle{fill:#f8c987;stroke:#17231c;stroke-width:3}
+.klus-location-halo{fill:none;stroke:#16221bcc;stroke-width:3;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.klus-location-line{fill:none;stroke:#f4d7a6;stroke-width:1.15;stroke-linecap:round;stroke-linejoin:round;vector-effect:non-scaling-stroke}
+.klus-location circle{fill:#f4dfbc;stroke:#17231c;stroke-width:1;vector-effect:non-scaling-stroke}
 .klus-application figcaption{display:flex;align-items:flex-start;gap:12px;padding-top:17px;max-width:500px;color:var(--klus-ink)}
 .klus-application figcaption strong{font-size:13px;font-weight:400;line-height:1.5}
-.klus-location-key{width:7px;height:7px;flex:0 0 auto;background:#e2b477;border-radius:50%;margin-top:6px}
+.klus-location-key{width:6px;height:6px;flex:0 0 auto;background:#e2c294;border-radius:50%;margin-top:7px}
 .klus-links{display:flex;gap:35px;border-top:1px solid var(--klus-line);padding-top:19px;margin-top:25px}
 .klus-links a{position:relative;z-index:8;pointer-events:auto;color:var(--klus-ink);display:flex;align-items:center;gap:25px;min-height:33px;font-size:11px;text-decoration:none;border-bottom:1px solid #c9b79455;padding-bottom:3px}
 .klus-links a>span{font-size:22px;color:#d6b688}
 .klus-showcase :is(button,a):focus-visible{outline:2px solid #ddb878;outline-offset:4px}
-.category-card[data-card-motion=profile][data-klus-switching=true] .klus-split-body{opacity:.6}
+.category-card[data-card-motion=profile][data-klus-switching=true] .klus-split-body{opacity:.82}
 .klus-split-body{transition:opacity .12s}
 html[data-theme=day] .category-card[data-card-motion=profile]{--klus-ink:#253b2e;--klus-muted:#52685a;--klus-line:#516e4d33;--klus-ground:#eef0e8;--profile-light:#b58139}
 html[data-theme=day] .klus-heading h3 em{color:#92754c}
@@ -68,24 +70,24 @@ html[data-theme=day] .klus-photo-frame{background:#e0e5da}
 html[data-theme=day] .klus-section .profile-section-body{fill:#b6c0b5;stroke:#465f4c}
 html[data-theme=day] .klus-section .profile-section-emitter{stroke:#ad772d}
 html[data-theme=day] .klus-section-info>small{color:#8a6d46}
-@media(max-width:1100px){.klus-split-body{gap:25px;grid-template-columns:1fr 1fr}.klus-selectors{gap:13px}.klus-selectors button>strong{font-size:13px}.klus-heading h3{font-size:30px}.klus-heading h3 em{display:block}.klus-product-viewport{height:184px}.klus-photo-frame{height:416px}.klus-technical{gap:13px}.klus-description h5{font-size:21px}.klus-description p{font-size:11px}}
+@media(max-width:1100px){.klus-split-body{gap:25px;grid-template-columns:1fr 1fr}.klus-selectors{gap:13px}.klus-selectors button>strong{font-size:13px}.klus-heading h3{font-size:30px}.klus-heading h3 em{display:block}.klus-product-viewport{height:184px}.klus-technical{gap:13px}.klus-section-info>strong{font-size:20px}.klus-description h5{font-size:21px}.klus-description p{font-size:11px}}
 @media(max-width:760px){
  .category-card[data-card-motion=profile] .klus-showcase{padding:25px 20px 21px}
  .klus-heading{display:block;margin-bottom:24px}.category-card[data-card-motion=profile] .klus-logo{width:174px;height:65px;padding:10px 12px}.klus-heading>div{margin-top:20px}.klus-heading>div>span{font-size:7px;margin-bottom:8px}.klus-heading h3{font-size:29px;line-height:1.04}.klus-heading h3 em{display:block}
  .klus-selectors{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-bottom:25px}.klus-selectors button{grid-template-columns:1fr;gap:5px;min-height:70px;padding:9px 0 4px}.klus-selectors button>span{grid-row:auto;padding:0;font-size:7px}.klus-selectors button>strong{font-size:11px;line-height:1.2;letter-spacing:-.03em}.klus-selectors button>small{grid-column:1;font-size:8px}
- .klus-split-body{grid-template-columns:1fr;gap:29px}.klus-model-line{margin-bottom:14px}.klus-model-line h4{font-size:27px}.klus-model-line>div>span{font-size:8px}.klus-model-line>span{font-size:9px}.klus-product-viewport{height:168px;padding:18px 16px 28px}.klus-product-viewport>span{font-size:7px;left:13px;bottom:11px}
+ .klus-split-body{grid-template-columns:1fr;gap:29px}.klus-model-line{margin-bottom:14px}.klus-model-line h4{font-size:27px}.klus-model-line>div>span{font-size:8px}.klus-model-line>span{font-size:9px}.klus-product-viewport{height:168px;padding:12px 0 28px}.klus-product-viewport>span{font-size:7px;left:0;bottom:11px}
  .klus-technical{margin-top:16px;min-height:109px;grid-template-columns:.95fr 1fr;gap:20px;padding-bottom:13px}.klus-section{height:96px}.klus-section-info{gap:6px}.klus-section-info>strong{font-size:18px}.klus-section-info>span{font-size:9px}.klus-section-info>span:first-child{font-size:7px}.klus-section-info>small{font-size:7px}
  .klus-description{padding-top:16px}.klus-description h5{font-size:23px;margin-bottom:9px}.category-card[data-card-motion=profile] .klus-description p{font-size:14px;line-height:1.65}
- .klus-application-label{font-size:7px;letter-spacing:.09em;margin-bottom:11px}.klus-photo-frame{height:342px}.klus-application figcaption{padding-top:12px;gap:9px}.klus-application figcaption strong{font-size:11px;line-height:1.5}.klus-location-key{width:6px;height:6px;margin-top:4px}.klus-links{margin-top:23px;padding-top:15px;display:grid;gap:10px}.klus-links a{font-size:10px;justify-content:space-between;min-height:34px}.klus-links a>span{font-size:20px}
+ .klus-application-label{font-size:7px;letter-spacing:.09em;margin-bottom:11px}.klus-application figcaption{padding-top:12px;gap:9px}.klus-application figcaption strong{font-size:11px;line-height:1.5}.klus-location-key{width:6px;height:6px;margin-top:4px}.klus-links{margin-top:23px;padding-top:15px;display:grid;gap:10px}.klus-links a{font-size:10px;justify-content:space-between;min-height:34px}.klus-links a>span{font-size:20px}
 }
-@media(max-width:359px){.category-card[data-card-motion=profile] .klus-showcase{padding:22px 15px}.klus-heading h3{font-size:27px}.klus-selectors{gap:8px}.klus-selectors button>strong{font-size:10px}.klus-selectors button>small{font-size:7px}.klus-product-viewport{height:150px}.klus-photo-frame{height:302px}.klus-description h5{font-size:21px}.klus-section-info>strong{font-size:16px}}
+@media(max-width:359px){.category-card[data-card-motion=profile] .klus-showcase{padding:22px 15px}.klus-heading h3{font-size:27px}.klus-selectors{gap:8px}.klus-selectors button>strong{font-size:10px}.klus-selectors button>small{font-size:7px}.klus-product-viewport{height:150px}.klus-description h5{font-size:21px}.klus-section-info>strong{font-size:16px}}
 @media(max-width:760px){
  .klus-selectors{grid-template-columns:repeat(2,minmax(0,1fr))}
  .klus-selectors button>strong{font-size:12px}.klus-selectors button>small{font-size:9px}
  .klus-section-info>span{font-size:11px}.klus-section-info>span:first-child,.klus-section-info>small{font-size:9px}
  .klus-model-line>div>span,.klus-model-line>span,.klus-product-viewport>span{font-size:10px}
  .klus-application-label{font-size:9px;letter-spacing:.04em}.klus-application figcaption strong{font-size:13px}
- .klus-photo-frame{height:auto}.category-card[data-card-motion=profile] .klus-application-image{height:auto;max-height:380px}
+ .klus-photo-frame{height:auto;aspect-ratio:4/3}
  .klus-links a{font-size:12px;min-height:40px}
 }
 @media(prefers-reduced-motion:reduce){.category-card[data-card-motion=profile] *{transition:none!important;animation:none!important}}

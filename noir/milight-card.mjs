@@ -30,11 +30,11 @@ export function initMiLightCard(card){
   function present(){
     clearTimers();requested=null;card.dataset.milightSwitching='false';syncSelection();setPhase(reduced?'installed':'product');syncTour();
     if(!running||reduced)return;
-    // The exact original remains at the same projective placement in every phase.
-    // Only the clean architectural plate behind it is revealed.
-    later(automatic?850:20,()=>setPhase('travel'));
-    later(automatic?1500:660,()=>setPhase('installed'));
-    if(automatic)tourTimer=later(8600,()=>{if(automatic)switchMode(modes[(modes.indexOf(current)+1)%modes.length]);});
+    // The original product keeps its proportions. A nearby application reveals
+    // independently; no fake mounting or projective distortion is introduced.
+    later(automatic?700:20,()=>setPhase('travel'));
+    later(automatic?1450:820,()=>setPhase('installed'));
+    if(automatic)tourTimer=later(7600,()=>{if(automatic)switchMode(modes[(modes.indexOf(current)+1)%modes.length]);});
   }
   function switchMode(mode){
     if(!modes.includes(mode)||requested===mode)return;
@@ -42,7 +42,7 @@ export function initMiLightCard(card){
     if(reduced||!running){current=mode;present();return;}
     card.dataset.milightSwitching='true';
     buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.milightSelect===mode)));
-    later(40,()=>{current=mode;present();});
+    later(160,()=>{current=mode;present();});
   }
   function choose(mode){
     if(!modes.includes(mode))return;
@@ -57,7 +57,7 @@ export function initMiLightCard(card){
   }
   buttons.forEach((button,index)=>{
     button.disabled=false;
-    button.addEventListener('pointerenter',event=>{if(event.pointerType==='touch')return;clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{hoverTimer=0;choose(button.dataset.milightSelect);},35);});
+    button.addEventListener('pointerenter',event=>{if(event.pointerType==='touch'||!matchMedia('(hover: hover) and (pointer: fine)').matches)return;clearTimeout(hoverTimer);hoverTimer=setTimeout(()=>{hoverTimer=0;choose(button.dataset.milightSelect);},35);});
     button.addEventListener('pointerleave',()=>{clearTimeout(hoverTimer);hoverTimer=0;});
     button.addEventListener('focus',()=>choose(button.dataset.milightSelect));
     button.addEventListener('click',event=>{event.preventDefault();event.stopPropagation();choose(button.dataset.milightSelect);if(matchMedia('(max-width:760px)').matches)stage.scrollIntoView({block:'center',behavior:reduced?'instant':'smooth'});});
@@ -71,12 +71,6 @@ export function initMiLightCard(card){
     event.preventDefault();event.stopPropagation();automatic=!automatic;
     if(automatic)present();else{clearTimers();requested=null;card.dataset.milightSwitching='false';syncSelection();setPhase('installed');syncTour();}
   });
-  // Scale one 1536×1024 photographic coordinate system for all products.
-  // Resize never alters the product-to-room correspondence.
-  const visual=card.querySelector('.milight-visual');
-  const scaleProjection=()=>{if(visual)card.style.setProperty('--milight-scale',String(visual.getBoundingClientRect().width/1536));};
-  const resizeObserver=new ResizeObserver(scaleProjection);
-  if(visual)resizeObserver.observe(visual);scaleProjection();
   // Decoded image replacement is handled centrally by theme.mjs.
   const syncTheme=event=>{card.dataset.milightTheme=event?.detail?.theme||document.documentElement.dataset.theme||'night';};
   addEventListener('prescot:themechange',syncTheme);syncTheme();syncSelection();setPhase('product');syncTour();card.classList.add('milight-ready');

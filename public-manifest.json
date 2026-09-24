@@ -55,8 +55,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 948,
-  "bytesExcludingManifest": 278683531,
+  "fileCountExcludingManifest": 943,
+  "bytesExcludingManifest": 276867228,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -2957,8 +2957,8 @@
       "source": "favicon.svg"
     },
     "index.html": {
-      "bytes": 104825,
-      "sha256": "1995035af3b7858ddf7836b80f58d6017f9e54894942310b3130b182282de611",
+      "bytes": 104330,
+      "sha256": "18e52acb2ba41c1831447ad3ffe6cbde265ca24b9cd0e06faf472c921c3a7756",
       "source": "noir/index.html"
     },
     "katalog/index.html": {
@@ -4081,75 +4081,25 @@
       "sha256": "1e870152d554228ff445b488002937b6a85975a0f045451ed2a377b7f70bd369",
       "source": "noir/media/maga-cutout.webp"
     },
-    "noir/media/milight-showcase/b0-plate-day-v2.webp": {
-      "bytes": 260256,
-      "sha256": "3f7b2cd72aa9e916df540356d76f7b4ff12cf34effdfa97447842f9b7bcaa672",
-      "source": "noir/media/milight-showcase/b0-plate-day-v2.webp"
-    },
-    "noir/media/milight-showcase/b0-plate-v2.webp": {
-      "bytes": 204458,
-      "sha256": "3ff7f8608434e61bd51b49d54fb811af383b8264aef7c4a773796c52f6c13d83",
-      "source": "noir/media/milight-showcase/b0-plate-v2.webp"
-    },
     "noir/media/milight-showcase/b0-product.webp": {
       "bytes": 108962,
       "sha256": "8964dfd4a8544146fc954e7ea57c207fc9f90c4efad08586faa630b361a60329",
       "source": "noir/media/milight-showcase/b0-product.webp"
-    },
-    "noir/media/milight-showcase/c8-plate-day-v2.webp": {
-      "bytes": 309514,
-      "sha256": "68267301246a44db77cc8668ced6db77bad1851a5cfc36b6749efdd4b5cba682",
-      "source": "noir/media/milight-showcase/c8-plate-day-v2.webp"
-    },
-    "noir/media/milight-showcase/c8-plate-v2.webp": {
-      "bytes": 229526,
-      "sha256": "73641cd5a9c8747bf20499c677c1671ea9eccfa354a2e0155db05cf7e8db0a77",
-      "source": "noir/media/milight-showcase/c8-plate-v2.webp"
     },
     "noir/media/milight-showcase/c8-product.webp": {
       "bytes": 32546,
       "sha256": "d04d33a33eca0ca4064516b6b11eec988ebd371c9c1d6a9c873d927fb26698fb",
       "source": "noir/media/milight-showcase/c8-product.webp"
     },
-    "noir/media/milight-showcase/hz2-plate-day-v2.webp": {
-      "bytes": 193058,
-      "sha256": "26de75905f51c9a4c927d5c30d60bf15ec9fbaa9c7a596a2b7e4176971e2dd4f",
-      "source": "noir/media/milight-showcase/hz2-plate-day-v2.webp"
-    },
-    "noir/media/milight-showcase/hz2-plate-v2.webp": {
-      "bytes": 199122,
-      "sha256": "4c6535878ae5113ed920b67eedfb8126c5406565de1faae3e67b6e72d1c6f67b",
-      "source": "noir/media/milight-showcase/hz2-plate-v2.webp"
-    },
     "noir/media/milight-showcase/hz2-product.webp": {
       "bytes": 374108,
       "sha256": "f1524e2be0b4bd7dd9acc60e189ef8081a5ea02da5a294d6df982c4e9d9f8d82",
       "source": "noir/media/milight-showcase/hz2-product.webp"
     },
-    "noir/media/milight-showcase/k1-plate-day-v2.webp": {
-      "bytes": 291422,
-      "sha256": "c7ecb466a1f944c1094e50c8aa7693da0512c875e8308bc4fc213af5e282e43e",
-      "source": "noir/media/milight-showcase/k1-plate-day-v2.webp"
-    },
-    "noir/media/milight-showcase/k1-plate-v2.webp": {
-      "bytes": 177866,
-      "sha256": "13b13e6aabadab04d62979a8d21c9933e458d44f2ef5fd92dae59b3b38c7a66b",
-      "source": "noir/media/milight-showcase/k1-plate-v2.webp"
-    },
-    "noir/media/milight-showcase/k1-product.webp": {
-      "bytes": 32796,
-      "sha256": "ae5b0746026b2841bcedd82ee5c3dae7c4ef6544183d9b71d1458fb79bcf1205",
-      "source": "noir/media/milight-showcase/k1-product.webp"
-    },
-    "noir/media/milight-showcase/sz5-plate-day-v2.webp": {
-      "bytes": 227400,
-      "sha256": "3b1b4f1072fb52e0cdbb45c9a1f3d9a987e9c481354880ef9a2cd5dd924cb123",
-      "source": "noir/media/milight-showcase/sz5-plate-day-v2.webp"
-    },
-    "noir/media/milight-showcase/sz5-plate-v2.webp": {
-      "bytes": 169308,
-      "sha256": "f7c9db10fc7c66d1dc746bf801c9775720fd3632cee85b05ffa435e6b6fa1782",
-      "source": "noir/media/milight-showcase/sz5-plate-v2.webp"
+    "noir/media/milight-showcase/k1-original-cutout.svg": {
+      "bytes": 111002,
+      "sha256": "6029f80ee9eb330ff3966f0a4c155431ee63ba83554ae088682063e8af713efe",
+      "source": "noir/media/milight-showcase/k1-original-cutout.svg"
     },
     "noir/media/milight-showcase/sz5-product.webp": {
       "bytes": 100098,
@@ -4282,13 +4232,13 @@
       "source": "noir/media/strip-print-marks-night.svg"
     },
     "noir/milight-card.css": {
-      "bytes": 10070,
-      "sha256": "a0837da4d4713c8363affa3cf0f2ae2d2dde705529d0dbdec10a9402ef5820b3",
+      "bytes": 12358,
+      "sha256": "8a691fdb27bbfef46f6ac7457470f4bb75d5b54da5ac72dafaecce508915d0d6",
       "source": "noir/milight-card.css"
     },
     "noir/milight-card.mjs": {
-      "bytes": 5902,
-      "sha256": "500a7b5d45a606db64098210b9c8188fa344be923b505682eaf41d8f4c9c77ef",
+      "bytes": 5527,
+      "sha256": "b5eee696badde05432ffb2b8f787dbaa1787d3f4c51b6a1083a858fb3257b5ca",
       "source": "noir/milight-card.mjs"
     },
     "noir/offer-evolution-compare.css": {
@@ -4332,13 +4282,13 @@
       "source": "noir/power-card.mjs"
     },
     "noir/profile-card.css": {
-      "bytes": 11032,
-      "sha256": "05259a66f01b5040b4d8dcef9f45b1c4c20dfd3c3f586bd6767f056de76d2ea5",
+      "bytes": 11331,
+      "sha256": "a2a6f6110164d6e2f3a26bc42f1bc3c0bc8842217cfd4141e40561d00a6d9c31",
       "source": "noir/profile-card.css"
     },
     "noir/profile-card.mjs": {
-      "bytes": 47654,
-      "sha256": "bf7343dd307931076286d4d7675b894ed303281cf57b79c292b206cdf7fdb9a7",
+      "bytes": 47983,
+      "sha256": "a9a851c289171656fed6bac99232110b17f1ceac61c0186152c3dbe3f4f8c975",
       "source": "noir/profile-card.mjs"
     },
     "noir/scharfer-immersion.css": {
@@ -4412,8 +4362,8 @@
       "source": "noir/touch-card.mjs"
     },
     "oferta/index.html": {
-      "bytes": 121627,
-      "sha256": "fd3f7c420a6b2bac67a17a748ba860d48771bc35e8f0612c03764bb631a179a3",
+      "bytes": 121132,
+      "sha256": "98aa1e4fd0bad0e4602d714f6831c707f4dd7177d23a394bbf87d5ff23059d09",
       "source": "noir/oferta/index.html"
     },
     "oprawy/index.html": {
@@ -4711,6 +4661,21 @@
       "sha256": "8d070ed9e1a13840e74f337e0b62ba16c920969e62bf05b89c95fe752bdbacec",
       "source": "wp-content/uploads/2026/02/321.webp"
     },
+    "wp-content/uploads/2026/02/AdobeStock_304022235.webp": {
+      "bytes": 59242,
+      "sha256": "1aa61b8adb4c59e2a92bbf631499e5f7a0ae4b4b4659f54ab48ffd2b00f7b5bb",
+      "source": "wp-content/uploads/2026/02/AdobeStock_304022235.webp"
+    },
+    "wp-content/uploads/2026/02/AdobeStock_615218750.webp": {
+      "bytes": 72288,
+      "sha256": "b572be424e200446cf228125a7f6b92f2d4924d9f77fedb0d7f2c9df62ce2bbf",
+      "source": "wp-content/uploads/2026/02/AdobeStock_615218750.webp"
+    },
+    "wp-content/uploads/2026/02/AdobeStock_615218959.webp": {
+      "bytes": 110242,
+      "sha256": "721da27f0565dac1b62edc07eeb93c23b3728160c82270a45c26f85c0d1c5d33",
+      "source": "wp-content/uploads/2026/02/AdobeStock_615218959.webp"
+    },
     "wp-content/uploads/2026/02/BASIC-pro_1-z-czarnej-tacy.webp": {
       "bytes": 16766,
       "sha256": "dc22a0e90639f501636d09079474df559c4ce4b4b563d8bd9b2534807e0327b4",
@@ -4720,6 +4685,16 @@
       "bytes": 58330,
       "sha256": "b6f2b33cf6922aabd019a9c6740900c3e08b04818a958effcc4f1c40b475aec6",
       "source": "wp-content/uploads/2026/02/KOSZULKA-START.webp"
+    },
+    "wp-content/uploads/2026/02/modern-minimalism-style-kitchen-in-new-luxury-home-2023-11-27-05-27-25-utc.webp": {
+      "bytes": 93088,
+      "sha256": "240062e4b0abe6f5b8c34112adee8229c2917a5d767e4b90f56ac75247f53994",
+      "source": "wp-content/uploads/2026/02/modern-minimalism-style-kitchen-in-new-luxury-home-2023-11-27-05-27-25-utc.webp"
+    },
+    "wp-content/uploads/2026/02/parallel-fronts-warm-lighting-blue-modern-2026-01-05-00-09-49-utc-scaled-1.webp": {
+      "bytes": 31010,
+      "sha256": "cb6fb8b80ca302a7a18ef7a2baea8e4988f7b6351704878f73537a5ddb49a3f6",
+      "source": "wp-content/uploads/2026/02/parallel-fronts-warm-lighting-blue-modern-2026-01-05-00-09-49-utc-scaled-1.webp"
     },
     "wp-content/uploads/2026/02/standard-pro_1-1.webp": {
       "bytes": 18948,

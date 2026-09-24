@@ -1,31 +1,45 @@
-/* One authentic product, fixed projective placement. Only its surroundings reveal. */
+/* MiBoxer: original product proportions and carefully framed lighting applications. */
 .category-grid>.category-card[data-card-motion=milight]{--ml-bg:#101419;--ml-panel:#151921;--ml-ink:#edf0f5;--ml-muted:#a4aeba;--ml-line:#bec9e326;--ml-accent:#c6b9ed;grid-column:1/-1;height:auto;min-height:0;background:var(--ml-bg);color:var(--ml-ink);cursor:default;overflow:hidden}
 .category-card[data-card-motion=milight]>.category-picture,.category-card[data-card-motion=milight]>:is(.category-number,.category-copy,.category-arrow){display:none!important}
 .category-card[data-card-motion=milight]:after{display:none}
 .category-card[data-card-motion=milight] .demo-milight{position:relative;inset:auto;z-index:3;overflow:hidden;pointer-events:none;background:var(--ml-bg);color:var(--ml-ink)}
 .milight-header{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:29px 34px;border-bottom:1px solid var(--ml-line)}
 .milight-overline{display:block;font-size:9px;letter-spacing:.14em;color:var(--ml-muted);margin-bottom:11px}
-.milight-header h3{font-size:31px;line-height:1.15;letter-spacing:-.045em;font-weight:450;margin:0}.milight-header h3 span{color:var(--ml-muted);font-weight:300;margin:0 6px}
+.milight-header h3{font-size:34px;line-height:1.15;letter-spacing:-.045em;font-weight:450;margin:0}.milight-header h3 span{color:var(--ml-muted);font-weight:300;margin:0 6px}
 .milight-header p{margin:0;font-size:16px;line-height:1.7;letter-spacing:-.015em}.milight-header p span{font-size:12px;color:var(--ml-muted)}
 .milight-body{display:grid;grid-template-columns:minmax(0,1fr) 290px;min-width:0}
 .milight-stage{display:grid;min-width:0;background:var(--ml-bg);container-type:inline-size;overflow:hidden}
 .milight-exhibit{grid-area:1/1;min-width:0;opacity:0;visibility:hidden;transition:opacity .15s ease;pointer-events:none}
 .milight-exhibit.is-selected{opacity:1;visibility:visible}
 [data-milight-switching=true] .milight-exhibit.is-selected{opacity:0}
-.milight-visual{position:relative;aspect-ratio:3/2;overflow:hidden;background:radial-gradient(ellipse at 50% 45%,#afb3e614,transparent 67%)}
-.category-card[data-card-motion=milight] .milight-environment{position:absolute;inset:0;width:100%;height:100%;max-width:none;max-height:none;object-fit:contain;transform:none;filter:none;opacity:0;transition:opacity .6s cubic-bezier(.25,.1,.3,1)}
-.milight-source{position:absolute;inset:0;opacity:1;pointer-events:none}
-.milight-projection{position:absolute;left:0;top:0;width:1536px;height:1024px;transform:scale(var(--milight-scale,.5));transform-origin:0 0;pointer-events:none}
-.category-card[data-card-motion=milight] .milight-product{display:block;position:absolute;left:0;top:0;max-width:none;max-height:none;object-fit:fill;transform-origin:0 0;filter:brightness(.83) sepia(.09) drop-shadow(0 8px 10px #0009);transition:filter .8s ease}
-.milight-exhibit[data-milight-exhibit=c8] .milight-product{filter:brightness(.87) sepia(.08) drop-shadow(0 8px 8px #0009)}
-.milight-exhibit[data-milight-exhibit=sz5] .milight-product{filter:brightness(.83) sepia(.12) drop-shadow(0 9px 10px #0008)}
-.milight-exhibit[data-milight-exhibit=hz2] .milight-product{filter:brightness(.93) drop-shadow(0 6px 9px #0007)}
-.milight-model{position:absolute;top:22px;left:27px;font-size:13px;font-weight:450;letter-spacing:.09em;line-height:1.45;transition:opacity .2s ease;color:var(--ml-ink)}.milight-model small{display:block;font-size:10px;letter-spacing:.01em;margin-top:3px;color:var(--ml-muted)}
-:is([data-milight-phase=travel],[data-milight-phase=installed]) .is-selected .milight-environment{opacity:1}
-:is([data-milight-phase=travel],[data-milight-phase=installed]) .is-selected .milight-model{opacity:0}
-.milight-caption{display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,27%);gap:20px;padding:28px 30px 30px;border-top:1px solid var(--ml-line);background:var(--ml-bg);min-height:190px}
+/* Packshot and application share a frame, without falsifying the product perspective. */
+.milight-visual{position:relative;aspect-ratio:16/10;min-height:390px;overflow:hidden;background:radial-gradient(ellipse at 40% 48%,#7c89991a,transparent 60%)}
+.category-card[data-card-motion=milight] .milight-environment{position:absolute;inset:0 0 0 auto;width:66%;height:100%;max-width:none;max-height:none;object-fit:cover;object-position:57% 50%;transform:scale(1.025);filter:brightness(.85);opacity:0;transition:opacity .7s ease,transform 1.2s ease;mask-image:linear-gradient(90deg,transparent,#000 18%)}
+.milight-exhibit[data-milight-exhibit=sz5] .milight-environment{object-position:58% 50%}
+.milight-exhibit[data-milight-exhibit=hz2] .milight-environment{object-position:55% 36%}
+.milight-exhibit[data-milight-exhibit=k1] .milight-environment{object-position:57% 50%}
+.milight-source{position:absolute;width:41%;height:65%;left:50%;top:51%;transform:translate(-50%,-50%);z-index:2;display:flex;align-items:center;justify-content:center;pointer-events:none;transition:left .8s cubic-bezier(.2,.7,.2,1),width .8s ease}
+.category-card[data-card-motion=milight] .milight-product{display:block;position:static;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;transform:none;filter:drop-shadow(0 15px 22px #0007);transition:filter .6s ease}
+.milight-exhibit[data-milight-exhibit=c8] .milight-product{max-width:75%}
+.milight-exhibit[data-milight-exhibit=k1] .milight-product{max-width:87%}
+.milight-model{position:absolute;top:27px;left:30px;z-index:3;font-size:23px;font-weight:400;letter-spacing:-.025em;line-height:1.35;color:var(--ml-ink)}
+.milight-model small{display:block;font-size:12px;letter-spacing:.015em;margin-top:5px;color:var(--ml-muted)}
+.milight-application-note{position:absolute;right:0;bottom:0;width:62%;padding:65px 28px 26px;box-sizing:border-box;z-index:1;color:#fff;background:linear-gradient(transparent,#070a10bf);opacity:0;transition:opacity .65s ease .2s}
+.milight-application-note span{display:block;font-size:10px;letter-spacing:.08em;color:#e4e5e8;margin-bottom:9px}
+.milight-application-note strong{font-size:clamp(22px,2.6vw,37px);font-weight:400;letter-spacing:-.045em;line-height:1.15;display:block;max-width:330px}
+.milight-signal{position:absolute;left:30px;bottom:30px;display:flex;align-items:center;gap:10px;width:27%;color:var(--ml-muted);opacity:0;transition:opacity .5s ease .3s}
+.milight-signal span{font-size:11px;white-space:nowrap;letter-spacing:.05em}
+.milight-signal i{height:1px;flex:1;background:linear-gradient(90deg,transparent,var(--ml-accent));position:relative}
+.milight-signal i:last-child{background:linear-gradient(90deg,var(--ml-accent),transparent)}
+.milight-signal i:last-child:after{content:"";position:absolute;left:0;top:-1px;width:3px;height:3px;border-radius:50%;background:var(--ml-accent);box-shadow:0 0 7px var(--ml-accent);animation:ml-radio-signal 2.8s ease-in-out infinite paused}
+:is([data-milight-phase=travel],[data-milight-phase=installed]) .is-selected .milight-environment{opacity:1;transform:scale(1)}
+:is([data-milight-phase=travel],[data-milight-phase=installed]) .is-selected .milight-source{left:21%;width:33%}
+:is([data-milight-phase=travel],[data-milight-phase=installed]) .is-selected :is(.milight-application-note,.milight-signal){opacity:1}
+[data-milight-tour=playing] .is-selected .milight-signal i:after{animation-play-state:running}
+@keyframes ml-radio-signal{0%,15%{opacity:0;left:0}30%{opacity:1}85%,100%{opacity:0;left:95%}}
+.milight-caption{display:grid;grid-template-columns:minmax(0,1fr) minmax(130px,27%);gap:20px;padding:28px 30px 30px;border-top:1px solid var(--ml-line);background:var(--ml-bg);min-height:170px}
 .milight-caption h4{margin:0 0 14px;font-size:clamp(25px,2.5vw,38px);font-weight:400;line-height:1.15;letter-spacing:-.05em}
-.milight-caption p{font-size:12px;line-height:1.75;color:var(--ml-muted);max-width:440px;margin:0}
+.milight-caption p{font-size:14px;line-height:1.65;color:var(--ml-muted);max-width:490px;margin:0}
 .milight-caption dl{display:flex;flex-direction:column;justify-content:center;gap:19px;margin:0;padding-left:19px;border-left:1px solid var(--ml-line)}
 .milight-caption dt{font-size:9px;line-height:1.4;letter-spacing:.035em;color:var(--ml-muted);margin-bottom:5px}.milight-caption dd{font-size:16px;line-height:1.3;letter-spacing:-.025em;color:var(--ml-accent);margin:0}
 .milight-chooser{min-width:0;padding:26px 17px 23px;border-left:1px solid var(--ml-line);background:var(--ml-panel);display:flex;flex-direction:column;pointer-events:auto}
@@ -42,9 +56,10 @@
 .milight-contact{display:flex;justify-content:space-between;align-items:center;gap:16px;min-height:43px;padding:12px 9px 0;border-top:1px solid var(--ml-line);color:var(--ml-ink);font-size:12px;text-decoration:none;pointer-events:auto}.milight-contact span{color:var(--ml-accent);font-size:18px}
 .milight-chooser :is(button,a):focus-visible{outline:2px solid var(--ml-accent);outline-offset:2px}
 html[data-theme=day] .category-grid>.category-card[data-card-motion=milight]{--ml-bg:#ecefeb;--ml-panel:#f5f5f0;--ml-ink:#28312f;--ml-muted:#63716c;--ml-line:#364a3b29;--ml-accent:#64577f;background:var(--ml-bg)}
+html[data-theme=day] .category-card[data-card-motion=milight] .milight-environment{filter:none}
 html[data-theme=day] .milight-selectors>button[aria-pressed=true]{border-color:#66578065;background:#7862970a}
-html[data-theme=day] .category-card[data-card-motion=milight] .milight-product{filter:brightness(.97) drop-shadow(0 7px 10px #26342870)}
+html[data-theme=day] .category-card[data-card-motion=milight] .milight-product{filter:drop-shadow(0 10px 16px #26342830)}
 @media(max-width:1100px){.milight-body{grid-template-columns:minmax(0,1fr) 245px}.milight-header{padding:25px}.milight-chooser{padding-inline:12px}.milight-selectors>button{grid-template-columns:13px minmax(0,1fr) 35px;gap:7px;padding-inline:7px}.category-card[data-card-motion=milight] .milight-selectors>button>img{width:35px;height:48px}.milight-selector-copy strong{font-size:13px}.milight-caption{grid-template-columns:1fr;padding:23px 24px;min-height:225px;gap:18px}.milight-caption dl{display:grid;grid-template-columns:1fr 1fr;gap:15px;border-left:0;border-top:1px solid var(--ml-line);padding:15px 0 0}.milight-caption p{max-width:none}}
-@media(max-width:760px){.milight-body{display:block}.milight-header{display:block;padding:24px 22px}.milight-header h3{font-size:29px}.milight-header p{font-size:14px;line-height:1.5;margin-top:17px}.milight-header p br{display:none}.milight-header p span{display:block;font-size:12px;margin-top:4px}.milight-overline{font-size:8px;margin-bottom:10px}.milight-caption{padding:22px;min-height:250px;gap:17px}.milight-caption h4{font-size:29px;margin-bottom:13px}.milight-caption p{font-size:12px;line-height:1.75}.milight-caption dl{gap:13px;padding-top:15px}.milight-caption dd{font-size:16px}.milight-caption dt{font-size:10px}.milight-model{top:13px;left:19px;font-size:11px}.milight-model small{font-size:9px}.milight-chooser{border-top:1px solid var(--ml-line);border-left:0;padding:20px 17px 17px}.milight-chooser-label{margin:0 5px 12px;font-size:11px}.milight-selectors{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.milight-selectors>button{grid-template-columns:minmax(0,1fr);padding:11px 9px;min-height:77px}.milight-index,.category-card[data-card-motion=milight] .milight-selectors>button>img{display:none}.milight-selector-copy strong{font-size:13px;line-height:1.35}.milight-selector-copy small{font-size:10.5px;margin-top:5px}.milight-selectors>button:last-child{grid-column:1/-1;min-height:65px}.milight-selectors>button:last-child .milight-selector-copy{display:flex;justify-content:space-between;gap:16px;align-items:center}.milight-selectors>button:last-child small{margin:0}.milight-controls{padding:12px 5px 8px}.milight-contact{padding:12px 5px 0}.milight-visual{aspect-ratio:3/2}}
+@media(max-width:760px){.milight-body{display:block}.milight-header{display:block;padding:24px 22px}.milight-header h3{font-size:29px}.milight-header p{font-size:14px;line-height:1.5;margin-top:17px}.milight-header p br{display:none}.milight-header p span{display:block;font-size:12px;margin-top:4px}.milight-overline{font-size:8px;margin-bottom:10px}.milight-caption{padding:22px;min-height:250px;gap:17px}.milight-caption h4{font-size:29px;margin-bottom:13px}.milight-caption p{font-size:12px;line-height:1.75}.milight-caption dl{gap:13px;padding-top:15px}.milight-caption dd{font-size:16px}.milight-caption dt{font-size:10px}.milight-model{top:13px;left:19px;font-size:11px}.milight-model small{font-size:9px}.milight-chooser{border-top:1px solid var(--ml-line);border-left:0;padding:20px 17px 17px}.milight-chooser-label{margin:0 5px 12px;font-size:11px}.milight-selectors{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.milight-selectors>button{grid-template-columns:minmax(0,1fr);padding:11px 9px;min-height:77px}.milight-index,.category-card[data-card-motion=milight] .milight-selectors>button>img{display:none}.milight-selector-copy strong{font-size:13px;line-height:1.35}.milight-selector-copy small{font-size:10.5px;margin-top:5px}.milight-selectors>button:last-child{grid-column:1/-1;min-height:65px}.milight-selectors>button:last-child .milight-selector-copy{display:flex;justify-content:space-between;gap:16px;align-items:center}.milight-selectors>button:last-child small{margin:0}.milight-controls{padding:12px 5px 8px}.milight-contact{padding:12px 5px 0}.milight-visual{aspect-ratio:1/1;min-height:340px}.milight-source{height:59%;top:49%;width:52%}.milight-model{font-size:20px;top:21px;left:20px}.milight-model small{font-size:11px}.milight-application-note{width:61%;padding:60px 17px 23px}.milight-application-note strong{font-size:23px}.milight-application-note span{font-size:9px;line-height:1.5}.milight-signal{left:20px;bottom:26px;width:27%;gap:5px}.milight-signal span{font-size:9px}}
 @media(max-width:359px){.milight-header,.milight-caption{padding-inline:18px}.milight-caption{min-height:275px}.milight-header h3{font-size:27px}.milight-caption h4{font-size:27px}.milight-chooser{padding-inline:12px}.milight-selectors>button{padding-inline:8px}.milight-caption dd{font-size:14px}.milight-selectors>button:last-child .milight-selector-copy{display:block}.milight-selectors>button:last-child small{margin-top:5px}}
 @media(prefers-reduced-motion:reduce){.category-card[data-card-motion=milight] *{transition:none!important;animation:none!important}}
