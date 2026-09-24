@@ -1,0 +1,94 @@
+/* Product families open like a row of book spines; mobile uses an accordion. */
+.offer-families{padding:110px var(--pad) 105px;background:#101617;border-top:1px solid #95afae22;color:#e9eeea;--family-panel:#151d1e;--family-muted:#9baea4;--family-line:#a2b7ae2b}
+.offer-families-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:35px;margin-bottom:54px}
+.offer-families-heading .eyebrow{font-size:9px;color:#829d8e;margin-bottom:24px}
+.offer-families-heading h2{font-size:clamp(44px,5.4vw,80px);line-height:1.04;font-weight:400;letter-spacing:-.055em}.offer-families-heading h2 em{color:#a8bbaa}
+.offer-families-heading>div:last-child{max-width:310px}.offer-families-heading>div>p:not(.eyebrow){font-size:13px;line-height:1.8;color:var(--family-muted)}.offer-families-heading .text-link{margin-top:15px;font-size:12px}
+.family-books{border:1px solid var(--family-line);overflow:hidden;isolation:isolate}
+.family-book{position:relative;background:var(--family-panel);border-bottom:1px solid var(--family-line);min-width:0}.family-book:last-child{border:0}
+.family-spine{margin:0;line-height:1;letter-spacing:0}.family-spine button{display:flex;align-items:center;gap:20px;width:100%;min-height:66px;padding:17px 23px;text-align:left;background:#10201950;color:var(--family-muted);font:inherit;cursor:pointer}
+.family-book-number{font-size:9px;font-weight:400;letter-spacing:.06em}.family-book-name{font-size:15px;font-weight:450;letter-spacing:.045em}.family-book-sign{font-size:24px;font-weight:300;margin-left:auto;line-height:1}
+.family-book.is-active .family-spine button{color:var(--family-light);background:color-mix(in srgb,var(--family-light) 5%,transparent)}.family-book.is-active .family-book-sign{transform:rotate(45deg)}
+.family-panel{display:grid;grid-template-columns:minmax(0,.44fr) minmax(0,.56fr);min-width:0;background:radial-gradient(ellipse at 77% 35%,color-mix(in srgb,var(--family-light) 9%,transparent),transparent 73%),var(--family-panel)}
+.family-portrait{position:relative;min-width:0;min-height:440px;margin:0;overflow:hidden;background:#080b0b}.family-portrait img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover}.family-portrait.is-cutout img{object-fit:contain;padding:22px}.family-portrait::after{content:'';position:absolute;inset:65% 0 0;background:linear-gradient(transparent,#080b0bdd);pointer-events:none}.family-portrait figcaption{position:absolute;z-index:1;bottom:23px;left:23px;right:23px;font-size:10px;line-height:1.6;color:#c9d3cd;letter-spacing:.03em}
+.family-story{padding:34px 27px 28px;min-width:0;display:flex;flex-direction:column}.family-kicker{font-size:8px;letter-spacing:.13em;line-height:1.5;color:var(--family-muted);margin:0 0 17px}.family-story h4{font-size:clamp(24px,2.5vw,37px);font-weight:400;line-height:1.13;letter-spacing:-.045em;margin:0 0 15px}.family-intro{font-size:11px;line-height:1.75;color:var(--family-muted);margin:0 0 25px;max-width:510px}
+.family-facts{display:grid;grid-template-columns:1fr 1fr;gap:9px;min-width:0}.family-fact{min-width:0;padding:14px 13px;border:1px solid color-mix(in srgb,var(--family-light) 22%,transparent);border-radius:11px;background:color-mix(in srgb,var(--family-light) 4%,transparent)}.family-fact strong{display:block;font-weight:400;font-size:clamp(19px,2.1vw,28px);line-height:1.25;letter-spacing:-.04em;color:var(--family-light);overflow-wrap:break-word}.family-fact>span{display:block;font-size:10px;line-height:1.5;margin:8px 0 5px;color:#d4ddd6}.family-fact p{font-size:10px;line-height:1.6;color:var(--family-muted);margin:0}
+.family-links{display:flex;flex-wrap:wrap;gap:10px 19px;margin-top:auto;padding-top:24px}.family-links a{display:inline-flex;align-items:center;gap:10px;min-height:32px;border-bottom:1px solid var(--family-line);font-size:10px;line-height:1.5}.family-links a span{font-size:16px;color:var(--family-light)}.family-spine button:focus-visible,.family-links a:focus-visible{outline:2px solid var(--family-light);outline-offset:-3px}
+.family-books[data-enhanced=true] .family-book:not(.is-active) .family-panel{display:none}
+.family-books[data-enhanced=true] .family-book.is-active .family-panel{animation:family-panel-reveal .3s ease both}
+@keyframes family-panel-reveal{from{opacity:.4}to{opacity:1}}
+@media(min-width:1101px){
+ .family-books[data-enhanced=true]{display:flex;min-height:560px}
+ .family-books[data-enhanced=true] .family-book{display:flex;flex:0 0 58px;min-width:58px;border-bottom:0;border-right:1px solid var(--family-line);overflow:hidden;transition:flex-grow .3s ease,flex-basis .3s ease}
+ .family-books[data-enhanced=true] .family-book.is-active{flex:1 1 58px}
+ .family-books[data-enhanced=true] .family-spine{flex:0 0 58px;width:58px;align-self:stretch}
+ .family-books[data-enhanced=true] .family-spine button{height:100%;width:58px;padding:23px 0;flex-direction:column;gap:24px;text-align:center}
+ .family-books[data-enhanced=true] .family-book-name{writing-mode:vertical-rl;transform:rotate(180deg);font-size:14px;letter-spacing:.11em;white-space:nowrap;margin:auto 0}
+ .family-books[data-enhanced=true] .family-book-sign{margin:0;font-size:23px}
+ .family-books[data-enhanced=true] .family-panel{flex:0 0 var(--family-panel-width);width:var(--family-panel-width);min-height:560px}
+ .family-books[data-enhanced=true] .family-portrait{min-height:560px}
+}
+html[data-theme=day] .offer-families{background:#eef1e9;color:#2d4439;--family-panel:#f6f6ef;--family-muted:#617064;--family-line:#56745c30}
+html[data-theme=day] .offer-families-heading h2 em{color:#637a64}html[data-theme=day] .offer-families-heading .eyebrow{color:#6c7e6d}
+html[data-theme=day] .family-book{--family-light:var(--family-day-ink)!important}html[data-theme=day] .family-spine button{background:#45634405}html[data-theme=day] .family-fact>span{color:#374c3d}
+html[data-theme=day] .family-portrait.is-cutout{background:#dce3d7}html[data-theme=day] .family-portrait.is-cutout::after{background:linear-gradient(transparent,#cbd5c4dd)}html[data-theme=day] .family-portrait.is-cutout figcaption{color:#435342}
+@media(max-width:1100px){.offer-families{padding:80px var(--pad)}.offer-families-heading{margin-bottom:35px}.family-panel{grid-template-columns:43% 57%}.family-story{padding:27px 25px}.family-story h4{font-size:32px}.family-fact strong{font-size:25px}.family-spine button{min-height:64px}.family-portrait{min-height:430px}}
+@media(max-width:600px){.offer-families{padding:65px var(--pad)}.offer-families-heading{display:block;margin-bottom:30px}.offer-families-heading .eyebrow{font-size:8px;margin-bottom:21px}.offer-families-heading h2{font-size:47px}.offer-families-heading>div:last-child{margin-top:24px;max-width:none}.offer-families-heading>div>p:not(.eyebrow){font-size:12px}.offer-families-heading .text-link{margin-top:9px}.family-spine button{min-height:62px;padding:16px 18px;gap:15px}.family-book-name{font-size:14px}.family-panel{display:block}.family-portrait{min-height:0;height:235px}.family-portrait img{object-fit:cover;object-position:center!important}.family-portrait.is-cutout img{object-fit:contain;padding:10px 20px}.family-portrait figcaption{left:20px;right:20px;bottom:17px;font-size:9px}.family-story{padding:25px 20px 22px}.family-kicker{font-size:8px;margin-bottom:14px}.family-story h4{font-size:31px;margin-bottom:15px}.family-intro{font-size:12px;line-height:1.75;margin-bottom:22px}.family-facts{gap:8px}.family-fact{padding:13px 11px;border-radius:10px}.family-fact strong{font-size:24px}.family-fact>span{font-size:10px;margin-top:7px}.family-fact p{font-size:10px}.family-links{padding-top:20px;gap:8px 16px}.family-links a{font-size:11px;min-height:34px}}
+@media(max-width:359px){.family-story{padding-inline:16px}.family-fact{padding:12px 10px}.family-fact strong{font-size:21px}.family-story h4{font-size:28px}.family-portrait{height:210px}}
+@media(prefers-reduced-motion:reduce){.family-books *, .family-books *::before,.family-books *::after{animation:none!important;transition:none!important}}
+
+/* Comfortable reading in feature panels without enlarging the artwork. */
+.family-kicker{font-size:10px}.family-intro{font-size:13px}.family-fact>span,.family-fact p,.family-links a{font-size:12px}
+@media(max-width:600px){.family-intro{font-size:13px}.family-fact>span,.family-fact p{font-size:11px}.family-links a{font-size:12px}.family-kicker{font-size:10px}}
+
+/* A quiet trace follows the book edge, never the photograph or its copy. */
+.family-books{overflow:visible}
+.family-book{--family-glow:var(--family-light);isolation:isolate;transition:transform .35s ease,box-shadow .35s ease}
+.family-book::before,.family-book::after{content:'';position:absolute;z-index:3;inset:1px;padding:1px;pointer-events:none;border-radius:1px;-webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);-webkit-mask-composite:xor;mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);mask-composite:exclude;opacity:0;transition:opacity .4s ease}
+.family-book::before{background:linear-gradient(145deg,color-mix(in srgb,var(--family-glow) 55%,transparent),transparent 38%,transparent 66%,color-mix(in srgb,var(--family-glow) 30%,transparent))}
+.family-book::after{background:linear-gradient(115deg,transparent 38%,color-mix(in srgb,var(--family-glow) 65%,transparent) 47%,var(--family-glow) 50%,color-mix(in srgb,var(--family-glow) 65%,transparent) 53%,transparent 62%);background-size:300% 300%;background-position:130% 130%;animation:family-led-scan 10s linear infinite;animation-play-state:paused}
+.family-book:is(.is-active,:focus-within)::before{opacity:.85}
+.family-book:is(.is-active,:focus-within)::after{opacity:.7}
+.family-book[data-family-motion=on]:is(.is-active,:focus-within)::after{animation-play-state:running}
+.family-spine button{position:relative;isolation:isolate;transition:background .35s ease,color .35s ease}
+.family-spine button::after{content:'';position:absolute;pointer-events:none;left:16px;right:16px;bottom:5px;height:1px;background:linear-gradient(90deg,transparent,var(--family-glow),transparent);box-shadow:0 0 6px color-mix(in srgb,var(--family-glow) 32%,transparent);opacity:0;transition:opacity .35s ease}
+.family-book:is(.is-active,:focus-within) .family-spine button::after{opacity:.5}
+.family-book-name{transition:color .35s ease,text-shadow .35s ease}
+.family-book:is(.is-active,:focus-within) .family-book-name{color:var(--family-glow);text-shadow:0 0 11px color-mix(in srgb,var(--family-glow) 38%,transparent),0 0 25px color-mix(in srgb,var(--family-glow) 13%,transparent)}
+.family-book-sign{transition:transform .3s ease,color .3s ease}
+.family-book-title{display:flex;flex-direction:column;gap:6px;align-items:flex-start;min-width:0}
+.family-book-benefit{color:#f7f7f2;font-size:11px;font-weight:500;letter-spacing:.015em;line-height:1.2;white-space:nowrap}
+.family-book[data-family-book=delux]{--family-glow:#ff6136}
+.family-book[data-family-book=delux] .family-book-name{color:#ff6136}
+.family-fact.is-warranty{border-color:#ff613657;background:linear-gradient(135deg,#ff613610,transparent)}
+.family-fact.is-warranty strong{color:#fffaf4;text-shadow:0 0 18px #fff2}
+.family-fact.is-warranty>span{color:#f4f2ec}
+@keyframes family-led-scan{0%,8%{background-position:130% 130%}32%,100%{background-position:-100% -100%}}
+@media(hover:hover) and (pointer:fine){
+ .family-book:hover::before{opacity:1}.family-book:hover::after{opacity:.75}
+ .family-book[data-family-motion=on]:hover::after{animation-play-state:running}
+ .family-book:hover .family-spine button::after{opacity:.7}
+ .family-book:hover .family-book-name{color:var(--family-glow);text-shadow:0 0 11px color-mix(in srgb,var(--family-glow) 42%,transparent),0 0 25px color-mix(in srgb,var(--family-glow) 15%,transparent)}
+ .family-book[data-family-motion=on]:hover{transform:translateY(-3px);box-shadow:0 12px 25px #0002}
+}
+.family-book[data-family-motion=on]:focus-within{transform:translateY(-3px);box-shadow:0 12px 25px #0002}
+.family-spine button:active .family-book-name{color:var(--family-glow);text-shadow:0 0 12px color-mix(in srgb,var(--family-glow) 45%,transparent)}
+@media(min-width:1101px){
+ .family-books[data-enhanced=true] .family-book{transition:flex-grow .3s ease,flex-basis .3s ease,transform .35s ease,box-shadow .35s ease}
+ .family-books[data-enhanced=true] .family-spine button::after{left:auto;right:7px;top:52px;bottom:52px;width:1px;height:auto;background:linear-gradient(180deg,transparent,var(--family-glow),transparent)}
+ .family-books[data-enhanced=true] .family-book-title{writing-mode:vertical-rl;transform:rotate(180deg);align-items:center;gap:7px;margin:auto 0}
+ .family-books[data-enhanced=true] .family-book-title .family-book-name{writing-mode:inherit;transform:none;margin:0}
+ .family-books[data-enhanced=true] .family-book-benefit{font-size:11px;letter-spacing:.025em}
+}
+html[data-theme=day] .family-book[data-family-book=delux]{--family-glow:#c7431f}
+html[data-theme=day] .family-book[data-family-book=delux] .family-book-name{color:#c7431f}
+html[data-theme=day] .family-book-benefit{color:#fff;background:#304637;padding:5px 6px;border-radius:3px;font-weight:500}
+html[data-theme=day] .family-fact.is-warranty{background:#304637;border-color:#304637}
+html[data-theme=day] .family-fact.is-warranty>span{color:#f4f5ee}
+html[data-theme=day] .family-fact.is-warranty p{color:#ccd8c9}
+html[data-theme=day] .family-book:is(.is-active,:focus-within) .family-book-name{text-shadow:0 0 12px color-mix(in srgb,var(--family-glow) 19%,transparent)}
+@media(prefers-reduced-motion:reduce){
+ .family-book,.family-spine button,.family-book-name,.family-book-sign{transform:none;transition:none!important}
+ .family-book::after{animation:none!important;opacity:0!important}
+ .family-book::before,.family-spine button::after{transition:none!important}
+}

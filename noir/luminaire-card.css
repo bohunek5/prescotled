@@ -1,0 +1,60 @@
+/* The opening photograph shows three colors of N; K213/N/Z are separate installations. */
+.category-card[data-card-motion="luminaire"]{background:#101718}
+.category-grid>.category-card.category-07[data-card-motion="luminaire"]{grid-column:1/-1;height:clamp(650px,54vw,900px)}
+.category-card[data-card-motion="luminaire"]>.category-picture{display:none!important}
+.category-card[data-card-motion="luminaire"] .demo-luminaire{inset:0;z-index:3;overflow:hidden;pointer-events:none}
+.category-card[data-card-motion="luminaire"]:after{transition:opacity .7s;background:linear-gradient(0deg,#0e1415 1%,#0e1415de 20%,transparent 51%)}
+.category-card[data-card-motion="luminaire"] .category-copy{transition:opacity .55s,transform .8s}
+.category-card[data-card-motion="luminaire"].proffesa-installed .category-copy{opacity:0;transform:translateY(12px)}
+.category-card[data-card-motion="luminaire"].proffesa-installed:after{opacity:0}
+.proffesa-family{position:absolute;left:6%;right:6%;top:9%;height:57%;transition:opacity .7s,transform 1s}
+.category-card[data-card-motion="luminaire"] .proffesa-family>img{position:absolute;width:100%;height:100%;object-fit:contain;object-position:center;filter:brightness(1.08);transform:none}
+.proffesa-family>span{position:absolute;left:3%;bottom:0;font-size:8px;letter-spacing:.1em;color:#b8c3bd}
+.proffesa-family>span i{font-style:normal;margin-left:12px;letter-spacing:.03em;color:#81928d}
+.proffesa-installed .proffesa-family{opacity:0;transform:translateY(-10px) scale(.96)}
+.proffesa-installations{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s .2s,visibility 0s .8s}
+.proffesa-installed .proffesa-installations{opacity:1;visibility:visible;transition:opacity .8s .2s,visibility 0s}
+.proffesa-stage-label{position:absolute;top:29px;left:calc(4% + 32px);font-size:9px;letter-spacing:.12em;color:#a8bcb4}
+.proffesa-panels{position:absolute;inset:66px 26px 150px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.proffesa-panel{position:relative;margin:0;min-width:0;overflow:hidden;border:1px solid #a9bdae24;background:#181a17;isolation:isolate}
+.category-card[data-card-motion="luminaire"] .proffesa-panel-room{position:absolute;inset:0;width:100%;height:79%;object-fit:cover;object-position:50% 43%;filter:brightness(.38) saturate(.78);transform:scale(1.02);transition:filter 1.7s,transform 2.4s;z-index:0}
+.category-card[data-card-motion="luminaire"].proffesa-lit .proffesa-panel-room{filter:brightness(1) saturate(1);transform:scale(1)}
+.category-card[data-card-motion="luminaire"] .proffesa-panel-pendant>.proffesa-panel-room{height:100%;object-fit:contain;object-position:center top;padding:8px;box-sizing:border-box;transform:none!important}
+.proffesa-panel-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(0deg,#080e10 0%,#080e10 12%,#080e1099 25%,transparent 50%)}
+.proffesa-panel figcaption{position:absolute;z-index:4;left:20px;right:12px;bottom:22px;display:grid;gap:10px;color:#e5e9df}
+.proffesa-panel figcaption>span{font-size:8px;letter-spacing:.08em;color:#b4bfac;line-height:1.6}
+.proffesa-panel figcaption>strong{font-size:23px;font-weight:400;letter-spacing:-.03em;white-space:nowrap}
+.proffesa-panel figcaption>small{font-size:11px;color:#b7bbaa}
+.proffesa-selectors{position:absolute;left:7%;right:7%;bottom:82px;display:flex;gap:8px;z-index:7;pointer-events:auto}
+.proffesa-selectors>button{position:relative;z-index:7;flex:1;border:0;border-top:1px solid #acc2b539;padding:11px 4px 8px;color:#95a59e;background:transparent;text-align:left;font:inherit;font-size:12px;cursor:pointer;pointer-events:auto;min-height:38px;transition:color .3s,border-color .3s}
+.proffesa-selectors>button>span{font-size:7px;color:#68817a;margin-right:7px}
+.proffesa-selectors>button[aria-pressed="true"]{border-color:#deb58b;color:#f0d7b8}
+.proffesa-selectors>button:focus-visible{outline:1px solid #f0c18b;outline-offset:3px}
+.proffesa-space-copy{position:absolute;left:7%;right:13%;bottom:4%;z-index:4}
+.proffesa-space-copy>strong{display:block;font-size:clamp(26px,2.7vw,40px);font-weight:400;letter-spacing:-.045em;line-height:1.15;color:#e9e9df}
+@media(max-width:1100px) and (min-width:901px){.proffesa-panels{left:20px;right:20px;gap:8px}.proffesa-panel figcaption{left:13px;right:8px}.proffesa-panel figcaption>strong{font-size:18px}.proffesa-panel figcaption>span{font-size:7px}.proffesa-panel figcaption>small{font-size:9px}.proffesa-stage-label{font-size:8px}.proffesa-space-copy>strong{font-size:29px}.proffesa-selectors>button{font-size:10px}.proffesa-selectors>button>span{font-size:7px;margin-right:6px}.proffesa-family>span{font-size:8px}}
+@media(max-width:900px){
+ .proffesa-family{left:3%;right:3%;top:14%;height:46%}.proffesa-family>span{left:4%;font-size:7px;bottom:-18px}.proffesa-family>span i{display:block;margin-left:0;margin-top:8px;font-size:8px}
+ .proffesa-stage-label{top:28px;left:calc(7% + 30px);font-size:7px}.proffesa-panels{inset:57px 16px 133px;display:block}
+ .proffesa-panel{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .65s,visibility 0s .65s}
+ [data-proffesa-view="wall"] .proffesa-panel-wall,[data-proffesa-view="ceiling"] .proffesa-panel-ceiling,[data-proffesa-view="pendant"] .proffesa-panel-pendant{opacity:1;visibility:visible;transition:opacity .65s,visibility 0s}
+ .category-card[data-card-motion="luminaire"] .proffesa-panel-room{height:82%;object-fit:cover;object-position:50% 45%}
+ .proffesa-panel-shade{background:linear-gradient(0deg,#080e10 0%,#080e10bd 13%,transparent 43%)}
+ .proffesa-panel figcaption{left:18px;bottom:17px;gap:7px}.proffesa-panel figcaption>span{font-size:7px}.proffesa-panel figcaption>strong{font-size:19px}.proffesa-panel figcaption>small{font-size:10px}
+ .proffesa-selectors{bottom:85px;gap:10px}.proffesa-selectors>button{font-size:10px;min-height:40px;padding-top:11px}.proffesa-selectors>button>span{font-size:7px}.proffesa-space-copy{bottom:6.5%;right:11%}.proffesa-space-copy>strong{font-size:26px;max-width:280px}
+}
+@media(max-width:760px){.category-grid>.category-card.category-07[data-card-motion="luminaire"]{height:650px}}
+@media(max-width:359px){.category-grid>.category-card.category-07[data-card-motion="luminaire"]{height:620px}}
+@media(max-width:359px){.proffesa-space-copy>strong{font-size:23px}.proffesa-selectors>button{font-size:8px}.proffesa-selectors>button>span{font-size:6px;margin-right:4px}.proffesa-panel figcaption>strong{font-size:17px}.proffesa-stage-label{font-size:6px}}
+@media(prefers-reduced-motion:reduce){.proffesa-demo *{transition:none!important}}
+/* Hero uses the untouched joint catalog photograph, explicitly labelled as colors of N. */
+.proffesa-hero{background:#101718}
+.proffesa-hero-family{position:absolute;inset:16% 3% 17% 43%;background:radial-gradient(ellipse at 55% 50%,#84776116,transparent 70%)}
+.proffesa-hero-family>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;filter:brightness(1.06)}
+.proffesa-hero-family>p{position:absolute;left:9%;right:0;bottom:8%;font-size:13px;color:#b9c5bc;font-weight:400;letter-spacing:.025em}
+.proffesa-hero-family>p span{display:block;font-size:8px;letter-spacing:.1em;color:#69837a;margin-bottom:14px}
+.proffesa-hero-family>p i{font-style:normal;color:#628176;margin:0 10px}
+.proffesa-hero .hero-copy{max-width:58%;pointer-events:none}.proffesa-hero .hero-copy a{pointer-events:auto}.proffesa-hero .hero-description{max-width:340px}
+@media(max-width:1100px) and (min-width:761px){.product-page .proffesa-hero h1{font-size:60px}.proffesa-hero-family{inset:22% 0 18% 44%}.proffesa-hero-family>p{bottom:17%;font-size:10px}.proffesa-hero-family>p span{font-size:6px}.proffesa-hero .hero-description{max-width:265px;font-size:12px}}
+@media(max-width:760px){.product-page .proffesa-hero{min-height:810px}.proffesa-hero .hero-copy{max-width:none;padding-top:120px}.proffesa-hero-family{inset:43% 2% 18%}.proffesa-hero-family>p{left:6%;bottom:1%;font-size:11px}.proffesa-hero-family>p span{font-size:7px;margin-bottom:10px}.proffesa-hero .hero-description{max-width:290px;font-size:11px;line-height:1.8;margin:20px 0}.proffesa-hero .hero-bottom{bottom:79px}}
+@media(max-width:359px){.product-page .proffesa-hero{min-height:790px}.proffesa-hero-family{inset:46% 0 17%}.proffesa-hero-family>p{font-size:10px}.proffesa-hero .hero-description{max-width:260px}}

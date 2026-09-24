@@ -1,0 +1,133 @@
+/* A local comparison of the retained coil and its optional new treatment.
+   Every content block owns a grid area; no text is laid over the canvases. */
+.evolution-comparison{--compare-line:#b5d3c025;--compare-muted:#a3b6aa;--compare-strong:#e6efe8;--compare-panel:#11201b40;height:800svh}
+.evolution-comparison .evolution-stage{display:grid;grid-template-rows:auto minmax(0,1fr) auto auto;gap:20px;position:sticky;top:0;height:100svh;min-height:700px;padding:112px 4% 88px;overflow:hidden}
+.evolution-comparison :is(.evolution-heading,.evolution-caption,.evolution-color-hud,.evolution-fact,.evolution-micro,.evolution-chapters,.evolution-power-modes){position:static;inset:auto;transform:none;width:auto;max-width:none;min-width:0;opacity:1;visibility:visible}
+.evolution-comparison .evolution-heading{display:grid;grid-template-columns:1fr auto;gap:7px 32px;align-items:end;pointer-events:auto}
+.evolution-comparison .evolution-heading>.eyebrow{grid-column:1/-1;font-size:11px;letter-spacing:.12em;margin:0;color:var(--compare-muted)}
+.evolution-comparison .evolution-heading h1{font-size:clamp(34px,3.4vw,60px);font-weight:450;line-height:1.12;letter-spacing:-.055em;margin:0}
+.evolution-comparison .evolution-heading>p:not(.eyebrow){max-width:340px;font-size:13px;line-height:1.7;color:var(--compare-muted);margin:0 0 3px;visibility:visible}
+.evolution-comparison .evolution-workspace{display:grid;grid-template-columns:minmax(0,1fr) minmax(270px,24%);gap:30px;min-height:0;position:relative}
+.evolution-comparison .evolution-pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;min-width:0;min-height:0}
+.evolution-comparison .evolution-variant{position:relative;display:grid;grid-template-rows:auto minmax(0,1fr);margin:0;min-height:0;overflow:hidden;border:1px solid var(--compare-line);background:var(--compare-panel)}
+.evolution-comparison .evolution-variant figcaption{display:flex;align-items:center;gap:10px;padding:15px 20px 0;z-index:2;color:var(--compare-muted);font-size:12px;line-height:1.3;pointer-events:none}
+.evolution-comparison .evolution-variant figcaption b{display:grid;place-items:center;width:24px;height:24px;border:1px solid var(--compare-line);font-weight:500;font-size:11px;color:var(--compare-strong)}
+.evolution-comparison .evolution-art{position:relative;inset:auto;transform:none;min-height:0;width:100%;height:100%;overflow:hidden;z-index:1}
+.evolution-comparison .evolution-canvas{position:absolute;inset:12px 0;width:100%;height:calc(100% - 24px);isolation:isolate}
+.evolution-comparison .evolution-canvas::before{inset:4% 0;filter:blur(12px);opacity:calc(var(--coil-energy,.8)*.5);background:radial-gradient(ellipse,color-mix(in srgb,var(--coil-light,#c8d5a8) var(--coil-aura-strength,10%),transparent),transparent 67%)}
+.evolution-comparison .evolution-canvas canvas{position:relative;width:100%;height:100%;transition:opacity .3s}
+.evolution-comparison .evolution-fallback{inset:5%;width:90%;height:90%;transition:opacity .3s}
+.evolution-comparison .evolution-readout{display:flex;flex-direction:column;min-width:0;min-height:0;padding:2px 0 0}
+.evolution-comparison .evolution-color-hud{padding-bottom:17px;margin-bottom:17px;border-bottom:1px solid var(--compare-line)}
+.evolution-comparison .evolution-color-hud>span:first-child,.evolution-comparison .evolution-fact>span:first-child{font-size:10px;letter-spacing:.095em;line-height:1.4;color:var(--compare-muted)}
+.evolution-comparison .evolution-color-hud>p{margin:5px 0 2px;line-height:1.1}
+.evolution-comparison .evolution-color-hud strong{font-size:clamp(40px,3.8vw,64px);line-height:1.1;font-weight:350}
+.evolution-comparison .evolution-color-hud small{font-size:20px}
+.evolution-comparison .evolution-color-caption{font-size:12px;line-height:1.4;color:var(--compare-muted)}
+.evolution-comparison :is(.evolution-color-hud,.evolution-fact)>i{display:none}
+.evolution-comparison .evolution-specifications{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px 20px;align-content:start}
+.evolution-comparison .evolution-fact{padding-bottom:13px;border-bottom:1px solid var(--compare-line)}
+.evolution-comparison .evolution-fact>strong{font-size:clamp(24px,2vw,34px);line-height:1.15;letter-spacing:-.04em;margin-top:7px;color:var(--compare-strong)}
+.evolution-comparison .evolution-fact strong small{font-size:12px;color:var(--compare-muted)}
+.evolution-comparison .evolution-fact>small,.evolution-comparison .evolution-fact>.evolution-package{font-size:11px;line-height:1.5;letter-spacing:0;margin-top:4px;color:var(--compare-muted)}
+.evolution-comparison .evo-tech{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:0 20px}
+.evolution-comparison .evo-tech>span:first-child{grid-column:1/-1}
+.evolution-comparison .evo-tech>strong{grid-row:2/4}
+.evolution-comparison .evo-tech>small{margin-top:6px}
+.evolution-comparison .evolution-rating{margin:5px 0 0;font-size:11px;gap:3px;color:var(--compare-muted)}
+.evolution-comparison .evolution-rating>span:first-child{font-size:9px;color:var(--compare-muted);letter-spacing:.035em}
+.evolution-comparison .evolution-power-modes{display:flex;gap:6px;align-items:center;margin-top:12px}
+.evolution-comparison .evolution-power-modes[hidden]{display:none}
+.evolution-comparison .evolution-power-modes>span{display:none}
+.evolution-comparison .evolution-power-modes button{font-size:10px;min-height:40px;padding:5px 4px}
+.evolution-comparison .evolution-power-modes button small{display:inline;font-size:11px;margin:0 6px 0 0}
+.evolution-comparison .evolution-micro{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:auto;padding-top:14px;font-size:11px;line-height:1.5;letter-spacing:0;color:var(--compare-muted)}
+.evolution-comparison .evolution-micro [data-evo-voltage],.evolution-comparison .evolution-micro>i:first-of-type{display:none}
+.evolution-comparison .evolution-micro .evo-micro-extra{display:block}
+.evolution-comparison .evolution-caption{display:grid;grid-template-columns:minmax(220px,.8fr) minmax(260px,1.4fr) auto;gap:5px 30px;align-items:center;padding-top:15px;border-top:1px solid var(--compare-line)}
+.evolution-comparison .evolution-caption>span{grid-column:1;font-size:10px;line-height:1.4;letter-spacing:.07em}
+.evolution-comparison .evolution-caption h2{grid-column:1;font-size:clamp(21px,1.9vw,30px);line-height:1.15;font-weight:400;margin:0}
+.evolution-comparison .evolution-caption h2 br{display:none}
+.evolution-comparison .evolution-caption>p{grid-column:2;grid-row:1/3;max-width:560px;font-size:13px;line-height:1.7;color:var(--compare-muted);margin:0}
+.evolution-comparison .evolution-caption>a{grid-column:3;grid-row:1/3;font-size:11px;line-height:1.3;gap:20px;min-height:44px;padding:8px 0;color:var(--compare-muted)}
+.evolution-comparison .evolution-caption>a b{font-size:24px}
+.evolution-comparison .evolution-chapters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px 30px;align-items:center;min-height:0}
+.evolution-comparison .evolution-stops{display:flex;width:100%;min-width:0;gap:6px;overflow-x:auto;overscroll-behavior-x:contain;scrollbar-width:thin;scrollbar-color:var(--compare-line) transparent;mask-image:none;padding-bottom:5px}
+.evolution-comparison .evolution-stops::after{display:none}
+.evolution-comparison .evolution-stops button{display:flex;flex-direction:column;align-items:flex-start;justify-content:center;gap:3px;flex:0 0 102px;padding:9px 12px;font-size:12px;line-height:1.3;min-height:52px;white-space:nowrap;border:1px solid transparent;color:var(--compare-muted)}
+.evolution-comparison .evolution-stops button>span{font-size:10px;line-height:1.3;color:var(--compare-muted)}
+.evolution-comparison .evolution-stops button[aria-current=step]{border-color:var(--compare-line);background:var(--compare-panel);color:var(--evo-ink)}
+.evolution-comparison .evolution-chapters>a{font-size:12px;line-height:1.4;gap:20px;max-width:none;margin:0;min-height:44px;color:var(--compare-muted)}
+.evolution-comparison .evolution-progress{display:none}
+.evolution-comparison .evolution-position{display:none}
+.evolution-comparison .evolution-aura{display:none}
+.evolution-comparison :is(button,a):focus-visible{outline:2px solid var(--evo-ink);outline-offset:3px}
+html[data-theme=day] .evolution-comparison{--compare-line:#36534426;--compare-muted:#4d6759;--compare-strong:#243e31;--compare-panel:#fff9}
+@media(min-width:1101px) and (max-height:950px){
+ .evolution-comparison .evolution-stage{padding-top:100px;padding-bottom:78px;gap:12px}
+ .evolution-comparison .evolution-heading h1{font-size:37px}
+ .evolution-comparison .evolution-heading>.eyebrow{font-size:10px}
+ .evolution-comparison .evolution-color-hud{margin-bottom:10px;padding-bottom:9px}
+ .evolution-comparison .evolution-color-hud strong{font-size:40px}
+ .evolution-comparison .evolution-specifications{gap:10px 18px}
+ .evolution-comparison .evolution-fact{padding-bottom:7px}
+ .evolution-comparison .evolution-fact>strong{font-size:25px;margin-top:5px}
+ .evolution-comparison .evolution-micro{font-size:10px;padding-top:8px;gap:5px 10px}
+ .evolution-comparison .evolution-caption{padding-top:10px}
+ .evolution-comparison .evolution-caption h2{font-size:23px}
+ .evolution-comparison .evolution-stops button{min-height:46px;padding-top:5px;padding-bottom:5px}
+}
+/* On touch and short screens the text follows the pair naturally; the model
+   rail selects both scenes together instead of trapping a tall sticky page. */
+@media(max-width:1100px),(max-height:739px){
+ .evolution-comparison{height:auto}
+ .evolution-comparison .evolution-stage{position:relative;height:auto;min-height:0;padding:108px 5% 105px;gap:24px;grid-template-rows:auto auto auto auto;overflow:visible}
+ .evolution-comparison .evolution-heading{grid-template-columns:1fr}
+ .evolution-comparison .evolution-heading>p:not(.eyebrow){max-width:none;font-size:13px;margin-top:4px}
+ .evolution-comparison .evolution-heading>p:not(.eyebrow) br{display:none}
+ .evolution-comparison .evolution-workspace{grid-template-columns:1fr;gap:24px}
+ .evolution-comparison .evolution-pair{height:440px;gap:12px}
+ .evolution-comparison .evolution-readout{display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px 22px}
+ .evolution-comparison .evolution-color-hud{margin:0;padding:0;border:0}
+ .evolution-comparison .evolution-specifications{grid-template-columns:repeat(3,minmax(0,1fr));gap:14px 20px}
+ .evolution-comparison .evo-tech{display:block;grid-column:auto;grid-row:span 2}
+ .evolution-comparison .evolution-micro{grid-column:1/-1;margin:0;padding:0}
+ .evolution-comparison .evolution-power-modes{grid-row:2;grid-column:2;margin:0;max-width:310px}
+ .evolution-comparison .evolution-caption{grid-template-columns:1fr 1.3fr}
+ .evolution-comparison .evolution-caption>a{grid-column:1;grid-row:3;font-size:11px;padding:0}
+ .evolution-comparison .evolution-caption>p{grid-row:1/4;font-size:13px}
+ .evolution-comparison .evolution-chapters{grid-template-columns:1fr}
+ .evolution-comparison .evolution-chapters>a{justify-self:start}
+}
+@media(max-width:600px){
+ .evolution-comparison .evolution-stage{padding:96px 20px 155px;gap:22px}
+ .evolution-comparison .evolution-heading h1{font-size:36px;max-width:300px}
+ .evolution-comparison .evolution-heading>.eyebrow{font-size:9px}
+ .evolution-comparison .evolution-pair{height:330px;gap:8px}
+ .evolution-comparison .evolution-variant figcaption{padding:12px 10px 0;gap:6px;font-size:10px}
+ .evolution-comparison .evolution-variant figcaption b{width:20px;height:20px;font-size:10px}
+ .evolution-comparison .evolution-readout{grid-template-columns:1fr;gap:18px}
+ .evolution-comparison .evolution-color-hud{display:grid;grid-template-columns:1fr auto;align-items:baseline;gap:0 12px;border-bottom:1px solid var(--compare-line);padding-bottom:16px}
+ .evolution-comparison .evolution-color-hud>p{grid-column:2;grid-row:1/3;margin:0}
+ .evolution-comparison .evolution-color-hud strong{font-size:42px}
+ .evolution-comparison .evolution-color-hud small{font-size:17px}
+ .evolution-comparison .evolution-specifications{grid-template-columns:repeat(2,minmax(0,1fr));gap:15px 20px}
+ .evolution-comparison .evo-tech{grid-row:span 2}
+ .evolution-comparison .evolution-fact>strong{font-size:29px}
+ .evolution-comparison .evolution-power-modes{grid-row:auto;grid-column:1;max-width:none}
+ .evolution-comparison .evolution-power-modes button{min-height:44px;font-size:11px}
+ .evolution-comparison .evolution-caption{grid-template-columns:1fr;gap:9px}
+ .evolution-comparison .evolution-caption h2{font-size:29px}
+ .evolution-comparison .evolution-caption>p{grid-column:1;grid-row:3;font-size:14px;line-height:1.65;max-width:none}
+ .evolution-comparison .evolution-caption>a{grid-row:4;min-height:44px}
+ .evolution-comparison .evolution-chapters{gap:17px}
+}
+@media(prefers-reduced-motion:reduce){
+ .evolution-comparison{height:auto}
+ .evolution-comparison .evolution-stage{position:relative;height:auto;min-height:0;grid-template-rows:auto auto auto auto}
+ .evolution-comparison .evolution-pair{min-height:430px}
+ .evolution-comparison *{scroll-behavior:auto!important;transition:none!important}
+}
+@media(prefers-reduced-motion:reduce) and (max-width:600px){.evolution-comparison .evolution-pair{min-height:330px}}
+/* LOW / MEDIUM / HIGH already appear in the shared model rail. */
+.evolution-comparison .evolution-power-modes{display:none}

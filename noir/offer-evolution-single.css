@@ -1,0 +1,87 @@
+/* The selected brighter scene, with separate areas for story and facts. */
+.evolution-single .evolution-stage{grid-template-columns:minmax(270px,29%) minmax(0,1fr) minmax(240px,23%);grid-template-rows:minmax(0,1fr) auto;gap:28px;padding-top:128px}
+.evolution-single .evolution-intro{grid-column:1;grid-row:1;display:flex;flex-direction:column;justify-content:center;gap:28px;min-width:0;min-height:0;z-index:3}
+.evolution-single .evolution-heading{display:block}
+.evolution-single .evolution-heading>.eyebrow{margin-bottom:24px}
+.evolution-single .evolution-heading h1{font-size:clamp(44px,4.2vw,76px);line-height:1.06;letter-spacing:-.055em}
+.evolution-single .evolution-heading>p:not(.eyebrow){margin-top:22px;font-size:14px;max-width:350px;line-height:1.8}
+.evolution-single .evolution-workspace{display:contents}
+.evolution-single .evolution-pair{grid-column:2;grid-row:1;display:block;height:100%;min-width:0}
+.evolution-single .evolution-variant{height:100%;border:0;background:transparent;display:block;overflow:visible}
+.evolution-single .evolution-variant figcaption{display:none}
+.evolution-single .evolution-art{height:100%;overflow:visible}
+.evolution-single .evolution-canvas{inset:0 -12%;width:124%;height:100%}
+.evolution-single .evolution-canvas::before{inset:0 -35%;opacity:calc(var(--coil-energy,.8)*.65);filter:blur(24px)}
+.evolution-single .evolution-readout{grid-column:3;grid-row:1;align-self:center;min-height:0;padding:0}
+.evolution-single .evolution-micro{margin-top:18px;font-size:12px}
+.evolution-single .evolution-caption{display:block;border:0;padding:0;max-width:380px}
+.evolution-single .evolution-caption>span{font-size:11px;letter-spacing:.08em;display:block;margin-bottom:12px}
+.evolution-single .evolution-caption h2{font-size:clamp(26px,2.2vw,37px);line-height:1.15;letter-spacing:-.04em;margin:0}
+.evolution-single .evolution-caption>p{font-size:14px;line-height:1.8;margin:15px 0 4px}
+.evolution-single .evolution-caption>a{font-size:11px;min-height:42px;gap:25px}
+.evolution-single .evolution-power-modes{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:0;max-width:380px}
+.evolution-single .evolution-power-modes[hidden]{display:none}
+.evolution-single .evolution-power-modes button{display:block;min-height:76px;text-align:left;padding:11px 12px;border-color:var(--compare-line);background:transparent;color:var(--compare-muted)}
+.evolution-single .evolution-power-modes button small{display:block;font-size:10px;letter-spacing:.06em;margin:0 0 6px}
+.evolution-single .evolution-power-modes button b{font-size:25px;line-height:1.2;font-weight:400;white-space:nowrap}
+.evolution-single .evolution-power-modes button em{font-size:11px;font-weight:400;font-style:normal}
+.evolution-single .evolution-power-modes button[aria-pressed=true]{color:var(--evo-ink);border-color:color-mix(in srgb,var(--evo-ink) 60%,transparent);background:color-mix(in srgb,var(--evo-ink) 8%,transparent)}
+.evolution-single .evolution-chapters{grid-column:1/-1;grid-row:2}
+.evolution-single .evolution-stops button{flex-basis:116px;font-size:13px}
+.evolution-single .evolution-stops button>span{font-size:11px}
+.evolution-single .evolution-color-hud>span:first-child,.evolution-single .evolution-fact>span:first-child{font-size:11px}
+.evolution-single .evolution-fact>small,.evolution-single .evolution-fact>.evolution-package{font-size:12px}
+.evolution-single .evolution-fact>strong{font-size:34px}
+.evolution-single .evolution-color-hud strong{font-size:64px}
+.evolution-single .evolution-color-caption{font-size:13px}
+@media(min-width:1101px) and (max-height:950px){
+ .evolution-single .evolution-stage{padding-top:106px;gap:18px}
+ .evolution-single .evolution-intro{gap:18px}
+ .evolution-single .evolution-heading h1{font-size:clamp(43px,4.1vw,64px)}
+ .evolution-single .evolution-heading>.eyebrow{margin-bottom:16px}
+ .evolution-single .evolution-heading>p:not(.eyebrow){font-size:13px;margin-top:16px}
+ .evolution-single .evolution-caption h2{font-size:29px}
+ .evolution-single .evolution-caption>p{font-size:13px;margin-top:12px;line-height:1.65}
+ .evolution-single .evolution-caption>span{margin-bottom:8px}
+ .evolution-single .evolution-caption>a{min-height:36px}
+ .evolution-single .evolution-power-modes button{min-height:68px;padding:8px 10px}
+ .evolution-single .evolution-color-hud strong{font-size:49px}
+ .evolution-single .evolution-fact>strong{font-size:28px}
+ .evolution-single .evolution-fact>small,.evolution-single .evolution-fact>.evolution-package{font-size:11px}
+}
+@media(max-width:1100px),(max-height:739px){
+ .evolution-single .evolution-stage{grid-template-columns:1fr;grid-template-rows:auto auto auto auto;padding:108px 5% 105px;gap:25px}
+ .evolution-single .evolution-intro{grid-row:1;grid-column:1;display:grid;grid-template-columns:1fr 1fr;gap:18px 30px}
+ .evolution-single .evolution-heading h1{font-size:clamp(40px,6vw,58px)}
+ .evolution-single .evolution-heading>.eyebrow{margin-bottom:15px}
+ .evolution-single .evolution-heading>p:not(.eyebrow){font-size:13px;margin-top:15px}
+ .evolution-single .evolution-caption{align-self:center}
+ .evolution-single .evolution-caption h2{font-size:28px}
+ .evolution-single .evolution-caption>p{font-size:13px;margin-top:12px}
+ .evolution-single .evolution-power-modes{grid-column:1/-1;max-width:none;grid-row:2}
+ .evolution-single .evolution-pair{grid-column:1;grid-row:2;height:560px}
+ .evolution-single .evolution-canvas{inset:0;width:100%;height:100%}
+ /* The glow stays inside the static scene; its desktop overscan must not
+    enlarge the touch page or drag the document when a chapter is selected. */
+ .evolution-single .evolution-canvas::before{inset:0 -8%}
+ .evolution-single .evolution-readout{grid-column:1;grid-row:3;display:grid;grid-template-columns:170px minmax(0,1fr);gap:16px 22px}
+ .evolution-single .evolution-chapters{grid-column:1;grid-row:4}
+ .evolution-single .evolution-micro{margin:0}
+}
+@media(max-width:600px){
+ .evolution-single .evolution-stage{padding:96px 24px 155px;gap:24px}
+ .evolution-single .evolution-intro{display:block}
+ .evolution-single .evolution-heading h1{font-size:48px;max-width:none}
+ .evolution-single .evolution-heading>p:not(.eyebrow){font-size:14px}
+ .evolution-single .evolution-caption{margin-top:25px}
+ .evolution-single .evolution-caption>p{font-size:14px}
+ .evolution-single .evolution-caption>a{min-height:38px;padding:4px 0}
+ .evolution-single .evolution-power-modes{margin-top:18px;max-width:none}
+ .evolution-single .evolution-power-modes button{min-height:76px;padding:10px}
+ .evolution-single .evolution-pair{height:440px}
+ .evolution-single .evolution-readout{display:block}
+ .evolution-single .evolution-color-hud{margin-bottom:22px}
+ .evolution-single .evolution-color-hud strong{font-size:50px}
+ .evolution-single .evolution-micro{margin-top:20px}
+}
+@media(prefers-reduced-motion:reduce) and (min-width:1101px) and (min-height:740px){.evolution-single .evolution-stage{grid-template-rows:minmax(650px,1fr) auto}.evolution-single .evolution-pair{min-height:650px}}

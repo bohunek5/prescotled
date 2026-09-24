@@ -1,0 +1,90 @@
+/* Original PR-MAD200 packaging view. Wires terminate at its genuine ports. */
+.category-card[data-card-motion="power"]{--prmad-energy:#edd0a0;--prmad-time-scale:1;container-type:inline-size}
+.category-card[data-card-motion="power"] .category-picture{display:none}
+.category-card[data-card-motion="power"]:after{background:linear-gradient(0deg,#101415 0%,#101415ed 19%,transparent 38%)}
+.prmad-demo{position:absolute;inset:0 0 30%;overflow:hidden;pointer-events:none;color:#8a9f99;z-index:4}
+.prmad-grid{position:absolute;inset:3% 0 0;background-image:linear-gradient(#bed6d306 1px,transparent 1px),linear-gradient(90deg,#bed6d306 1px,transparent 1px);background-size:54px 54px;mask-image:radial-gradient(ellipse at center,#000,transparent 80%)}
+.prmad-assembly-wrap{position:absolute;left:0;right:0;top:160px;bottom:4px;display:grid;place-items:center;container:prmad-stage/size}
+/* Fit against both dimensions: a wide, short card must not enlarge and crop
+   the product. The scene retains its complete SVG coordinate system. */
+.prmad-assembly-scene{position:relative;width:min(100%,calc(100cqh * 760 / 310));aspect-ratio:760/310}
+.prmad-assembly{display:block;width:100%;height:100%;overflow:visible}
+.prmad-body{filter:brightness(.89) contrast(1.04) drop-shadow(0 12px 13px #0005);transition:filter .3s}
+.category-card[data-card-motion="power"].is-active .prmad-body{filter:brightness(1) drop-shadow(0 12px 17px #0008)}
+.prmad-reference{opacity:.27}
+.prmad-hardware-switch{transform:translateX(0);transition:transform calc(.16s * var(--prmad-time-scale,1)) ease-out}
+.prmad-hardware-switch[data-position="up"]{transform:translateX(-3.2px)}
+.prmad-overline{display:block;font-size:9px;letter-spacing:.12em;color:#93a49e;line-height:1.5}
+.prmad-configuration{position:absolute;top:67px;left:7%;z-index:2}
+.prmad-modes{display:flex;gap:8px;margin-top:9px}
+.prmad-mode{appearance:none;display:grid;justify-items:center;align-content:center;gap:4px;width:64px;min-height:88px;padding:8px 5px 5px;margin:0;border:1px solid #78948b36;border-radius:3px;background:#131d1be6;color:#9aa8a2;font:inherit;cursor:pointer;pointer-events:auto;touch-action:manipulation;transition:color .12s,border-color .12s,background .12s}
+.prmad-mode b{font-weight:500;font-size:17px;letter-spacing:.025em;line-height:1.15}
+.prmad-mode:focus-visible{outline:2px solid #f8d5a6;outline-offset:3px}
+.prmad-dip{position:relative;display:flex;box-sizing:border-box;width:30px;height:30px;gap:5px;padding:4px;background:#26312e;border:1px solid #839e853b;border-radius:2px;box-shadow:inset 0 0 0 2px #0c151155}
+.prmad-dip i{display:block;position:relative;width:7px;height:20px;background:#101817;border-radius:1px;box-shadow:inset 0 0 0 1px #78978b29}
+.prmad-dip i:after{content:"";position:absolute;left:1px;bottom:1px;width:5px;height:7px;background:#bac4bc;border-radius:1px;box-shadow:inset 0 -2px 0 #65766a}
+.prmad-dip .is-up:after{bottom:auto;top:1px}
+.prmad-mode small{display:block;font-size:8px;letter-spacing:.1em;line-height:1;opacity:.8}
+.prmad-mode[aria-pressed="true"]{color:#f2d3a8;border-color:#d3ac7187;background:#52372a45}
+.prmad-mode[aria-pressed="true"] .prmad-dip{border-color:#cba1649c;background:#713c2d}
+.prmad-output{position:absolute;right:7%;top:67px;min-width:108px}
+.prmad-output strong{display:flex;align-items:baseline;gap:6px;font-size:46px;font-weight:300;line-height:1.12;letter-spacing:-.06em;color:#e4d1b1;margin:8px 0;font-variant-numeric:tabular-nums}
+.prmad-output strong small{font-size:12px;font-weight:400;letter-spacing:0;color:#b7c4bc}
+.prmad-status{display:flex;align-items:center;gap:5px;color:#9bb1a7;font-size:8px;letter-spacing:.07em;white-space:nowrap}
+.prmad-status>i{width:4px;height:4px;border-radius:50%;background:#5c685f}
+/* Nothing is cabled while idle. Each path is drawn from its left endpoint. */
+.prmad-cord{stroke-width:3;stroke-dasharray:1;stroke-dashoffset:1;opacity:0;transition:none}
+.prmad-pe{stroke:#acb982}.prmad-neutral{stroke:#8caec3}.prmad-line{stroke:#a0836f}.prmad-positive{stroke:#d64b41;stroke-width:3}.prmad-negative-edge{stroke:#66716f;stroke-width:3.8}.prmad-negative{stroke:#252e31;stroke-width:2.8}
+[data-prmad-connected="true"] .prmad-input{stroke-dashoffset:0;opacity:.95;transition:stroke-dashoffset calc(.24s * var(--prmad-time-scale,1)) cubic-bezier(.2,.7,.3,1),opacity calc(.1s * var(--prmad-time-scale,1))}
+[data-prmad-connected="true"][data-prmad-load="12"] [data-prmad-branch="12"] .prmad-cord,
+[data-prmad-connected="true"][data-prmad-load="24"] [data-prmad-branch="24"] .prmad-cord{stroke-dashoffset:0;opacity:.95;transition:none;animation:prmad-wire-to-strip calc(.3s * var(--prmad-time-scale,1)) calc(.16s * var(--prmad-time-scale,1)) cubic-bezier(.2,.7,.3,1) both}
+.prmad-energy{stroke:#ee8775;stroke-width:.7;opacity:0;filter:drop-shadow(0 0 3px #d95745)}
+.prmad-callouts{opacity:.6}.prmad-svg-labels{font-size:10px;font-family:inherit;letter-spacing:1.2px;opacity:.7}
+.prmad-pcb{fill:#182320;stroke:#83978c;stroke-width:1.2}.prmad-trace{stroke:#596d5f;stroke-width:.7}.prmad-pads{stroke:#c49867;stroke-width:4}.prmad-polarity{stroke:#9baf9d;stroke-width:.7}
+.prmad-led-package{fill:#26352c;stroke:#b1b9a2;stroke-width:1}.prmad-phosphor{fill:#897855}
+.prmad-strip-label{position:absolute;left:81.5%;font-size:7px;letter-spacing:.06em;color:#91a299;line-height:1.5;white-space:nowrap}
+.prmad-strip-label b{font-size:13px;font-weight:500;letter-spacing:0;margin-left:3px}
+.prmad-strip-label-12{top:9%}.prmad-strip-label-24{top:52%}
+[data-prmad-on="true"][data-prmad-load="12"] [data-prmad-strip="12"] .prmad-phosphor,
+[data-prmad-on="true"][data-prmad-load="24"] [data-prmad-strip="24"] .prmad-phosphor{fill:#fff1c6;filter:drop-shadow(0 0 5px #ffd28b) drop-shadow(0 0 13px #efb575)}
+[data-prmad-on="true"][data-prmad-load="12"] [data-prmad-branch="12"] .prmad-energy,
+[data-prmad-on="true"][data-prmad-load="24"] [data-prmad-branch="24"] .prmad-energy{opacity:.95}
+[data-prmad-on="true"][data-prmad-load="12"] .prmad-strip-label-12,
+[data-prmad-on="true"][data-prmad-load="24"] .prmad-strip-label-24{color:#f5d4a7}
+[data-prmad-on="true"] .prmad-status>i{background:#dbe0b2;box-shadow:0 0 9px #e7df9e}
+@container(min-width:900px){
+  .prmad-configuration{left:4%}.prmad-output{right:4%}
+  .prmad-assembly-wrap{left:calc(4% + 224px);right:calc(4% + 128px);top:35px;bottom:6px}
+}
+@container(max-width:430px){
+  .prmad-configuration{top:59px;left:7%;right:7%}
+  .prmad-modes{gap:8px}.prmad-mode{width:calc((100cqw - 14cqw - 16px)/3);max-width:83px;min-height:88px}.prmad-mode b{font-size:18px}
+  .prmad-output{left:7%;right:auto;top:192px;display:grid;grid-template-columns:auto auto;column-gap:14px;align-items:center}
+  .prmad-output strong{grid-column:2;grid-row:1/3;font-size:34px;margin:0;gap:5px}
+  .prmad-output strong small{font-size:10px}.prmad-output .prmad-overline{font-size:8px}.prmad-status{font-size:7px}
+  .prmad-strip-label{font-size:0}.prmad-strip-label b{font-size:11px;margin-left:0}
+  .prmad-assembly-wrap{top:218px;bottom:0}
+}
+@media(max-width:760px){.prmad-demo{bottom:33%}}
+@media(max-width:359px){.prmad-demo{bottom:35%}}
+@media(prefers-reduced-motion:reduce){.prmad-demo *{transition:none!important}}
+
+/* AUTO visually checks a connected, unlit load before revealing the voltage. */
+.prmad-output strong>[data-prmad-voltage]{min-width:2ch}
+.prmad-detection,.prmad-delivery{stroke:#ffb4a0;stroke-width:2.5;stroke-dasharray:.08 .92;stroke-dashoffset:1;opacity:0;filter:drop-shadow(0 0 5px #e76a52)}
+[data-prmad-phase="detecting"][data-prmad-load="12"] [data-prmad-branch="12"] .prmad-detection,
+[data-prmad-phase="detecting"][data-prmad-load="24"] [data-prmad-branch="24"] .prmad-detection,
+[data-prmad-phase="supplying"][data-prmad-load="12"] [data-prmad-branch="12"] .prmad-delivery,
+[data-prmad-phase="supplying"][data-prmad-load="24"] [data-prmad-branch="24"] .prmad-delivery{opacity:1;animation:prmad-detect calc(.48s * var(--prmad-time-scale,1)) ease-in-out both}
+[data-prmad-phase="detecting"] .prmad-status>i{background:#dd8d72;box-shadow:0 0 9px #e6947955}
+[data-prmad-phase="detecting"] .prmad-output strong{color:#8a9996}
+@keyframes prmad-detect{0%{stroke-dashoffset:1;opacity:0}20%{opacity:1}85%{opacity:1}100%{stroke-dashoffset:0;opacity:0}}
+@media(prefers-reduced-motion:reduce){.prmad-detection,.prmad-delivery{animation:none!important;display:none}}
+
+/* Separate keyframes keep the cable reveal direction correct when a full
+   cycle switches from AUTO to a fixed voltage on the previously used branch. */
+[data-prmad-mode="auto"][data-prmad-connected="true"][data-prmad-load="12"] [data-prmad-branch="12"] .prmad-cord,
+[data-prmad-mode="auto"][data-prmad-connected="true"][data-prmad-load="24"] [data-prmad-branch="24"] .prmad-cord{animation-name:prmad-wire-to-supply}
+@keyframes prmad-wire-to-strip{from{stroke-dashoffset:1;opacity:0}to{stroke-dashoffset:0;opacity:.95}}
+@keyframes prmad-wire-to-supply{from{stroke-dashoffset:-1;opacity:0}to{stroke-dashoffset:0;opacity:.95}}
+@media(prefers-reduced-motion:reduce){.prmad-cord{animation:none!important}}

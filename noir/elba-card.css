@@ -1,0 +1,98 @@
+/* One camera, one image coordinate system: only the surroundings are revealed. */
+.category-card[data-card-motion=elba]{grid-column:1/-1}
+.category-card[data-card-motion=elba].elba-ready{height:auto!important;min-height:0!important;overflow:hidden;background:#101716}
+.category-card[data-card-motion=elba].elba-ready :is(.category-picture,.category-copy,.category-number,.category-arrow),.category-card[data-card-motion=elba].elba-ready:after{display:none}
+.category-card[data-card-motion=elba] .demo-elba{display:none}
+.category-card[data-card-motion=elba].elba-ready .demo-elba{display:block;position:relative;inset:auto;padding:37px 36px 31px;z-index:3;pointer-events:none;color:#edece4;background:#101716}
+.elba-showcase-header{display:flex;justify-content:space-between;align-items:center;gap:36px;margin-bottom:28px}
+.elba-showcase-header h3{font-size:55px;letter-spacing:-.055em;line-height:1;margin:0;font-weight:500;white-space:nowrap}
+.elba-showcase-header h3 span{font-size:22px;font-weight:400;letter-spacing:-.03em;margin-left:9px;color:#b4c6bd}
+.elba-showcase-header p{margin:0;max-width:390px;display:flex;flex-direction:column;gap:9px;color:#a8bbb1;font-size:12px;line-height:1.55}
+.elba-showcase-header p strong{font-weight:400;color:#d2dcd4}
+.elba-showcase-body{display:grid;grid-template-columns:minmax(0,1fr) 244px;gap:25px;align-items:start}
+.elba-stage{position:relative;min-width:0;overflow:hidden;background:transparent}
+.elba-exhibit{display:none;opacity:1;transform:none;position:relative;inset:auto}
+.elba-exhibit.is-selected{display:block}
+.elba-composition{display:block;width:100%;height:auto;aspect-ratio:3/2;background:#0a1110;overflow:hidden;border:1px solid #c0d4c224}
+.category-card[data-card-motion=elba] .elba-composition{position:relative;inset:auto;height:auto;overflow:hidden}
+.elba-composition image{transform:none;filter:none;clip-rule:nonzero}
+.elba-background-frame{opacity:0;transition:opacity .55s cubic-bezier(.2,.55,.3,1)}
+.elba-fixed-product{opacity:1;transition:none}
+.category-card[data-card-motion=elba]:is([data-elba-phase=reveal],[data-elba-phase=installed]) .elba-background-frame{opacity:1}
+.category-card[data-card-motion=elba][data-elba-switching=true] .elba-stage{opacity:.35;transition:opacity .15s}
+.category-card[data-card-motion=elba][data-elba-switching=false] .elba-stage{opacity:1;transition:opacity .3s}
+.elba-scene-copy{display:grid;grid-template-columns:minmax(135px,.65fr) minmax(0,1fr);gap:26px;padding:24px 1px 5px;min-height:166px}
+.elba-spec{position:static;inset:auto;transform:none;opacity:1;display:flex;flex-direction:column;gap:10px;background:transparent;padding:0;color:#f0ece1}
+.elba-spec strong{font-size:16px;font-weight:400;line-height:1.4;letter-spacing:-.025em}
+.elba-spec span{font-size:10px;color:#a6bab0;line-height:1.6}
+.elba-exhibit-caption{position:static;inset:auto;transform:none;opacity:1;max-width:none;color:#eaece0}
+.elba-exhibit-caption>span{font-size:9px;text-transform:uppercase;letter-spacing:.14em;color:#9ab3a4}
+.elba-exhibit-caption h4{font-size:27px;font-weight:400;line-height:1.08;letter-spacing:-.04em;margin:10px 0}
+.elba-exhibit-caption h4 em{font-style:normal;color:#d2b792}
+.elba-exhibit-caption p{font-size:11px;line-height:1.7;color:#afbeb2;max-width:340px;margin:12px 0 0}
+.elba-chooser{position:relative;z-index:8;min-width:0}
+.elba-chooser-label{margin:0 0 12px;font-size:9px;text-transform:uppercase;letter-spacing:.13em;color:#94ab9c}
+.elba-selectors{display:grid;gap:8px}
+.elba-selectors button{position:relative;z-index:8;pointer-events:auto;background:#14211b;color:#cfdbd2;border:1px solid #bbcdb529;min-height:87px;width:100%;padding:12px;display:grid;grid-template-columns:17px minmax(0,1fr) 46px;gap:8px;align-items:center;text-align:left;cursor:pointer;transition:background .25s,border-color .25s}
+.elba-selector-index{font-size:8px;letter-spacing:.07em;color:#88a18f}
+.elba-selector-copy{display:flex;flex-direction:column;gap:7px}
+.elba-selector-copy strong{font-size:12px;font-weight:400;line-height:1.25}
+.elba-selector-copy small{font-size:8px;color:#91aa99;line-height:1.3}
+.elba-selectors button img{width:46px;height:53px;object-fit:contain;filter:drop-shadow(0 3px 5px #0003)}
+.elba-selectors button[aria-pressed=true]{background:#2d3d2f;border-color:#a7b69482;color:#f1f2e7}
+.elba-selectors button[aria-pressed=true] :is(.elba-selector-index,small){color:#cbd6b9}
+.elba-tour-controls{display:grid;grid-template-columns:1fr auto;gap:17px;margin-top:20px;align-items:center;color:#a9bda8;font-size:10px}
+.elba-tour-controls button{position:relative;z-index:8;pointer-events:auto;display:flex;align-items:center;gap:9px;border:1px solid #b2c7a74a;background:#1b2b20;color:#e8ecda;min-height:42px;padding:10px 16px;font-size:10px;cursor:pointer}
+.elba-tour-controls button i{width:8px;height:10px;display:block;border-left:3px solid currentColor;border-right:3px solid currentColor}
+.elba-tour-controls button[aria-pressed=false] i{border:0;width:0;height:0;border-top:5px solid transparent;border-bottom:5px solid transparent;border-left:8px solid currentColor}
+.elba-tour-controls button:disabled{opacity:.5;cursor:default}
+.elba-contact{grid-column:1/-1;position:relative;z-index:8;pointer-events:auto;color:#d6e1cb;font-size:11px;display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid #bfd2b24d;min-height:42px;text-decoration:none}
+.elba-contact span{font-size:22px;color:#d6b689}
+.demo-elba :is(button,a):focus-visible{outline:2px solid #dfbb86;outline-offset:3px}
+html[data-theme=day] .category-card[data-card-motion=elba].elba-ready,html[data-theme=day] .category-card[data-card-motion=elba].elba-ready .demo-elba{background:#edf0e7;color:#29402f}
+html[data-theme=day] .elba-composition{background:#d7dfd0;border-color:#5c795430}
+html[data-theme=day] :is(.elba-showcase-header h3 span,.elba-showcase-header p,.elba-showcase-header p strong,.elba-spec span,.elba-exhibit-caption>span,.elba-exhibit-caption p,.elba-chooser-label,.elba-tour-controls){color:#5e765c}
+html[data-theme=day] :is(.elba-spec,.elba-exhibit-caption){color:#2c4633}
+html[data-theme=day] .elba-exhibit-caption h4 em{color:#937349}
+html[data-theme=day] .elba-selectors button{background:#f8faf3;color:#38543e;border-color:#607d5438}
+html[data-theme=day] :is(.elba-selector-index,.elba-selector-copy small){color:#66815d}
+html[data-theme=day] .elba-selectors button[aria-pressed=true]{background:#d7e1c9;border-color:#719662;color:#223d29}
+html[data-theme=day] .elba-selectors button[aria-pressed=true] :is(.elba-selector-index,small){color:#476638}
+html[data-theme=day] .elba-tour-controls button{background:#e3ebd7;color:#345034;border-color:#759b5b70}
+html[data-theme=day] .elba-contact{color:#345034;border-color:#607b4f55}
+@media(max-width:1100px){.elba-showcase-body{grid-template-columns:minmax(0,1fr) 210px;gap:19px}.elba-selectors button{grid-template-columns:14px minmax(0,1fr);min-height:78px}.elba-selectors button img{display:none}.elba-scene-copy{grid-template-columns:1fr;gap:18px;min-height:230px}.elba-spec{gap:5px}.elba-showcase-header h3{font-size:45px}.elba-showcase-header p{font-size:11px;max-width:295px}.elba-exhibit-caption h4{font-size:25px}}
+@media(max-width:900px){.elba-showcase-body{grid-template-columns:minmax(0,1fr);gap:22px}.elba-selectors{grid-template-columns:repeat(5,minmax(0,1fr))}.elba-selectors button{display:flex;flex-direction:column;align-items:flex-start;min-height:91px;padding:12px 9px}.elba-selector-copy strong{font-size:10px}.elba-selector-copy small{font-size:7px}.elba-scene-copy{grid-template-columns:.7fr 1fr;min-height:163px}.elba-tour-controls{grid-template-columns:1fr auto 1fr}.elba-contact{grid-column:auto;max-width:160px;margin-left:auto;width:100%}.elba-showcase-header{gap:20px}.elba-showcase-header p{max-width:310px}}
+@media(max-width:760px){.category-card[data-card-motion=elba].elba-ready .demo-elba{padding:25px 18px 24px}.elba-showcase-header{display:block;margin-bottom:23px}.elba-showcase-header h3{font-size:39px}.elba-showcase-header h3 span{font-size:19px;margin-left:7px}.elba-showcase-header p{font-size:10px;line-height:1.6;margin-top:15px;gap:6px;max-width:270px}.elba-stage{margin-inline:-18px}.elba-composition{border-left:0;border-right:0;aspect-ratio:3/2}.elba-scene-copy{padding:22px 18px 0;grid-template-columns:1fr;gap:20px;min-height:250px}.elba-spec strong{font-size:15px}.elba-spec span{font-size:10px}.elba-exhibit-caption>span{font-size:8px}.elba-exhibit-caption h4{font-size:26px;line-height:1.1}.elba-exhibit-caption p{font-size:11px;max-width:290px}.elba-selectors{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.elba-selectors button{display:grid;grid-template-columns:15px minmax(0,1fr);gap:8px;min-height:70px;padding:10px}.elba-selectors button:last-child{grid-column:1/-1}.elba-selector-copy strong{font-size:11px}.elba-selector-copy small{font-size:8px}.elba-tour-controls{grid-template-columns:1fr auto;gap:15px}.elba-contact{grid-column:1/-1;margin:0;max-width:none}.elba-chooser-label{font-size:9px}.elba-showcase-body{gap:25px}}
+@media(max-width:359px){.category-card[data-card-motion=elba].elba-ready .demo-elba{padding:23px 14px}.elba-stage{margin-inline:-14px}.elba-scene-copy{padding-inline:14px}.elba-showcase-header h3{font-size:35px}.elba-showcase-header h3 span{font-size:17px}.elba-selector-copy strong{font-size:10px}.elba-selector-copy small{font-size:7.5px}.elba-exhibit-caption h4{font-size:24px}}
+@media(prefers-reduced-motion:reduce){.category-card[data-card-motion=elba] *{transition:none!important;animation:none!important}}
+
+.category-card[data-card-motion=elba]:not(.elba-active) .elba-background-frame{transition:none}
+
+/* Verified family facts share the empty product frame; neither image layer moves. */
+.elba-image-stage{position:relative;min-width:0}
+.elba-product-hud{position:absolute;inset:auto 6% 7%;display:flex;justify-content:space-between;gap:22%;margin:0;color:#c8e5d4;opacity:1;transition:opacity .18s ease;pointer-events:none}
+.elba-hud-block{width:39%;min-width:0;padding-bottom:13px;border-bottom:1px solid #a9d5bd55;position:relative}
+.elba-hud-block:after{content:"";position:absolute;left:0;bottom:-2px;width:4px;height:4px;background:#c8e5d4;border-radius:50%}
+.elba-hud-block dt{font-size:10px;line-height:1.45;letter-spacing:.09em;text-transform:uppercase;color:#93b6a2;margin:0 0 11px}
+.elba-hud-value{font-size:clamp(30px,3.8vw,55px);line-height:1;letter-spacing:-.065em;margin:0;white-space:nowrap;font-weight:400}
+.elba-hud-value small{font-size:.31em;letter-spacing:-.02em;margin-left:5px}
+.elba-hud-detail{font-size:11px;line-height:1.5;color:#9ebba9;margin:10px 0 0}
+.category-card[data-card-motion=elba]:is([data-elba-phase=reveal],[data-elba-phase=installed]) .elba-product-hud{opacity:0}
+.category-card[data-card-motion=elba]:not(.elba-active) .elba-product-hud{transition:none}
+html[data-theme=day] .elba-product-hud{color:#254e38}
+html[data-theme=day] .elba-hud-block{border-color:#4d785666}
+html[data-theme=day] .elba-hud-block:after{background:#386d49}
+html[data-theme=day] :is(.elba-hud-block dt,.elba-hud-detail){color:#476c4f}
+/* Reduced motion keeps the finished scene and its facts together, without a timer. */
+.category-card[data-card-motion=elba][data-elba-reduced=true] .elba-product-hud{position:relative;inset:auto;padding:23px 6% 8px;opacity:1;transition:none}
+@media(max-width:1100px) and (min-width:901px){.elba-hud-block dt{font-size:9px}.elba-hud-detail{font-size:10px}.elba-hud-value{font-size:36px}}
+@media(max-width:760px){.elba-product-hud{inset:auto 5% 6%;gap:19%}.elba-hud-block{width:40.5%;padding-bottom:9px}.elba-hud-block dt{font-size:8px;letter-spacing:.055em;margin-bottom:7px;min-height:23px}.elba-hud-value{font-size:30px}.elba-hud-detail{font-size:10px;line-height:1.4;margin-top:7px}.elba-hud-value small{font-size:11px;margin-left:4px}}
+@media(max-width:359px){.elba-hud-value{font-size:27px}.elba-hud-detail{font-size:9px}.elba-hud-block dt{font-size:7.5px}.elba-product-hud{bottom:4%}}
+
+/* The environment softens into the frame; the actual foreground stays above it. */
+.elba-composition{--elba-scene-shade:#0a1110}
+.elba-scene-shade{opacity:0;transition:opacity .55s cubic-bezier(.2,.55,.3,1)}
+.category-card[data-card-motion=elba]:is([data-elba-phase=reveal],[data-elba-phase=installed]) .elba-scene-shade{opacity:1}
+html[data-theme=day] .elba-composition{--elba-scene-shade:#f1f4eb}
+.category-card[data-card-motion=elba]:not(.elba-active) .elba-scene-shade{transition:none}
+@media(max-width:760px){[data-elba-exhibit=atex] .elba-hud-block:last-child{text-align:right}}

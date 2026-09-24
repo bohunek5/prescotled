@@ -1,0 +1,46 @@
+/* Continuous PCB evolution and voltage readouts. */
+.strip-evolution{height:800svh;--evo-reel-opacity:0;--evo-scene-opacity:1;--evo-fact-reveal:1;--evo-unroll:0;--evo-energy:.6;--evo-light:#ffbd77}
+.evolution-reel{position:absolute;inset:-2% -10%;opacity:var(--evo-reel-opacity);transform:translateY(calc(var(--evo-unroll)*-35px)) scale(calc(1.08 - var(--evo-unroll)*.12));will-change:opacity,transform;pointer-events:none;filter:drop-shadow(0 22px 35px #0005)}
+.evolution-reel img{width:100%;height:100%;max-width:none;object-fit:contain;transform:translateX(-6%)}
+.strip-evolution[data-renderer=ready] .evolution-canvas canvas{opacity:var(--evo-scene-opacity)}
+.evolution-canvas::before{opacity:calc(var(--evo-scene-opacity)*var(--coil-energy,.8)*.14)}
+.strip-evolution[data-renderer=fallback] .evolution-fallback{opacity:var(--evo-scene-opacity)}
+.strip-evolution[data-enhanced=true] :is(.evolution-fact,.evolution-color-hud,.evolution-caption,.evolution-micro,.evolution-power-modes){opacity:var(--evo-fact-reveal)}
+.evolution-start{pointer-events:auto;display:inline-flex;align-items:center;gap:30px;padding:15px 0 8px;margin-top:17px;background:none;border-bottom:1px solid #bbd0c740;color:#cfdecf;font-size:12px;min-height:44px;transition:opacity .2s}
+.evolution-start>span{color:var(--evo-ink);font-size:22px;font-weight:300}.strip-evolution[data-evo-intro=false] .evolution-start{opacity:0;visibility:hidden}
+.evo-voltage>strong{font-size:46px}.evo-voltage>strong small{font-size:13px}
+.evolution-rating{display:flex;flex-wrap:wrap;align-items:baseline;gap:3px 5px;line-height:1.3;font-size:10px;margin-top:9px;color:#a9c1b5}
+.evolution-rating>span:first-child{flex-basis:100%;font-size:8px;letter-spacing:.05em;color:#79978a}.evolution-rating>b{font-weight:400}
+.evolution-power-modes{position:absolute;z-index:5;right:6%;bottom:10%;width:190px;display:flex;gap:4px;align-items:stretch}
+.evolution-power-modes>span{position:absolute;left:0;top:-17px;font-size:8px;letter-spacing:.08em;color:#96b2a2}
+.evolution-power-modes button{flex:1;min-width:0;min-height:44px;border:1px solid #789c823b;background:#10201988;color:#829c8e;padding:5px 3px;font-size:8px;line-height:1.3;cursor:pointer}
+.evolution-power-modes button small{display:block;font-size:10px;margin-bottom:4px}.evolution-power-modes button[aria-pressed=true]{background:#6b593731;color:#f2cc99;border-color:#c79560aa}
+.strip-evolution[data-evolution-mode=delux3] .evolution-position{display:none}
+.evolution-aura{inset:0;opacity:1!important;background:radial-gradient(ellipse at 57% 30%,color-mix(in srgb,var(--evo-light) 12%,transparent),transparent 38%),radial-gradient(ellipse at 62% 74%,color-mix(in srgb,var(--evo-light) 9%,transparent),transparent 43%);filter:blur(12px)}
+.evolution-aura:after{content:'';position:absolute;left:35%;right:12%;top:7%;bottom:4%;background:radial-gradient(ellipse at 60% 54%,var(--evo-light),transparent 67%);opacity:calc(var(--evo-energy)*.09);transform:skewY(-14deg);filter:blur(35px)}
+html[data-theme=day] .evolution-reel{filter:drop-shadow(0 24px 28px #4b5b492b)}
+html[data-theme=day] .evolution-start{color:#365141;border-color:#47674a55}
+html[data-theme=day] .evolution-rating{color:#43634e}html[data-theme=day] .evolution-rating>span:first-child{color:#6c8070}
+html[data-theme=day] .evolution-power-modes button{background:#eef1e6aa;color:#637961;border-color:#63796144}
+html[data-theme=day] .evolution-power-modes button[aria-pressed=true]{background:#decdaa55;color:#775a2e;border-color:#977747}
+html[data-theme=day] .evolution-power-modes>span{color:#61765e}
+html[data-theme=day] .evolution-aura{mix-blend-mode:multiply;opacity:.7!important}
+@media(min-width:761px) and (max-height:820px){.evo-voltage>strong{font-size:38px}.evolution-rating{margin-top:5px;font-size:9px}.evolution-rating>span:first-child{font-size:7px}.evolution-power-modes{bottom:10%;width:185px}.evo-power{bottom:20%}.evo-voltage>i{margin-top:10px}}
+@media(min-width:761px) and (max-width:1100px) and (min-height:821px){.evolution-start{font-size:11px;margin-top:5px}.evo-voltage>strong{font-size:38px}.evolution-power-modes{right:5%;bottom:13%;width:158px}.evo-power{bottom:21%}.evolution-rating{font-size:9px}}
+@media(max-width:760px){
+ .evolution-reel{inset:0 -42%;transform:translateY(calc(var(--evo-unroll)*-20px)) scale(calc(1 - var(--evo-unroll)*.12))}
+ .evolution-start{position:absolute;left:0;top:calc(70svh - 91px);font-size:11px;margin-top:0;padding:4px 0;min-height:34px;gap:20px}
+ .evolution-heading>p:not(.eyebrow){visibility:hidden}
+ .evolution-power-modes{display:none}
+ .evo-voltage>strong{font-size:34px;line-height:1.15}.evo-voltage>strong small{font-size:10px}
+ .evolution-rating{margin-top:5px;font-size:8px;gap:2px 4px}.evolution-rating>span:first-child{font-size:6px;letter-spacing:0}
+ .evo-voltage>i{display:none}
+}
+@media(max-width:760px) and (max-height:780px){.evolution-start{top:calc(70svh - 91px)}.evo-voltage>strong{font-size:29px}.evolution-rating{font-size:7px}.evolution-rating>span:first-child{font-size:5px}}
+@media(max-height:600px),(max-width:760px) and (max-height:719px){.strip-evolution{height:auto}.evolution-start{transition:none}}
+@media(min-width:600px) and (max-height:600px){.evolution-start{position:static;font-size:11px;margin-top:8px}.evolution-power-modes{right:6%;bottom:26%;width:150px}.evo-voltage>strong{font-size:32px}.evolution-rating{font-size:8px}.evo-power{left:29%;top:439px;bottom:auto}}
+@media(prefers-reduced-motion:reduce){.strip-evolution{height:auto}.evolution-reel{will-change:auto}.evolution-canvas canvas{transition:none}}
+html:not(.has-js) .strip-evolution{--evo-fact-reveal:1}.evolution-start:focus-visible,.evolution-power-modes button:focus-visible{outline:2px solid var(--evo-ink);outline-offset:4px}
+@media(min-width:761px){.evolution-chapters{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px 26px}.evolution-stops{width:100%;min-width:0}.evolution-chapters>a{margin:0}.evolution-progress{grid-column:1/-1;margin:0}}
+@media(min-width:761px) and (max-width:1100px) and (min-height:821px){.evolution-chapters{grid-template-columns:1fr}.evolution-chapters>a{max-width:calc(100% - 165px)}}
+@media(min-width:761px) and (max-width:1100px) and (min-height:821px){.evo-voltage>i{display:none}}
