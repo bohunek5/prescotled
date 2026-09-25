@@ -5,7 +5,7 @@
 .category-card[data-card-motion=profile] .klus-showcase{display:none;position:relative;inset:auto;z-index:3;padding:28px 30px 23px;color:var(--klus-ink);background:var(--klus-ground);pointer-events:none;overflow:visible}
 .category-card[data-card-motion=profile].klus-ready .klus-showcase{display:block}
 .category-card[data-card-motion=profile].klus-ready :is(.category-picture,.category-copy,.category-arrow,.category-number){display:none}
-.klus-heading{display:flex;align-items:center;justify-content:space-between;gap:28px;margin-bottom:23px}
+.klus-heading{display:flex;align-items:center;justify-content:flex-start;gap:36px;margin-bottom:23px}
 .category-card[data-card-motion=profile] .klus-logo{width:190px;height:71px;object-fit:contain;padding:10px 13px;background:#f9f8f2;filter:none;transform:none}
 .klus-heading>div>span{display:block;font-size:11px;letter-spacing:.12em;color:var(--klus-muted);margin-bottom:9px}
 .klus-heading h3{font-size:clamp(29px,3vw,41px);font-weight:400;letter-spacing:-.04em;line-height:1.08;margin:0}
@@ -87,4 +87,23 @@ html[data-theme=day] .klus-section-info>small{color:#8a6d46}
  .klus-links{display:grid;gap:7px;margin-top:19px;padding-top:11px}.klus-links a{font-size:12px;justify-content:space-between;min-height:40px}
 }
 @media(max-width:359px){.category-card[data-card-motion=profile] .klus-showcase{padding:20px 14px 17px}.klus-heading h3{font-size:27px}.klus-selectors{grid-auto-columns:137px;gap:0 10px}.klus-section-info>strong{font-size:21px}.klus-model-line h4{font-size:29px}.klus-product-viewport{height:150px}.klus-section{height:117px}.klus-description h5{font-size:23px}}
+/* A bounded desktop stage keeps the cards readable on wide displays. */
+@media(min-width:861px){
+ .category-card[data-card-motion=profile] .klus-showcase{padding:24px 30px 20px}
+ .klus-heading{margin-bottom:16px}
+ .category-card[data-card-motion=profile] .klus-logo{width:176px;height:66px}
+ .klus-heading h3{font-size:clamp(29px,2.4vw,38px)}
+ .klus-heading>div>span{margin-bottom:7px}
+ .klus-selectors{margin-bottom:17px}
+ .klus-selectors button{min-height:55px;padding-block:8px}
+ .klus-model-line h4{font-size:32px}
+ .klus-product-viewport{height:156px}
+ .klus-technical{margin-top:5px;padding-block:9px}
+ .klus-section{height:105px;max-width:225px}
+ .klus-description{padding-top:12px}
+ .klus-description h5{font-size:23px;margin-bottom:7px}
+ .klus-photo-frame{aspect-ratio:auto;height:clamp(345px,25vw,410px)}
+ .klus-application figcaption{padding-top:10px}
+ .klus-links{margin-top:17px;padding-top:10px}
+}
 @media(prefers-reduced-motion:reduce){.category-card[data-card-motion=profile] *{transition:none!important;animation:none!important;scroll-behavior:auto!important}}

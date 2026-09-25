@@ -56,7 +56,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 949,
-  "bytesExcludingManifest": 278443178,
+  "bytesExcludingManifest": 278445712,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -3042,8 +3042,8 @@
       "source": "noir/delux-story.mjs"
     },
     "noir/elba-card.css": {
-      "bytes": 12635,
-      "sha256": "0ee40de7a39cd1261be654defb98b2130242cc987f12553f1a9ea3a2a3d205a1",
+      "bytes": 13633,
+      "sha256": "0e029b8080cba27e347ea8ac568940ced3ee3ed38143ad6d2bbee595ce659441",
       "source": "noir/elba-card.css"
     },
     "noir/elba-card.mjs": {
@@ -4312,13 +4312,13 @@
       "source": "noir/power-card.mjs"
     },
     "noir/profile-card.css": {
-      "bytes": 11312,
-      "sha256": "007d7450a0a2d07d2dd48e9f4afbb34bcf3ce91f25ac7b50bd6ecd6eb302493f",
+      "bytes": 12222,
+      "sha256": "4df58df5b1be9e0ece68d9e7db6c2032b26bdb1e2d22e4ea14ef2783b58fd4bf",
       "source": "noir/profile-card.css"
     },
     "noir/profile-card.mjs": {
-      "bytes": 84753,
-      "sha256": "4e251a546183303ff3d73c15878328b261b9d444bb4d9493d84fd6fab7479579",
+      "bytes": 85379,
+      "sha256": "e7150eba9615d94311c58eb62f24999115acbfbaa82d03f7cbd0113045556fb9",
       "source": "noir/profile-card.mjs"
     },
     "noir/scharfer-immersion.css": {

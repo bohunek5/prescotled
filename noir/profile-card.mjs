@@ -4,15 +4,25 @@ export function initProfileCard(card){
  const qs=s=>root.querySelector(s),buttons=[...root.querySelectorAll('[data-klus-select]')],cache=new Map();let mode=MODELS[0],running=false,reduced=false,theme=document.documentElement.dataset.theme==='day'?'day':'night',token=0,switching=false,changes=0;
  const number=n=>String(n).replace('.',',');
  function preload(src){if(!cache.has(src)){const im=new Image();im.src=src;cache.set(src,im.decode().then(()=>true).catch(()=>{cache.delete(src);return false;}));}return cache.get(src);}
+ function fitScene(){
+  const frame=qs('.klus-photo-frame'),box=mode.sceneBox.slice(),[x,y,w,h]=box;
+  if(matchMedia('(min-width:861px)').matches&&frame.clientWidth>0){
+   const cropHeight=Math.min(h,w*frame.clientHeight/frame.clientWidth);
+   box[1]=Math.max(y,Math.min(y+h-cropHeight,mode.pin[1]-cropHeight*.46));box[3]=cropHeight;
+  }
+  qs('[data-klus-scene]').setAttribute('viewBox',box.join(' '));
+  for(const [i,key]of ['x','y','width','height'].entries())qs('[data-klus-scene-crop]')?.setAttribute(key,box[i]);
+ }
  function sync(){card.dataset.klusMode=mode.id;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.klusSelect===mode.id)));for(const[key,value]of Object.entries({mount:mode.mount,model:mode.model,ref:mode.ref,dimensions:number(mode.width)+' × '+number(mode.height)+' mm',channel:'Kanał LED '+number(mode.channel)+' mm',caption:mode.caption,copy:mode.copy,finish:theme==='day'&&mode.dayFinish?mode.dayFinish:mode.finish,'application-caption':mode.line}))qs('[data-klus-'+key+']').textContent=value;qs('[data-klus-catalog]').href='/prescotled/katalog/#sku-'+mode.ref.toLowerCase();const counter=qs('[data-klus-current]');if(counter)counter.textContent=String(MODELS.indexOf(mode)+1).padStart(2,'0')+' / '+String(MODELS.length).padStart(2,'0');}
  async function render(){const request=++token,m=mode,p=theme==='day'&&m.product.day?m.product.day:m.product,src=p.src;switching=true;card.dataset.klusSwitching='true';const loaded=await Promise.all([preload(src),preload(m.scene)]);if(request!==token)return;
   if(loaded[0]){const im=qs('[data-klus-product]');im.setAttribute('href',src);im.setAttribute('width',p.w);im.setAttribute('height',p.h);qs('[data-klus-product-art]').setAttribute('viewBox',p.box.join(' '));qs('[data-klus-product-art]').setAttribute('aria-label','Oryginalny profil KLUŚ '+m.model);qs('[data-klus-product-clip]').setAttribute('d',p.clip);}
   if(loaded[1]){qs('[data-klus-scene-image]').setAttribute('href',m.scene);qs('[data-klus-scene]').setAttribute('viewBox',m.sceneBox.join(' '));qs('[data-klus-scene]').setAttribute('preserveAspectRatio',m.sceneAlign);for(const [i,key]of ['x','y','width','height'].entries())qs('[data-klus-scene-crop]')?.setAttribute(key,m.sceneBox[i]);qs('[data-klus-scene]').setAttribute('aria-label',m.sceneLabel);}
-  qs('[data-klus-section]').innerHTML=m.section;qs('[data-klus-line]').setAttribute('d',m.trace);qs('[data-klus-line-halo]').setAttribute('d',m.trace);qs('[data-klus-pin]').setAttribute('cx',m.pin[0]);qs('[data-klus-pin]').setAttribute('cy',m.pin[1]);sync();switching=false;card.dataset.klusSwitching='false';
+  qs('[data-klus-section]').innerHTML=m.section;qs('[data-klus-line]').setAttribute('d',m.trace);qs('[data-klus-line-halo]').setAttribute('d',m.trace);qs('[data-klus-pin]').setAttribute('cx',m.pin[0]);qs('[data-klus-pin]').setAttribute('cy',m.pin[1]);sync();fitScene();switching=false;card.dataset.klusSwitching='false';
  }
  function select(id){const next=MODELS.find(m=>m.id===id);if(!next||next===mode)return;mode=next;changes++;buttons.forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.klusSelect===id)));render();}
  buttons.forEach((b,i)=>{b.addEventListener('pointerenter',e=>{if(e.pointerType!=='touch'&&matchMedia('(hover: hover) and (pointer: fine)').matches)select(b.dataset.klusSelect);});b.addEventListener('focus',()=>select(b.dataset.klusSelect));b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();select(b.dataset.klusSelect);});b.addEventListener('keydown',e=>{const next=e.key==='Home'?0:e.key==='End'?buttons.length-1:['ArrowRight','ArrowDown'].includes(e.key)?(i+1)%buttons.length:['ArrowLeft','ArrowUp'].includes(e.key)?(i+buttons.length-1)%buttons.length:null;if(next!==null){e.preventDefault();buttons[next].focus({preventScroll:true});buttons[next].scrollIntoView({block:'nearest',inline:'nearest',behavior:'instant'});}});});
  addEventListener('prescot:themechange',e=>{theme=e.detail?.theme==='day'?'day':'night';card.dataset.klusTheme=theme;render();});
+ const sceneResize=new ResizeObserver(fitScene);sceneResize.observe(qs('.klus-photo-frame'));
  card.classList.add('klus-ready');card.dataset.klusPhase='split';card.dataset.klusTheme=theme;sync();render();
  // Preload the bounded eight choices; no timers, RAF loop, autoplay or scene travel.
  for(const m of MODELS){preload(m.product.src);if(m.product.day)preload(m.product.day.src);preload(m.scene);}

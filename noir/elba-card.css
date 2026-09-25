@@ -96,3 +96,21 @@ html[data-theme=day] :is(.elba-hud-block dt,.elba-hud-detail){color:#476c4f}
 html[data-theme=day] .elba-composition{--elba-scene-shade:#f1f4eb}
 .category-card[data-card-motion=elba]:not(.elba-active) .elba-scene-shade{transition:none}
 @media(max-width:760px){[data-elba-exhibit=atex] .elba-hud-block:last-child{text-align:right}}
+
+/* Match the compact KLUŚ card height while retaining the whole fixture scene. */
+@media(min-width:1101px){
+ .category-card[data-card-motion=elba].elba-ready .demo-elba{padding:28px 32px 24px}
+ .elba-showcase-header{margin-bottom:20px;justify-content:flex-start;gap:42px}
+ .elba-image-stage{width:min(100%,720px);margin-inline:auto}
+ .elba-scene-copy{min-height:144px;padding-top:18px}
+ .category-card[data-card-motion=elba][data-elba-reduced=true] .elba-image-stage{width:min(100%,540px)}
+}
+@media(min-width:1400px){
+ .elba-exhibit.is-selected{display:flex;align-items:center;justify-content:space-evenly;gap:36px}
+ .elba-image-stage{width:62%;max-width:720px;flex:0 1 720px;margin:0}
+ .elba-scene-copy{display:flex;flex-direction:column;gap:24px;flex:1 1 270px;max-width:340px;min-height:0;padding:0}
+ .elba-spec strong{font-size:20px}
+ .elba-spec span,.elba-exhibit-caption p{font-size:14px}
+ .elba-exhibit-caption h4{font-size:30px}
+ .elba-showcase-header p{font-size:14px;max-width:460px}
+}
