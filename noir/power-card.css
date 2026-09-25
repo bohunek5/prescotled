@@ -88,3 +88,63 @@
 @keyframes prmad-wire-to-strip{from{stroke-dashoffset:1;opacity:0}to{stroke-dashoffset:0;opacity:.95}}
 @keyframes prmad-wire-to-supply{from{stroke-dashoffset:-1;opacity:0}to{stroke-dashoffset:0;opacity:.95}}
 @media(prefers-reduced-motion:reduce){.prmad-cord{animation:none!important}}
+
+/* The offer's two power cards share a roomy, readable product stage. Keep the
+   standalone presentation's own sizing; these rules belong to the site grid. */
+.prmad-product-info{display:none}
+.category-grid>.category-card[data-card-motion="power"] .prmad-demo{inset:0 0 228px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-configuration{top:70px;left:26px;right:auto}
+.category-grid>.category-card[data-card-motion="power"] .prmad-output{top:70px;right:26px;left:auto;display:block;min-width:134px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-overline{font-size:11px;letter-spacing:.06em}
+.category-grid>.category-card[data-card-motion="power"] .prmad-mode{width:70px;min-height:94px;gap:5px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-mode b{font-size:20px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-mode small{font-size:10px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-output strong{font-size:54px;margin:8px 0;gap:7px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-output strong small{font-size:14px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-status{font-size:10px;letter-spacing:.03em}
+.category-grid>.category-card[data-card-motion="power"] .prmad-assembly-wrap{left:0;right:0;top:187px;bottom:133px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-strip-label{left:87.1%;font-size:0}
+.category-grid>.category-card[data-card-motion="power"] .prmad-strip-label b{font-size:16px;margin:0}
+.category-grid>.category-card[data-card-motion="power"] .prmad-product-info{display:block;position:absolute;left:26px;right:26px;bottom:0;color:#c8d4ce}
+.category-grid>.category-card[data-card-motion="power"] .prmad-product-info>p{font-size:17px;line-height:1.5;min-height:51px;margin:0 0 17px;max-width:440px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-product-info dl{display:grid;grid-template-columns:1.45fr .7fr 1fr;gap:16px;border-top:1px solid #afc9d42e;padding-top:16px;margin:0}
+.category-grid>.category-card[data-card-motion="power"] .prmad-product-info dt{font-size:12px;line-height:1.4;color:#a0b3a9;margin-bottom:5px}
+.category-grid>.category-card[data-card-motion="power"] .prmad-product-info dd{font-size:27px;font-weight:350;line-height:1.2;margin:0;white-space:nowrap}
+.category-grid>.category-card[data-card-motion="power"] .prmad-product-info dd small{font-size:14px}
+.category-grid>.category-card[data-card-motion="power"] .category-copy{left:26px;right:45px;bottom:34px;max-width:none}
+.category-grid>.category-card[data-card-motion="power"] .category-copy .eyebrow{font-size:12px}
+.category-grid>.category-card[data-card-motion="power"] .category-copy h3{font-size:clamp(30px,5.8cqw,42px);line-height:1.14;margin:15px 0}
+.category-grid>.category-card[data-card-motion="power"] .category-copy p:last-child{font-size:16px;line-height:1.6;max-width:470px}
+.category-grid>.category-card[data-card-motion="power"] :is(.prmad-mode,.category-card-link){scroll-margin-block:150px}
+html[data-theme=day] .category-grid>.category-card[data-card-motion="power"] .prmad-product-info{color:#29483b}
+html[data-theme=day] .category-grid>.category-card[data-card-motion="power"] .prmad-product-info dt{color:#506c5d}
+html[data-theme=day] .category-grid>.category-card[data-card-motion="power"] .prmad-product-info dl{border-color:#36534535}
+@container(max-width:460px){
+ .category-grid>.category-card[data-card-motion="power"] .prmad-demo{bottom:231px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-configuration{top:62px;left:20px;right:20px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-modes{gap:10px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-mode{width:calc((100cqw - 60px)/3);max-width:96px;min-height:88px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-output{left:20px;right:20px;top:185px;display:grid;grid-template-columns:1fr auto;min-width:0;column-gap:8px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-output strong{grid-row:1/3;grid-column:2;margin:0;font-size:42px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-status{font-size:10px;white-space:normal}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-assembly-wrap{top:244px;bottom:142px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-strip-label b{font-size:12px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-product-info{left:20px;right:20px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-product-info>p{font-size:16px;line-height:1.45;min-height:47px;margin-bottom:14px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-product-info dl{gap:12px;padding-top:13px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-product-info dd{font-size:25px}
+ .category-grid>.category-card[data-card-motion="power"] .category-copy{left:20px;right:36px;bottom:29px}
+ .category-grid>.category-card[data-card-motion="power"] .category-copy p:last-child{font-size:15px}
+}
+@container(max-width:310px){
+ .category-grid>.category-card[data-card-motion="power"] .prmad-configuration,.category-grid>.category-card[data-card-motion="power"] .prmad-output,.category-grid>.category-card[data-card-motion="power"] .prmad-product-info{left:16px;right:16px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-modes{gap:8px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-mode{width:calc((100cqw - 48px)/3)}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-overline{font-size:10px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-output strong{font-size:36px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-output strong small{font-size:12px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-product-info dd{font-size:23px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-product-info dt{font-size:11px}
+ .category-grid>.category-card[data-card-motion="power"] .prmad-product-info dd small{font-size:12px}
+ .category-grid>.category-card[data-card-motion="power"] .category-copy{left:16px;right:36px}
+}

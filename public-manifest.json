@@ -55,8 +55,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 943,
-  "bytesExcludingManifest": 276867228,
+  "fileCountExcludingManifest": 949,
+  "bytesExcludingManifest": 278443178,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -2957,8 +2957,8 @@
       "source": "favicon.svg"
     },
     "index.html": {
-      "bytes": 104330,
-      "sha256": "18e52acb2ba41c1831447ad3ffe6cbde265ca24b9cd0e06faf472c921c3a7756",
+      "bytes": 105369,
+      "sha256": "aec753d3c4c57f2ea6c355e867fa0c26d8b2f05de94ea1c4bcfa85b648cb4c7b",
       "source": "noir/index.html"
     },
     "katalog/index.html": {
@@ -4036,6 +4036,16 @@
       "sha256": "bc431bba9d7596a746b687144f748bf5aaaa87ffade1db7f66524495a5db3f38",
       "source": "noir/media/klus-showcase/originals/gizall-product.jpg"
     },
+    "noir/media/klus-showcase/originals/hrmax-application-original.jpg": {
+      "bytes": 267571,
+      "sha256": "320e51f88c12aa3fb468d02a4097974c6a1af4ad549f77bdfea31378b04f1eeb",
+      "source": "noir/media/klus-showcase/originals/hrmax-application-original.jpg"
+    },
+    "noir/media/klus-showcase/originals/hrmax-product-original.jpg": {
+      "bytes": 306994,
+      "sha256": "8f44ce4eb0f2975f3bb74d163a69f6536cca77cf0891cfa54a239c6cb0e99f24",
+      "source": "noir/media/klus-showcase/originals/hrmax-product-original.jpg"
+    },
     "noir/media/klus-showcase/originals/kozus-application.jpg": {
       "bytes": 604757,
       "sha256": "017ac12e4c69051d2f1584daf93d5511634767423f783b340183ce5644f82485",
@@ -4075,6 +4085,26 @@
       "bytes": 42175,
       "sha256": "7f7cd36f9649418bcd5e49c287dfbbab04280ea1f66a487e522da8533122055b",
       "source": "noir/media/klus-showcase/originals/micronk-product-night-v3.jpg"
+    },
+    "noir/media/klus-showcase/originals/nisani-application-original.jpg": {
+      "bytes": 98755,
+      "sha256": "9c75ae1750e3d1d633570e7b2d5665a8750df43576a404dd38e2c751893c3934",
+      "source": "noir/media/klus-showcase/originals/nisani-application-original.jpg"
+    },
+    "noir/media/klus-showcase/originals/nisani-product-original.jpg": {
+      "bytes": 341652,
+      "sha256": "2d89f6b28b0256563b53da8e2923a2b0003fd893d1cde22628d5e34bc4466ac6",
+      "source": "noir/media/klus-showcase/originals/nisani-product-original.jpg"
+    },
+    "noir/media/klus-showcase/originals/por-application-original.jpg": {
+      "bytes": 233606,
+      "sha256": "fb85af32bcc5178938a9a95f0c4ac845d111607e8759cd6a242033d3803fd7c4",
+      "source": "noir/media/klus-showcase/originals/por-application-original.jpg"
+    },
+    "noir/media/klus-showcase/originals/por-product-original.jpg": {
+      "bytes": 280498,
+      "sha256": "96f8c6a15004d3ec98ae73f69adad6155531e863004079a351e940830e58cd79",
+      "source": "noir/media/klus-showcase/originals/por-product-original.jpg"
     },
     "noir/media/maga-cutout.webp": {
       "bytes": 63384,
@@ -4262,8 +4292,8 @@
       "source": "noir/offer-evolution.mjs"
     },
     "noir/offer-families.css": {
-      "bytes": 13807,
-      "sha256": "7b6af73e5c6f5a4b6e6b3ba068fbcc74e8c049d48309aa7c2581e79907890356",
+      "bytes": 14248,
+      "sha256": "72c1f914ecbfbc09d837e21b3d13b13ef8dff50031bc36cb961aa6d1023ad392",
       "source": "noir/offer-families.css"
     },
     "noir/offer-families.mjs": {
@@ -4272,33 +4302,33 @@
       "source": "noir/offer-families.mjs"
     },
     "noir/power-card.css": {
-      "bytes": 9057,
-      "sha256": "44a6113682e32e60cf53cffc556a46e5330303d626c0fc3693d7c6a1dcbfb74a",
+      "bytes": 15291,
+      "sha256": "f4fc6afbda97102b7206e90dac436a73cff7c94ae6d39726d5f60631298210e1",
       "source": "noir/power-card.css"
     },
     "noir/power-card.mjs": {
-      "bytes": 4996,
-      "sha256": "e44e9a11362f3a6693c775c42b4edfc57bb4bb8145c875882dfbeab9063db45d",
+      "bytes": 5596,
+      "sha256": "d9e6dc9e24f0f6b9473686461c910d83226a06769d048e70c6c93082d61fa506",
       "source": "noir/power-card.mjs"
     },
     "noir/profile-card.css": {
-      "bytes": 11331,
-      "sha256": "a2a6f6110164d6e2f3a26bc42f1bc3c0bc8842217cfd4141e40561d00a6d9c31",
+      "bytes": 11312,
+      "sha256": "007d7450a0a2d07d2dd48e9f4afbb34bcf3ce91f25ac7b50bd6ecd6eb302493f",
       "source": "noir/profile-card.css"
     },
     "noir/profile-card.mjs": {
-      "bytes": 47983,
-      "sha256": "a9a851c289171656fed6bac99232110b17f1ceac61c0186152c3dbe3f4f8c975",
+      "bytes": 84753,
+      "sha256": "4e251a546183303ff3d73c15878328b261b9d444bb4d9493d84fd6fab7479579",
       "source": "noir/profile-card.mjs"
     },
     "noir/scharfer-immersion.css": {
-      "bytes": 10955,
-      "sha256": "14842c61cd288797efbe5e9da5e060c3e3ce623149c7a4efad3335e2b8e47a26",
+      "bytes": 11029,
+      "sha256": "930f16c4eff1327eb19d3317886840cf1445e16f0372d951a206436ec0f75c15",
       "source": "noir/scharfer-immersion.css"
     },
     "noir/scharfer-immersion.mjs": {
-      "bytes": 11071,
-      "sha256": "990b65db36b5370551009e48bbbd99ebc33ad715092abdd3f5cca72ee66dac8b",
+      "bytes": 11770,
+      "sha256": "048d7dd2073cfe53dd6c8f98022604c22e3b87b21a1952061e5fa141f7db08f3",
       "source": "noir/scharfer-immersion.mjs"
     },
     "noir/scharfer-showcase.css": {
@@ -4362,8 +4392,8 @@
       "source": "noir/touch-card.mjs"
     },
     "oferta/index.html": {
-      "bytes": 121132,
-      "sha256": "98aa1e4fd0bad0e4602d714f6831c707f4dd7177d23a394bbf87d5ff23059d09",
+      "bytes": 122168,
+      "sha256": "c2f6de326138895c89480fd7fa0be93370499afc52c05bbf44e15f8f8bf08713",
       "source": "noir/oferta/index.html"
     },
     "oprawy/index.html": {

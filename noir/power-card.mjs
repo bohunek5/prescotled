@@ -6,10 +6,11 @@ export function initPowerCard(card, {playbackSpeed:requestedSpeed=1,stageDuratio
   const status=card.querySelector('[data-prmad-status]');
   const buttons=[...card.querySelectorAll('button[data-prmad-option]')];
   const hardware=[...card.querySelectorAll('[data-prmad-switch]')];
+  const explanation=card.querySelector('[data-prmad-explanation]');
   if(!voltage||!label||!status||!buttons.length)return{start(){},stop(){}};
   const timers=new Set(),motion=matchMedia('(prefers-reduced-motion: reduce)');
   const preview=[['auto','12'],['auto','24'],['12','12'],['24','24']];
-  const nativeTiming={connecting:210,detected:690,autoHold:2050,fixedHold:1700,fixedOn:690};
+  const nativeTiming={connecting:210,detected:690,autoHold:3600,fixedHold:3200,fixedOn:690};
   // A presentation can slow this card alone; native pages retain speed 1.
   const speed=Number(requestedSpeed),playbackSpeed=Number.isFinite(speed)&&speed>0?speed:1;
   const timing=Object.fromEntries(Object.entries(nativeTiming).map(([key,ms])=>[key,ms/playbackSpeed]));
@@ -25,6 +26,7 @@ export function initPowerCard(card, {playbackSpeed:requestedSpeed=1,stageDuratio
     card.dataset.prmadDirection=next==='detecting'?'to-supply':next==='supplying'?'to-strip':'none';
     card.dataset.prmadOn=String(next==='ready');
     const auto=card.dataset.prmadMode==='auto';
+    if(explanation)explanation.textContent=auto?'Podłącz taśmę. Zasilacz rozpozna 12 lub 24 V.':`Ustaw ${load} V przełącznikami DIP. Podłącz taśmę ${load} V.`;
     label.textContent=auto?(next==='detecting'?'ROZPOZNAWANIE':'AUTODETEKCJA'):'STAŁE NAPIĘCIE';
     voltage.textContent=auto&&(next==='connecting'||next==='detecting')?'—':load;
     status.textContent=next==='idle'?'12 V LUB 24 V':next==='connecting'?'PODŁĄCZANIE':next==='detecting'?'SPRAWDZANIE NAPIĘCIA':next==='supplying'?`ZASILANIE ${load} V`:auto?`WYKRYTO ${load} V`:`TAŚMA ${load} V`;
@@ -65,10 +67,11 @@ export function initPowerCard(card, {playbackSpeed:requestedSpeed=1,stageDuratio
     running=true;reduced=motion.matches;manual=true;clear();
     if(mode==='auto')automatic();else show(mode,mode,true);
   }
-  buttons.forEach(button=>{
-    button.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch')select(button.dataset.prmadOption);});
+  buttons.forEach((button,index)=>{
+    button.addEventListener('pointerenter',event=>{if(event.pointerType!=='touch'&&matchMedia('(hover:hover) and (pointer:fine)').matches)select(button.dataset.prmadOption);});
     button.addEventListener('focus',()=>select(button.dataset.prmadOption));
     button.addEventListener('click',()=>select(button.dataset.prmadOption));
+    button.addEventListener('keydown',event=>{const next=event.key==='ArrowRight'?(index+1)%buttons.length:event.key==='ArrowLeft'?(index+buttons.length-1)%buttons.length:event.key==='Home'?0:event.key==='End'?buttons.length-1:null;if(next!==null){event.preventDefault();buttons[next].focus();}});
   });
   show('auto','12',false);
   return{
