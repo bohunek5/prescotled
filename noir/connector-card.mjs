@@ -182,7 +182,7 @@ export function initConnectorCard(card){
   function loadFamilyPhoto(){
     const f=family==='rm'?{image:RM_MODELS[rmIndex].photo,alt:`Oryginalny rozdzielacz PRESCOT ${RM_MODELS[rmIndex].sku} — ${RM_MODELS[rmIndex].branches} wyjść`}:FAMILIES[family],night=document.documentElement.dataset.theme!=='day';
     const websitePair=family==='lock'&&night&&!!card.closest('.offer-page,.home-page');
-    const src=websitePair?'/prescotled/noir/media/connector-lock-white-open-pair.svg':family==='lock'&&night?'/prescotled/noir/media/connector-lock-white-original.png':f.image;
+    const src=websitePair?'/prescotled/noir/media/connector-lock-white-pair-20260925.png':family==='lock'&&night?'/prescotled/noir/media/connector-lock-white-original.png':f.image;
     const alt=websitePair?'Oryginalne białe gniazdo i wtyk PRESCOT DC LOCK przed połączeniem':family==='lock'?(night?'Oryginalne białe złącza PRESCOT DC LOCK — gniazdo, wtyk i połączona para':'Oryginalne czarne gniazdo i wtyk PRESCOT DC LOCK'):f.alt;
     const token=++imageToken,photo=qs('[data-acc-photo]');
     if(photo.getAttribute('src')!==src){photo.style.opacity='0';const next=new Image();next.src=src;next.decode().then(()=>{if(token!==imageToken)return;photo.src=src;photo.alt=alt;photo.style.opacity='1';}).catch(()=>{if(token===imageToken)photo.style.opacity='0';});}else photo.style.opacity='1';

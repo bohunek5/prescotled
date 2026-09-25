@@ -27,8 +27,18 @@
 .evolution-single .evolution-power-modes button em{font-size:11px;font-weight:400;font-style:normal}
 .evolution-single .evolution-power-modes button[aria-pressed=true]{color:var(--evo-ink);border-color:color-mix(in srgb,var(--evo-ink) 60%,transparent);background:color-mix(in srgb,var(--evo-ink) 8%,transparent)}
 .evolution-single .evolution-chapters{grid-column:1/-1;grid-row:2}
-.evolution-single .evolution-stops button{flex-basis:116px;font-size:13px}
+.evolution-single .evolution-stops{gap:9px;padding:5px 1px 9px}
+.evolution-single .evolution-stops button{position:relative;isolation:isolate;overflow:hidden;flex-basis:130px;min-height:64px;padding:11px 13px 15px;font-size:14px;border:1px solid var(--compare-line);border-radius:7px;background:color-mix(in srgb,var(--chapter-light,#fff0cf) 3%,transparent);transition:background .22s,border-color .22s,transform .22s;transform-origin:bottom}
 .evolution-single .evolution-stops button>span{font-size:11px}
+.evolution-single .evolution-stops button::after{content:'';position:absolute;inset:auto 13px 8px;height:2px;pointer-events:none;background:var(--chapter-light,#fff0cf);opacity:.28;border-radius:2px;transition:opacity .22s,box-shadow .22s}
+.evolution-single .evolution-stops button[data-light-kind=rgb]::after{background:linear-gradient(90deg,#f59767,#f882b5,#aa9cf8,#77bfed,#a0d7ad)}
+.evolution-single .evolution-stops button:is(:hover,:focus-visible,[aria-current=step]){color:var(--chapter-ink);border-color:color-mix(in srgb,var(--chapter-ink) 52%,transparent);background:color-mix(in srgb,var(--chapter-light,#fff0cf) 9%,var(--compare-panel));transform:translateY(-2px)}
+.evolution-single .evolution-stops button:is(:hover,:focus-visible,[aria-current=step])>span{color:var(--chapter-ink)}
+.evolution-single .evolution-stops button:is(:hover,:focus-visible,[aria-current=step])::after{opacity:.95;box-shadow:0 0 10px color-mix(in srgb,var(--chapter-light,#fff0cf) 60%,transparent)}
+.evolution-single .evolution-stops button:focus-visible{outline:2px solid var(--chapter-ink);outline-offset:-3px}
+html[data-theme=day] .evolution-single .evolution-stops button::after{background:var(--chapter-ink);opacity:.35}
+html[data-theme=day] .evolution-single .evolution-stops button[aria-current=step]::after{opacity:1}
+html[data-theme=day] .evolution-single .evolution-stops button[data-light-kind=rgb]::after{background:linear-gradient(90deg,#d25330,#b34480,#725dd8,#367fba,#448b64)}
 .evolution-single .evolution-color-hud>span:first-child,.evolution-single .evolution-fact>span:first-child{font-size:11px}
 .evolution-single .evolution-fact>small,.evolution-single .evolution-fact>.evolution-package{font-size:12px}
 .evolution-single .evolution-fact>strong{font-size:34px}
@@ -85,3 +95,4 @@
  .evolution-single .evolution-micro{margin-top:20px}
 }
 @media(prefers-reduced-motion:reduce) and (min-width:1101px) and (min-height:740px){.evolution-single .evolution-stage{grid-template-rows:minmax(650px,1fr) auto}.evolution-single .evolution-pair{min-height:650px}}
+@media(prefers-reduced-motion:reduce){.evolution-single .evolution-stops button{transition:none;transform:none}}

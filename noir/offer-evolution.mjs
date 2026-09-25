@@ -11,7 +11,14 @@ if(root){
  let visible=false,pageActive=true,measureDirty=true,paintDirty=true,lastPaint=0,nextPaint=0,elapsedSeconds=0,renderedFrames=0;
  let lastPercent=-1;
  let theme=document.documentElement.dataset.theme==='day'?'day':'night';
- function palette(){const m=models[Math.max(0,index)];root.style.setProperty('--evo-ink',theme==='day'?m.dayInk:m.ink);}
+ function palette(){
+  const m=models[Math.max(0,index)];root.style.setProperty('--evo-ink',theme==='day'?m.dayInk:m.ink);
+  root.querySelectorAll('[data-evo-jump]').forEach((button,i)=>{
+   button.style.setProperty('--chapter-light',models[i].light);
+   button.style.setProperty('--chapter-ink',theme==='day'?models[i].dayInk:models[i].ink);
+   button.dataset.lightKind=models[i].family==='rgb'?'rgb':'white';
+  });
+ }
  const frameInterval=1000/30;
  const clamp=v=>Math.max(0,Math.min(1,v));
  const chapterRail=root.querySelector('.evolution-stops');

@@ -270,7 +270,7 @@ export function createEvolutionScene(host,{presentation=false}={}){
    pcb.color.set(0xefefe4);back.color.set(0xcbd1c8);
    ambient.intensity=day?2.05:1.75;ambient.color.set(0xf5f8f1);ambient.groundColor.set(0x8b9892);
    key.intensity=2.45;rim.intensity=2.3;renderer.toneMappingExposure=1.08;
-   host.style.setProperty('--coil-aura-strength','24%');
+   host.style.setProperty('--coil-aura-strength',day?'34%':'42%');
   }
   particleLayers.forEach(layer=>{layer.mat.blending=day?T.NormalBlending:T.AdditiveBlending;});
   lattice.uniforms.uColor.value.set(day?0x47695a:0x9fc5b0);drift.uniforms.uColor.value.set(day?0x487d67:0x9ce0c9);lastAura=-1;
@@ -307,8 +307,8 @@ export function createEvolutionScene(host,{presentation=false}={}){
    const outgoing=a.family===pack.family,incoming=b.family===pack.family;
    pack.group.visible=(outgoing&&blend<.999)||(incoming&&blend>.001);pack.glow.mesh.visible=pack.group.visible;
    pack.role.value=outgoing&&incoming?0:outgoing?-1:1;
-   if(pack.lightMaterial)pack.lightMaterial.emissiveIntensity=day?.55:1.75;
-   pack.glow.uniforms.uOpacity.value=presentation?(day?.2:1.1):day?.12:pack.family.startsWith('cob')?.78:.88;
+   if(pack.lightMaterial)pack.lightMaterial.emissiveIntensity=presentation?(day?.85:2.15):day?.55:1.75;
+   pack.glow.uniforms.uOpacity.value=presentation?(day?.34:1.38):day?.12:pack.family.startsWith('cob')?.78:.88;
    if(pack.family==='delux3'){const mode=models[index].mode??0;pack.paths.forEach((material,i)=>{material.emissiveIntensity=(i===0||i===mode+1)?(day?.45:1.3):0;});}
   });
   lattice.uniforms.uOpacity.value=day?.38:.48;drift.uniforms.uOpacity.value=day?.6:.8;

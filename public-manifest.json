@@ -56,7 +56,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 949,
-  "bytesExcludingManifest": 278445712,
+  "bytesExcludingManifest": 275159773,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -3022,13 +3022,13 @@
       "source": "noir/catalog-search.mjs"
     },
     "noir/connector-card.css": {
-      "bytes": 20792,
-      "sha256": "926591aa136f5ef6d9e7b16eb146dea069b11f9c066270ede124035340511883",
+      "bytes": 20784,
+      "sha256": "89f2d52c4d3d75e601ef2bdf944b26c9b07744c9716099929606258eca1096b4",
       "source": "noir/connector-card.css"
     },
     "noir/connector-card.mjs": {
-      "bytes": 77179,
-      "sha256": "c90338e9172fd3f7e055c2ab794cab6f0f47885e5329ce35cfae6531fe20a3d8",
+      "bytes": 77183,
+      "sha256": "64071150985f15eddd7066d96ba7fa0b7294327e74324e780d330244d37fa828",
       "source": "noir/connector-card.mjs"
     },
     "noir/delux-story.css": {
@@ -3856,15 +3856,15 @@
       "sha256": "846e8e59895f95243eb7965587245af0a5d3e78107520129b2b1c6cecf6e402c",
       "source": "noir/media/connector-lock-black-pair.webp"
     },
-    "noir/media/connector-lock-white-open-pair.svg": {
-      "bytes": 6073916,
-      "sha256": "38b801f1edcdec4cd338075222625ef44769d4b8500d7372b4fe91c26914096b",
-      "source": "noir/media/connector-lock-white-open-pair.svg"
-    },
     "noir/media/connector-lock-white-original.png": {
       "bytes": 4555060,
       "sha256": "683eb949b808b1a447059761389fdd1c0fc2afdce071a37ee2ed1577f67f5ecd",
       "source": "noir/media/connector-lock-white-original.png"
+    },
+    "noir/media/connector-lock-white-pair-20260925.png": {
+      "bytes": 2785681,
+      "sha256": "8a136e919507874b00c8807a4a4f573f7276417fee2553172746f9fc4a9139f7",
+      "source": "noir/media/connector-lock-white-pair-20260925.png"
     },
     "noir/media/connector-pcb-original.svg": {
       "bytes": 60878,
@@ -4277,8 +4277,8 @@
       "source": "noir/offer-evolution-compare.css"
     },
     "noir/offer-evolution-single.css": {
-      "bytes": 7033,
-      "sha256": "b1835cc17b09a42d6b57fc0ad4d040d109da0cf8807e38c0fcdca422af8e5512",
+      "bytes": 8994,
+      "sha256": "2297f442afb631d646eff6268a5391b1af2e969466e345ad96b8875096dc707a",
       "source": "noir/offer-evolution-single.css"
     },
     "noir/offer-evolution.css": {
@@ -4287,8 +4287,8 @@
       "source": "noir/offer-evolution.css"
     },
     "noir/offer-evolution.mjs": {
-      "bytes": 9613,
-      "sha256": "3cd223be7bbf1e9473ed6b3c9a3de784fbd31a12e61b462dd4964c06a46186ce",
+      "bytes": 9912,
+      "sha256": "4ba78b46204ea7398103eda95598fb67f1fbf23046f2f3ba370c68a751b21ea3",
       "source": "noir/offer-evolution.mjs"
     },
     "noir/offer-families.css": {
@@ -4362,8 +4362,8 @@
       "source": "noir/sleeves-page.mjs"
     },
     "noir/strip-evolution-scene.mjs": {
-      "bytes": 29800,
-      "sha256": "27a9ed47dc170a7c0f292218041da691a776fdc1a0198d12e0b07b58c4c28aa1",
+      "bytes": 29840,
+      "sha256": "d5ed29624f130507d21aeed89580719a23c62e98203344f85cbc6ad1762a9108",
       "source": "noir/strip-evolution-scene.mjs"
     },
     "noir/style.css": {
