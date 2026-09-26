@@ -1,4 +1,4 @@
-import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState} from './offer-series-models.mjs';
+import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState,brandTiming} from './offer-series-models.mjs?v=20260926-rhythm1';
 const root=document.querySelector('[data-evo-series-preview]');
 if(root){
  const stage=root.querySelector('.evolution-stage'),hosts=[...root.querySelectorAll('.evolution-canvas')];
@@ -9,7 +9,7 @@ if(root){
 
  let scene=null,frame=0,progress=0,targetProgress=0,index=-1,pointerX=0,pointerY=0,manualIndex=null;
  let visible=false,pageActive=true,measureDirty=true,paintDirty=true,lastPaint=0,nextPaint=0,elapsedSeconds=0,renderedFrames=0;
- let lastPercent=-1,brandSeconds=0,lastBrandStep=-1;
+ let lastPercent=-1,brandSeconds=0,lastBrandStep=-1,lastBrandHeadline='YOUR BRAND';
  let theme=document.documentElement.dataset.theme==='day'?'day':'night';
  function palette(){
   const m=models[Math.max(0,index)];root.style.setProperty('--evo-ink',theme==='day'?m.dayInk:m.ink);
@@ -51,7 +51,7 @@ if(root){
  function updateContent(next,force=false){
   if(next===index&&!force)return;
   const changed=next!==index;index=next;const m=models[index],custom=m.family==='custom';
-  root.dataset.evolutionMode=m.family;if(changed){brandSeconds=0;lastBrandStep=-1;}
+  root.dataset.evolutionMode=m.family;if(changed){brandSeconds=0;lastBrandStep=-1;lastBrandHeadline='YOUR BRAND';field('range').getAnimations().forEach(a=>a.cancel());field('name').getAnimations().forEach(a=>a.cancel());}
   field('family-label').textContent=custom?'PROJEKT INDYWIDUALNY':m.range+' '+m.name;
   field('range').textContent=custom?'Twoja taśma.':m.range;
   field('name').textContent=custom?'YOUR BRAND':m.name;
@@ -73,6 +73,16 @@ if(root){
  function paintBrand(state){
   const {a,b,blend,from,to}=state,chosen=blend>=.5?b:a,step=blend>=.5?to:from;
   if(step!==lastBrandStep){fillFacts(chosen);field('years').textContent=String(step+1).padStart(2,'0');lastBrandStep=step;}
+  const headline=brandSeconds<brandTiming.intro?'YOUR BRAND':chosen.headline;
+  if(headline!==lastBrandHeadline){
+   field('range').textContent=headline==='YOUR BRAND'?'Twoja taśma.':'A może…';
+   field('name').textContent=headline;lastBrandHeadline=headline;
+   if(!reduced.matches)for(const el of [field('range'),field('name')]){
+    el.getAnimations().forEach(a=>a.cancel());
+    el.animate([{opacity:.25,transform:'translateY(5px)',filter:'blur(3px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0)'}],{duration:360,easing:'cubic-bezier(.2,.7,.2,1)'});
+   }
+  }
+
   // Only the individual-project preview interpolates figures. Product values
   // and the LOW/MEDIUM/HIGH controls always display exact catalogue values.
   for(const [key,selector,unit,digits] of [['density','density','LED/m',0],['power','power','W/m',1],['output','output','',0],['color','color','',0]]){
@@ -150,7 +160,7 @@ if(root){
  stage.addEventListener('pointerleave',()=>{pointerX=pointerY=0;schedule();});
  root.evolution={inspect:()=>({progress,targetProgress,index,sku:models[index]?.sku,theme,chapterCount:models.length,brandSeconds,brandStep:lastBrandStep,powerMode:models[0].mode,renderer:root.dataset.renderer,reducedMotion:reduced.matches,shortViewport:shortViewport.matches,visible,playing:!!canRotate(),elapsedSeconds,renderedFrames,pendingFrame:!!frame,paintDirty,scene:scene?.inspect?.(),variants:scenes.map(item=>item.inspect?.())})};
  updateContent(0);schedule(true);
- import('./offer-series-scene.mjs').then(({createEvolutionScene})=>{
+ import('./offer-series-scene.mjs?v=20260926-rhythm1').then(({createEvolutionScene})=>{
   hosts.forEach((host,i)=>{
    const item=createEvolutionScene(host,{presentation:host.dataset.evolutionVersion==='renewed'});
    scenes.push(item);if(i===0)scene=item;

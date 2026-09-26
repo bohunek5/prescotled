@@ -1,5 +1,5 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {evolutionModels as models,evolutionState,brandPresets} from './offer-series-models.mjs';
+import {evolutionModels as models,evolutionState,brandPresets} from './offer-series-models.mjs?v=20260926-rhythm1';
 
 // One physical PCB, with every contact, package and light particle sharing the
 // same deformation. A travelling front changes product technology along it.

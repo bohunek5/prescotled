@@ -679,12 +679,12 @@ export function evolutionState(p){p=storyProgress(p);let from=0;while(from<evolu
 export const modelIndex=p=>{const s=evolutionState(p);return s.blend>=.5?s.to:s.from;};
 
 // These are illustrative configurations, never a product SKU or quotation.
-const customBase={...evolutionModels.at(-1)};
+export const brandTiming={intro:1.8,cycle:4.2,transitionStart:.62};
 export const brandPresets=[
- {...evolutionModels[7],family:'digital',techLabel:'YOUR BRAND / Digital SMD',detail:'Projekt cyfrowy · SMD',light:'#91b8ff'},
- {...evolutionModels[1],techLabel:'YOUR BRAND / SMD'},
- {...evolutionModels[2],techLabel:'YOUR BRAND / SLIM'},
- {...evolutionModels[8],techLabel:'YOUR BRAND / COB'},
- {...evolutionModels[10],techLabel:'YOUR BRAND / Digital COB',light:'#80e6d7'}
+ {...evolutionModels[7],family:'digital',headline:'DIGITAL SMD?',techLabel:'YOUR BRAND / Digital SMD',detail:'Projekt cyfrowy · SMD',light:'#91b8ff'},
+ {...evolutionModels[1],headline:'SMD?',techLabel:'YOUR BRAND / SMD'},
+ {...evolutionModels[2],headline:'SLIM?',techLabel:'YOUR BRAND / SLIM'},
+ {...evolutionModels[8],headline:'COB?',techLabel:'YOUR BRAND / COB'},
+ {...evolutionModels[10],headline:'DIGITAL COB?',techLabel:'YOUR BRAND / Digital COB',light:'#80e6d7'}
 ].map(m=>({...m,custom:true}));
-export function brandState(seconds){const phase=(seconds/7)%brandPresets.length,from=Math.floor(phase),local=phase-from,to=(from+1)%brandPresets.length,t=Math.max(0,(local-.64)/.36);return{a:brandPresets[from],b:brandPresets[to],from,to,blend:t*t*(3-2*t),local};}
+export function brandState(seconds){const phase=(seconds/brandTiming.cycle)%brandPresets.length,from=Math.floor(phase),local=phase-from,to=(from+1)%brandPresets.length,t=Math.max(0,(local-brandTiming.transitionStart)/(1-brandTiming.transitionStart));return{a:brandPresets[from],b:brandPresets[to],from,to,blend:t*t*(3-2*t),local};}

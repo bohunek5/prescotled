@@ -1,7 +1,7 @@
 import './theme.mjs';
 import './scharfer-showcase.mjs';
 import './sleeves-page.mjs';
-if(document.querySelector('[data-evo-series-preview]')) import('./offer-series.mjs?v=20260926-series1');
+if(document.querySelector('[data-evo-series-preview]')) import('./offer-series.mjs?v=20260926-rhythm1');
 else import('./offer-evolution.mjs');
 import './offer-families.mjs';
 import './card-motion.mjs';

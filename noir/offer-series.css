@@ -37,3 +37,5 @@
  [data-evo-series-preview] .series-warranty>strong{font-size:78px}
  [data-evo-series-preview] .series-links{gap:2px 20px}
 }
+
+[data-evo-series-preview][data-evolution-mode=custom] .evolution-heading h1 :is([data-evo-range],[data-evo-name]){display:inline-block}
