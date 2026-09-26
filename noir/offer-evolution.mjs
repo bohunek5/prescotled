@@ -1,4 +1,4 @@
-import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress} from './evolution-models.mjs';
+import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress} from './evolution-models.mjs?v=20260926-light1';
 const root=document.querySelector('[data-strip-evolution]');
 if(root){
  const stage=root.querySelector('.evolution-stage'),hosts=[...root.querySelectorAll('.evolution-canvas')];
@@ -126,7 +126,7 @@ if(root){
  stage.addEventListener('pointerleave',()=>{pointerX=pointerY=0;schedule();});
  root.evolution={inspect:()=>({progress,targetProgress,index,sku:models[index]?.sku,theme,chapterCount:models.length,renderer:root.dataset.renderer,reducedMotion:reduced.matches,shortViewport:shortViewport.matches,visible,playing:!!canRotate(),elapsedSeconds,renderedFrames,pendingFrame:!!frame,paintDirty,scene:scene?.inspect?.(),variants:scenes.map(item=>item.inspect?.())})};
  updateContent(0);schedule(true);
- import('./strip-evolution-scene.mjs').then(({createEvolutionScene})=>{
+ import('./strip-evolution-scene.mjs?v=20260926-light1').then(({createEvolutionScene})=>{
   hosts.forEach((host,i)=>{
    const item=createEvolutionScene(host,{presentation:host.dataset.evolutionVersion==='renewed'});
    scenes.push(item);if(i===0)scene=item;

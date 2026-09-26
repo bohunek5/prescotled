@@ -1,5 +1,5 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {evolutionModels as models,evolutionState,brandPresets} from './offer-series-models.mjs?v=20260926-rhythm1';
+import {evolutionModels as models,evolutionState,brandIntro} from './offer-series-models.mjs?v=20260926-light1';
 
 // One physical PCB, with every contact, package and light particle sharing the
 // same deformation. A travelling front changes product technology along it.
@@ -168,7 +168,7 @@ export function createEvolutionScene(host,{presentation=false}={}){
   const gold=standard({color:0xcda158,metalness:.62,roughness:.4},{role,copper:true});
   const body=standard({color:0xf0eee0,roughness:.45},{role}),dark=standard({color:0x27312e,roughness:.66},{role});
   const emitter=basic({color:0xffffff,side:T.DoubleSide},{role,light:true});
-  const rgb=family==='rgb'||family==='digital',wcob=family==='wcob',digital=family==='cobdigital'||family==='digital',cob=family.startsWith('cob'),slim=family==='slim',sshape=family==='sshape',pitch=100/density,count=Math.floor(length/pitch),components=Array.from({length:count},(_,i)=>({u:sshape?(i+.5)*pitch/length:along((i+.5)*pitch)}));
+  const rgb=family==='rgb'||family==='rgbw'||family==='digital',wcob=family==='wcob',digital=family==='cobdigital'||family==='digital',cob=family.startsWith('cob'),slim=family==='slim',sshape=family==='sshape',pitch=100/density,count=Math.floor(length/pitch),components=Array.from({length:count},(_,i)=>({u:sshape?(i+.5)*pitch/length:along((i+.5)*pitch)}));
   let lightMaterial=null;
   if(cob){
    lightMaterial=standard({color:0xf2e6c6,emissive:0xffffff,emissiveIntensity:1.6,side:T.DoubleSide,roughness:.62},{role,light:true});
@@ -180,7 +180,7 @@ export function createEvolutionScene(host,{presentation=false}={}){
    const pins=components.flatMap(c=>rgb?[-1,1].flatMap(side=>[-.165,0,.165].map(y=>({...c,x:side*.285,y,z:.034}))):[-1,1].map(side=>({...c,y:side*.205,z:.026})));
    instances(group,new T.BoxGeometry(rgb?.075:.22,rgb?.074:.067,.025),gold,pins);
    if(rgb){
-    [[-.1,0xe13d29],[0,0x38b779],[.1,0x3474d8]].forEach(([x,color])=>{const die=basic({color,side:T.DoubleSide,opacity:.9},{role});instances(group,new T.PlaneGeometry(.062,.12),die,components.map(c=>({...c,x,z:.099}))).renderOrder=4;});
+    (family==='rgbw'?[[-.12,0xeab8ac],[-.04,0xc9e5c4],[.04,0xb6cfee],[.12,0xfff4dd]]:[[-.1,0xe13d29],[0,0x38b779],[.1,0x3474d8]]).forEach(([x,color])=>{const die=basic({color,side:T.DoubleSide,opacity:.9},{role});instances(group,new T.PlaneGeometry(.062,.12),die,components.map(c=>({...c,x,z:.099}))).renderOrder=4;});
    }else{
     const resistors=components.filter((_,i)=>family==='delux3'?[1,3,5].includes(i%8):i%(sshape?3:8)===(sshape?1:3)).map(c=>({...c,u:slim||sshape?c.u+(slim?.28:.38)/length:c.u,x:slim||sshape?0:.325,z:.04}));instances(group,new T.BoxGeometry(.085,.16,.048),dark,resistors);
    }
@@ -189,9 +189,9 @@ export function createEvolutionScene(host,{presentation=false}={}){
   const traces=family==='delux3'||rgb?[-.425,-.345,.345,.425]:slim?[-.165,.165]:sshape?[-.075,.075]:[-.39,.39];
   const paths=[];
   for(const x of traces){const material=family==='delux3'?standard({color:0xcda158,emissive:0xf4bd76,emissiveIntensity:0,metalness:.5,roughness:.4},{role,copper:true}):gold;const mesh=new T.Mesh(ribbon(x-.009,x+.009,.007),material);mesh.renderOrder=1;group.add(mesh);paths.push(material);}
-  const padCount=family==='delux3'||rgb?4:2,cut=cutOverride??(family==='delux3'||rgb?5:cob?4.5:slim||sshape?5:6.3),pads=[];
-  for(let d=.1;d<length;d+=cut)for(let k=0;k<padCount;k++)pads.push({u:along(d),x:(k-(padCount-1)/2)*(padCount===4?.23:slim?.21:sshape?.34:.68),z:.03});
-  instances(group,new T.PlaneGeometry(slim?.15:padCount===4?.17:.24,.22),gold,pads);
+  const padCount=family==='rgbw'?5:family==='delux3'||rgb?4:2,cut=cutOverride??(family==='delux3'||rgb?5:cob?4.5:slim||sshape?5:6.3),pads=[];
+  for(let d=.1;d<length;d+=cut)for(let k=0;k<padCount;k++)pads.push({u:along(d),x:(k-(padCount-1)/2)*(padCount===5?.18:padCount===4?.23:slim?.21:sshape?.34:.68),z:.03});
+  instances(group,new T.PlaneGeometry(slim?.15:padCount>=4?.13:.24,.22),gold,pads);
   if(family==='cobip67'){
    const sleeve=standard({color:0xd6e9ef,side:T.DoubleSide,roughness:.15,metalness:.08,opacity:.18},{role,structural:true});
    for(const [left,right,z] of [[-.59,.59,.15],[-.59,.59,-.10]]){const skin=new T.Mesh(ribbon(left,right,z),sleeve);skin.renderOrder=4;group.add(skin);}
@@ -200,7 +200,7 @@ export function createEvolutionScene(host,{presentation=false}={}){
   }
   const pack={group,role,family,count,components,lightMaterial,paths};packs.push(pack);return pack;
  }
- createPack('delux3',160);createPack('smd',128);createPack('slim',160);createPack('sshape',60);createPack('rgb',60);createPack('cob',528);createPack('smd5',60,1.7);createPack('smd12',60,5);createPack('smd24',120,5);createPack('cob48',480,5);createPack('cobdigital',784,7.1);createPack('wcob',320,2.5);createPack('cobip67',320,5);createPack('digital',60,5);
+ createPack('delux3',160);createPack('smd',128);createPack('slim',160);createPack('sshape',60);createPack('rgb',60);createPack('cob',528);createPack('smd5',60,1.7);createPack('smd12',60,5);createPack('smd24',120,5);createPack('cob48',480,5);createPack('cobdigital',784,7.1);createPack('wcob',320,2.5);createPack('cobip67',320,5);createPack('digital',60,5);createPack('bread',70,5);createPack('rgbw',60,5);
  const shaderVertex=deformGLSL.replaceAll('EVO_LENGTH',length.toFixed(8))+`
  attribute float aSize;attribute float aAlong;attribute float aSeed;
  uniform float uStructural;uniform float uScale;uniform float uDpr;uniform float uOpacity;uniform float uRole;uniform float uGlow;uniform vec3 uColor;
@@ -208,7 +208,7 @@ export function createEvolutionScene(host,{presentation=false}={}){
  void main(){
   vec3 p=evoDeform(position,aAlong,uStructural);vec4 mv=modelViewMatrix*vec4(p,1.);gl_Position=projectionMatrix*mv;
   float flow=pow(.5+.5*cos((aAlong-uEvoTime*.13)*6.283185),24.);
-  gl_PointSize=clamp(aSize*uScale*uDpr/-mv.z*(1.+flow*.65),.7,18.*uDpr);
+  gl_PointSize=clamp(aSize*uScale*uDpr/-mv.z*(1.+flow*.65),.7,100.*uDpr);
   float depth=mix(.3,1.,smoothstep(-2.,2.,(modelMatrix*vec4(p,1.)).z));
   vColor=mix(uColor,evoLight(aAlong),uGlow);
   vAlpha=uOpacity*depth*evoCoverage(aAlong,uRole)*mix(.3+.7*flow,evoPower(aAlong)*(.82+.18*flow+.12*evoChangeLight(aAlong)),uGlow);
@@ -226,7 +226,11 @@ export function createEvolutionScene(host,{presentation=false}={}){
  const lattice=particles(edges,0x9fc5b0,.5,{structural:true});
  for(const pack of packs){
   const samples=pack.family.startsWith('cob')?Array.from({length:600},(_,i)=>({u:i/599})):pack.components;
-  pack.glow=particles(samples.map(({u})=>({u,p:point(frame(u),0,0,.1),size:pack.family.startsWith('cob')?.32:.48})),0xffffff,.62,{role:pack.role,glow:true});
+  pack.glow=particles(samples.map(({u})=>({u,p:point(frame(u),0,0,.1),size:pack.family.startsWith('cob')?.44:.72})),0xffffff,.62,{role:pack.role,glow:true});
+  // Broad, low-opacity light hugs the physical strip, sharing its deformation.
+  // Sampling is capped; its soft overlap does not depend on catalogue density.
+  const haloSamples=pack.family.startsWith('cob')?Array.from({length:180},(_,i)=>({u:i/179})):pack.components.filter((_,i)=>i%Math.max(1,Math.ceil(pack.count/180))===0);
+  pack.halo=particles(haloSamples.map(({u})=>({u,p:point(frame(u),0,0,.09),size:2.6})),0xffffff,.035,{role:pack.role,glow:true});
  }
  // Stylised charge traces stay beside the copper. They are not extra LEDs and
  // never turn analogue RGB into an individually addressable rainbow strip.
@@ -269,10 +273,11 @@ export function createEvolutionScene(host,{presentation=false}={}){
  // Presentation illumination makes a CCT change visible at film size; catalogue
  // temperatures and all electrical/output specifications remain unchanged.
  function modelLight(m){
-  if(!presentation||m.unit!=='K')return new T.Color(m.light);
+  if(m.custom||!presentation||m.unit!=='K')return new T.Color(m.light);
   const kelvin=Number(m.color);
   return new T.Color(kelvin<=3000?'#ffad50':kelvin<=4000?'#fff0cf':kelvin<=5700?'#c7e2ff':'#acd2ff');
  }
+ const rgbwPalette=['#edb4b7','#c3b4ee','#a8cceb','#a8ded1'].map(c=>new T.Color(c));
  const colors=models.map(modelLight),rgbColor=new T.Color(),lightColor=new T.Color(),front=new T.Vector3(),filmWhite=new T.Color(0xf5f6ef);
  let theme='night',motion=true,disposed=false,rendered=0,lastIndex=0,lastProgress=0,lastRotation=0,lastTwist=0,lastBlend=0,width=0,heightPx=0,lastAura=-1;
  function setTheme(next){
@@ -299,11 +304,11 @@ export function createEvolutionScene(host,{presentation=false}={}){
  function update(index,progress,pointerX=0,pointerY=0,seconds=0,sample=null){
   if(disposed)return;resize();if(index!==lastIndex||progress!==lastProgress)lastAura=-1;lastIndex=index;lastProgress=progress;
   const day=theme==='day',state=sample??evolutionState(progress),blend=state.blend;
-  const resolveModel=m=>m.family==='custom'?brandPresets[0]:m;
+  const resolveModel=m=>m.family==='custom'?brandIntro:m;
   const a=sample?.a??resolveModel(models[state.from]),b=sample?.b??resolveModel(models[state.to]);
   const custom=Boolean(sample||(blend>=.5?b.custom:a.custom));
   if(custom!==brandPrinted){brandPrinted=custom;printMaterials.forEach(({material,kind})=>{material.map=custom?kind===0?brandTexture:null:printTextures[presentation?'day':theme][kind];material.opacity=material.map?.95:0;material.needsUpdate=true;});}
-  if(presentation){pcb.color.set(custom?0x344943:0xefefe4);back.color.set(custom?0x203a33:0xcbd1c8);}
+  if(presentation){pcb.color.set(custom?0x293544:0xefefe4);back.color.set(custom?0x142031:0xcbd1c8);}
   uniforms.uEvoDigitalA.value=['cobdigital','digital'].includes(a.family)?1:0;uniforms.uEvoDigitalB.value=['cobdigital','digital'].includes(b.family)?1:0;
   const time=motion?seconds:0;
   coil.rotation.y=-.38+progress*TAU*1.32+time*.19+pointerX*.2;coil.rotation.z=-.035+pointerY*.022;
@@ -316,23 +321,29 @@ export function createEvolutionScene(host,{presentation=false}={}){
   // Zero at both ends, including its derivative: no flash on chapter changes.
   // Scroll drives the highlight; reduced motion disables it entirely.
   uniforms.uEvoChange.value=motion&&a.family!==b.family?Math.sin(Math.PI*blend)**2*(day?.7:1):0;
-  uniforms.uFilmRebuild.value=presentation&&motion&&a.family!==b.family?Math.sin(Math.PI*blend):0;
+  uniforms.uFilmRebuild.value=0; // Keep the ribbon whole during soft material transitions.
   if(rebuildLayer)rebuildLayer.mesh.visible=uniforms.uFilmRebuild.value>.002;
   uniforms.uEvoProfileA.value.set(Number(a.width)/10,a.family==='sshape'?1:0);uniforms.uEvoProfileB.value.set(Number(b.width)/10,b.family==='sshape'?1:0);
   uniforms.uEvoA.value.copy(modelLight(a));uniforms.uEvoB.value.copy(modelLight(b));
-  uniforms.uEvoLevelA.value=a.family==='delux3'?Number(a.power)/11:1;uniforms.uEvoLevelB.value=b.family==='delux3'?Number(b.power)/11:1;
+  uniforms.uEvoLevelA.value=a.level??(a.family==='delux3'?Number(a.power)/11:1);uniforms.uEvoLevelB.value=b.level??(b.family==='delux3'?Number(b.power)/11:1);
   rgbColor.setHSL((.73+time*.052)%1,.87,day?.43:.6);
   if(a.family==='rgb')uniforms.uEvoA.value.copy(rgbColor);if(b.family==='rgb')uniforms.uEvoB.value.copy(rgbColor);
+  // One shared colour across every analogue RGBW LED; the white channel keeps
+  // the palette soft. This is deliberately not an addressable rainbow chase.
+  const palettePhase=Math.min(3,Math.max(0,(sample?.elapsed??0)/2.65)),paletteIndex=Math.min(2,Math.floor(palettePhase)),paletteMix=palettePhase-paletteIndex;
+  rgbColor.copy(rgbwPalette[paletteIndex]).lerp(rgbwPalette[paletteIndex+1],paletteMix*paletteMix*(3-2*paletteMix));
+  if(a.family==='rgbw')uniforms.uEvoA.value.copy(rgbwPalette.at(-1));if(b.family==='rgbw')uniforms.uEvoB.value.copy(rgbColor);
   if(presentation){lightColor.copy(uniforms.uEvoA.value).lerp(uniforms.uEvoB.value,blend);key.color.copy(filmWhite).lerp(lightColor,.25);rim.color.copy(filmWhite).lerp(lightColor,.65);}
   packs.forEach(pack=>{
    const outgoing=a.family===pack.family,incoming=b.family===pack.family;
-   pack.group.visible=(outgoing&&blend<.999)||(incoming&&blend>.001);pack.glow.mesh.visible=pack.group.visible;
+   pack.group.visible=(outgoing&&blend<.999)||(incoming&&blend>.001);pack.glow.mesh.visible=pack.group.visible;pack.halo.mesh.visible=pack.group.visible;
    pack.role.value=outgoing&&incoming?0:outgoing?-1:1;
    if(pack.lightMaterial)pack.lightMaterial.emissiveIntensity=presentation?(day?.85:2.15):day?.55:1.75;
-   pack.glow.uniforms.uOpacity.value=presentation?(day?.34:1.38):day?.12:pack.family.startsWith('cob')?.78:.88;
+   pack.glow.uniforms.uOpacity.value=presentation?(day?.2:.8):day?.12:pack.family.startsWith('cob')?.78:.88;
+   pack.halo.uniforms.uOpacity.value=day?.014:pack.family.startsWith('cob')?.028:.09;
    if(pack.family==='delux3'){const mode=models[index].mode??0;pack.paths.forEach((material,i)=>{material.emissiveIntensity=(i===0||i===mode+1)?(day?.45:1.3):0;});}
   });
-  lattice.uniforms.uOpacity.value=day?.38:.48;drift.uniforms.uOpacity.value=day?.6:.8;
+  lattice.mesh.visible=false;drift.mesh.visible=false;
   for(let i=0;i<driftSeeds.length;i++){
    const e=driftSeeds[i],u=(e.u+time*e.speed)%1,at=u*640,lo=Math.floor(at),hi=Math.min(640,lo+1),mix=at-lo,f=frames[lo],g=frames[hi];
    front.copy(f.p).lerp(g.p,mix).addScaledVector(f.across,e.x).addScaledVector(f.normal,e.z);driftPosition.setXYZ(i,front.x,front.y,front.z);driftAlong.setX(i,u);
@@ -342,5 +353,5 @@ export function createEvolutionScene(host,{presentation=false}={}){
   renderer.render(scene,camera);rendered++;
  }
  setTheme(document.documentElement.dataset.theme);resize();
- return{ready,update,resize,setTheme,setMotion(enabled){motion=Boolean(enabled);lastAura=-1;},inspect:()=>({frames:rendered,kind:'branded-slim-sshape-pcb-spiral',presentation,theme,motion,model:lastIndex,progress:lastProgress,rotation:lastRotation,twist:lastTwist,turns:turns+lastTwist/TAU,transition:lastBlend,transitionReflex:uniforms.uEvoChange.value,rebuild:uniforms.uFilmRebuild.value,rebuildParticles:rebuildLayer?.mesh.visible?rebuildLayer.count:0,presentationLight:lightColor.getStyle(),pcbWidthMm:models[lastIndex]?.width,printedMarks:brandPrinted?['YOUR BRAND']:['PRESCOT LED','CE','RoHS'],printTexturesReady:printTextures.day.length===2&&printTextures.night.length===2,ignition:uniforms.uEvoIgnition.value,representedLengthMm:Math.round(lengthMm),components:packs.map(p=>({family:p.family,count:p.count,visible:p.group.visible,role:p.role.value})),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,renderedPoints:renderer.info.render.points,geometryCount:renderer.info.memory.geometries}),dispose(){disposed=true;resources.forEach(r=>r.dispose());renderer.dispose();renderer.domElement.remove();}};
+ return{ready,update,resize,setTheme,setMotion(enabled){motion=Boolean(enabled);lastAura=-1;},inspect:()=>({frames:rendered,kind:'branded-slim-sshape-pcb-spiral',presentation,theme,motion,model:lastIndex,progress:lastProgress,rotation:lastRotation,twist:lastTwist,turns:turns+lastTwist/TAU,transition:lastBlend,transitionReflex:uniforms.uEvoChange.value,rebuild:uniforms.uFilmRebuild.value,rebuildParticles:rebuildLayer?.mesh.visible?rebuildLayer.count:0,presentationLight:lightColor.getStyle(),lightLevel:uniforms.uEvoLevelA.value+(uniforms.uEvoLevelB.value-uniforms.uEvoLevelA.value)*lastBlend,digital:Math.max(uniforms.uEvoDigitalA.value,uniforms.uEvoDigitalB.value),halo:packs.filter(p=>p.halo.mesh.visible).map(p=>p.family),pcbWidthMm:models[lastIndex]?.width,printedMarks:brandPrinted?['YOUR BRAND']:['PRESCOT LED','CE','RoHS'],printTexturesReady:printTextures.day.length===2&&printTextures.night.length===2,ignition:uniforms.uEvoIgnition.value,representedLengthMm:Math.round(lengthMm),components:packs.map(p=>({family:p.family,count:p.count,visible:p.group.visible,role:p.role.value})),drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,renderedPoints:renderer.info.render.points,geometryCount:renderer.info.memory.geometries}),dispose(){disposed=true;resources.forEach(r=>r.dispose());renderer.dispose();renderer.domElement.remove();}};
 }

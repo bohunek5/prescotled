@@ -1,4 +1,4 @@
-import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState,brandTiming} from './offer-series-models.mjs?v=20260926-rhythm1';
+import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState} from './offer-series-models.mjs?v=20260926-light1';
 const root=document.querySelector('[data-evo-series-preview]');
 if(root){
  const stage=root.querySelector('.evolution-stage'),hosts=[...root.querySelectorAll('.evolution-canvas')];
@@ -9,7 +9,7 @@ if(root){
 
  let scene=null,frame=0,progress=0,targetProgress=0,index=-1,pointerX=0,pointerY=0,manualIndex=null;
  let visible=false,pageActive=true,measureDirty=true,paintDirty=true,lastPaint=0,nextPaint=0,elapsedSeconds=0,renderedFrames=0;
- let lastPercent=-1,brandSeconds=0,lastBrandStep=-1,lastBrandHeadline='YOUR BRAND';
+ let lastPercent=-1,brandSeconds=0,lastBrandStep=-2,lastBrandHeadline='marka.';
  let theme=document.documentElement.dataset.theme==='day'?'day':'night';
  function palette(){
   const m=models[Math.max(0,index)];root.style.setProperty('--evo-ink',theme==='day'?m.dayInk:m.ink);
@@ -41,6 +41,7 @@ if(root){
  }
  const field=(name)=>root.querySelector('[data-evo-'+name+']');
  function fillFacts(m){
+  for(const key of ['color','density','power','output'])delete field(key).dataset.value;
   for(const name of ['color','unit','colorCopy','tech','techLabel','output','outputUnit','outputLabel','quality','qualityUnit','qualityLabel','detail'])field(name.replace(/[A-Z]/g,c=>'-'+c.toLowerCase())).textContent=m[name];
   field('density').innerHTML=m.density+' <small>LED/m</small>';
   field('power').innerHTML=m.power+' <small>W/m</small>';
@@ -51,10 +52,10 @@ if(root){
  function updateContent(next,force=false){
   if(next===index&&!force)return;
   const changed=next!==index;index=next;const m=models[index],custom=m.family==='custom';
-  root.dataset.evolutionMode=m.family;if(changed){brandSeconds=0;lastBrandStep=-1;lastBrandHeadline='YOUR BRAND';field('range').getAnimations().forEach(a=>a.cancel());field('name').getAnimations().forEach(a=>a.cancel());}
+  root.dataset.evolutionMode=m.family;root.dataset.brandIntro=String(custom);if(changed){brandSeconds=0;lastBrandStep=-2;lastBrandHeadline='YOUR BRAND';field('range').getAnimations().forEach(a=>a.cancel());field('name').getAnimations().forEach(a=>a.cancel());}
   field('family-label').textContent=custom?'PROJEKT INDYWIDUALNY':m.range+' '+m.name;
-  field('range').textContent=custom?'Twoja taśma.':m.range;
-  field('name').textContent=custom?'YOUR BRAND':m.name;
+  field('range').textContent=custom?'Twoja własna':m.range;
+  field('name').textContent=custom?'marka.':m.name;
   field('series-description').textContent=custom?'zaprojektowana dla Twojej marki.':m.id==='3w1'?'z trzema poziomami mocy.':m.id==='cobip67'?'w przezroczystej osłonie.':'z serii '+m.range+' '+m.name+'.';
   field('index').textContent=m.index;field('title').textContent=m.title.replace(/<br\s*\/?>(?:\s*)/gi,' ');field('copy').textContent=m.copy;
   fillFacts(m);
@@ -71,25 +72,22 @@ if(root){
   if(!reduced.matches)root.querySelectorAll('.evolution-fact>strong,.evolution-color-hud>p,.evolution-caption').forEach(el=>el.animate([{opacity:.55,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],{duration:340,easing:'ease-out'}));
  }
  function paintBrand(state){
-  const {a,b,blend,from,to}=state,chosen=blend>=.5?b:a,step=blend>=.5?to:from;
-  if(step!==lastBrandStep){fillFacts(chosen);field('years').textContent=String(step+1).padStart(2,'0');lastBrandStep=step;}
-  const headline=brandSeconds<brandTiming.intro?'YOUR BRAND':chosen.headline;
+  const {a,b,blend,model:chosen,step,intro}=state;
+  if(step!==lastBrandStep){fillFacts(chosen);field('years').textContent=intro?'00':String(step+1).padStart(2,'0');lastBrandStep=step;}
+  const headline=intro?'marka.':chosen.headline;
   if(headline!==lastBrandHeadline){
-   field('range').textContent=headline==='YOUR BRAND'?'Twoja taśma.':'A może…';
-   field('name').textContent=headline;lastBrandHeadline=headline;
-   if(!reduced.matches)for(const el of [field('range'),field('name')]){
-    el.getAnimations().forEach(a=>a.cancel());
-    el.animate([{opacity:.25,transform:'translateY(5px)',filter:'blur(3px)'},{opacity:1,transform:'translateY(0)',filter:'blur(0)'}],{duration:360,easing:'cubic-bezier(.2,.7,.2,1)'});
-   }
+   root.dataset.brandIntro=String(intro);
+   field('range').textContent=intro?'Twoja własna':'A może…';field('name').textContent=headline;lastBrandHeadline=headline;
+   field('title').textContent=intro?'Twój pomysł. Twoja marka.':chosen.title;
+   field('copy').textContent=intro?models.at(-1).copy:chosen.copy;
+   if(!reduced.matches)for(const el of[field('range'),field('name')]){el.getAnimations().forEach(a=>a.cancel());el.animate([{opacity:.3,filter:'blur(3px)',transform:'translateY(4px)'},{opacity:1,filter:'blur(0)',transform:'translateY(0)'}],{duration:420,easing:'cubic-bezier(.2,.7,.2,1)'});}
   }
-
-  // Only the individual-project preview interpolates figures. Product values
-  // and the LOW/MEDIUM/HIGH controls always display exact catalogue values.
-  for(const [key,selector,unit,digits] of [['density','density','LED/m',0],['power','power','W/m',1],['output','output','',0],['color','color','',0]]){
-   const x=Number(a[key].replace(',','.')),y=Number(b[key].replace(',','.'));
-   if(!Number.isFinite(x)||!Number.isFinite(y))continue;
-   const value=(x+(y-x)*blend).toLocaleString('pl-PL',{maximumFractionDigits:digits});
-   const el=field(selector);if(el.dataset.value!==value){el.innerHTML=value+(unit?' <small>'+unit+'</small>':'');el.dataset.value=value;}
+  // Animate only compatible quantities in the individual-project examples.
+  for(const [key,selector,unit,digits]of[['density','density','LED/m',0],['power','power','W/m',1],['output','output','',0],['color','color','',0]]){
+   if(key==='output'&&a.outputUnit!==b.outputUnit||key==='color'&&a.unit!==b.unit)continue;
+   const x=Number(a[key].replace(',','.')),y=Number(b[key].replace(',','.'));if(!Number.isFinite(x)||!Number.isFinite(y))continue;
+   const value=(x+(y-x)*blend).toLocaleString('pl-PL',{maximumFractionDigits:digits}),el=field(selector);
+   if(el.dataset.value!==value){el.innerHTML=value+(unit?' <small>'+unit+'</small>':'');el.dataset.value=value;}
   }
  }
  function tick(now){
@@ -160,7 +158,7 @@ if(root){
  stage.addEventListener('pointerleave',()=>{pointerX=pointerY=0;schedule();});
  root.evolution={inspect:()=>({progress,targetProgress,index,sku:models[index]?.sku,theme,chapterCount:models.length,brandSeconds,brandStep:lastBrandStep,powerMode:models[0].mode,renderer:root.dataset.renderer,reducedMotion:reduced.matches,shortViewport:shortViewport.matches,visible,playing:!!canRotate(),elapsedSeconds,renderedFrames,pendingFrame:!!frame,paintDirty,scene:scene?.inspect?.(),variants:scenes.map(item=>item.inspect?.())})};
  updateContent(0);schedule(true);
- import('./offer-series-scene.mjs?v=20260926-rhythm1').then(({createEvolutionScene})=>{
+ import('./offer-series-scene.mjs?v=20260926-light1').then(({createEvolutionScene})=>{
   hosts.forEach((host,i)=>{
    const item=createEvolutionScene(host,{presentation:host.dataset.evolutionVersion==='renewed'});
    scenes.push(item);if(i===0)scene=item;

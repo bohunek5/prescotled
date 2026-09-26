@@ -342,8 +342,8 @@ export const evolutionModels=[
     "light": "#ffd29a",
     "width": "10",
     "ip": "IP20",
-    "beam": "120",
-    "output": "120",
+    "beam": "180",
+    "output": "180",
     "outputUnit": "°",
     "outputLabel": "KĄT ŚWIECENIA",
     "quality": "> 90",
@@ -422,7 +422,7 @@ export const evolutionModels=[
     "light": "#aacbff",
     "width": "10",
     "ip": "IP20",
-    "beam": "—",
+    "beam": "180",
     "output": "900",
     "outputUnit": "lm/m",
     "outputLabel": "STRUMIEŃ ŚWIATŁA",
@@ -462,7 +462,7 @@ export const evolutionModels=[
     "light": "#fff0d0",
     "width": "8",
     "ip": "IP62",
-    "beam": "—",
+    "beam": "180",
     "output": "1450",
     "outputUnit": "lm/m",
     "outputLabel": "STRUMIEŃ ŚWIATŁA",
@@ -502,7 +502,7 @@ export const evolutionModels=[
     "light": "#ffc88a",
     "width": "10",
     "ip": "IP67",
-    "beam": "—",
+    "beam": "180",
     "output": "700",
     "outputUnit": "lm/m",
     "outputLabel": "STRUMIEŃ ŚWIATŁA",
@@ -678,13 +678,21 @@ export const chapterProgress=modelChapterProgress;export const storyProgress=p=>
 export function evolutionState(p){p=storyProgress(p);let from=0;while(from<evolutionModels.length-1&&p>=bounds[from+1])from++;const local=(p-bounds[from])/(bounds[from+1]-bounds[from]);const t=Math.max(0,Math.min(1,(local-.66)/.34));return{from,to:Math.min(evolutionModels.length-1,from+1),blend:from===evolutionModels.length-1?0:t*t*(3-2*t),local};}
 export const modelIndex=p=>{const s=evolutionState(p);return s.blend>=.5?s.to:s.from;};
 
-// These are illustrative configurations, never a product SKU or quotation.
-export const brandTiming={intro:1.8,cycle:4.2,transitionStart:.62};
+// Individually designed strips: examples based on existing PRESCOT models.
+export const brandTiming={intro:3,transition:1.05};
+export const brandIntro={...evolutionModels[2],custom:true,level:.5,light:'#e7efff',color:'4000',colorCopy:'Neutralna biel',techLabel:'WŁASNA MARKA / SLIM'};
 export const brandPresets=[
- {...evolutionModels[7],family:'digital',headline:'DIGITAL SMD?',techLabel:'YOUR BRAND / Digital SMD',detail:'Projekt cyfrowy · SMD',light:'#91b8ff'},
- {...evolutionModels[1],headline:'SMD?',techLabel:'YOUR BRAND / SMD'},
- {...evolutionModels[2],headline:'SLIM?',techLabel:'YOUR BRAND / SLIM'},
- {...evolutionModels[8],headline:'COB?',techLabel:'YOUR BRAND / COB'},
- {...evolutionModels[10],headline:'DIGITAL COB?',techLabel:'YOUR BRAND / Digital COB',light:'#80e6d7'}
-].map(m=>({...m,custom:true}));
-export function brandState(seconds){const phase=(seconds/brandTiming.cycle)%brandPresets.length,from=Math.floor(phase),local=phase-from,to=(from+1)%brandPresets.length,t=Math.max(0,(local-brandTiming.transitionStart)/(1-brandTiming.transitionStart));return{a:brandPresets[from],b:brandPresets[to],from,to,blend:t*t*(3-2*t),local};}
+ {...evolutionModels[0],...powerModes[2],sku:'24D160-11-4080-1010',color:'4000',colorCopy:'Neutralna biel',output:'1800',family:'delux3',techLabel:'SMD / ŚWIATŁO ROBOCZE',headline:'wysoka jasność\ndo pracy?',title:'SMD · światło robocze',copy:'Wyraźne, neutralne światło nad blatem i stanowiskiem pracy.',outputLabel:'STRUMIEŃ ŚWIATŁA',level:1.75,light:'#e8f2ff',duration:4},
+ {...evolutionModels[2],sku:'24DS002-050-4-WW50',power:'3,5',output:'550',color:'3000',colorCopy:'Ciepła biel',techLabel:'SMD SLIM / AKCENT',headline:'delikatne światło\ndla akcentu?',title:'SLIM · subtelne podświetlenie',copy:'Wąska taśma i przygaszone światło do wnęk, półek i detali.',level:.2,light:'#ffcf94',duration:4},
+ {...evolutionModels[1],family:'bread',sku:'24B070-9-2590-81',width:'8',cut:'50',density:'70',power:'9,2',output:'860',color:'2500',colorCopy:'Ciepła barwa do pieczywa',quality:'93',techLabel:'SMD / ŚWIATŁO DO PIECZYWA',headline:'ciepła barwa\ndo pieczywa?',title:'2500 K · ekspozycja pieczywa',copy:'Przyjemne, ciepłe światło do ekspozycji pieczywa i wyrobów cukierniczych.',level:.72,light:'#ffc27c',duration:4},
+ {...evolutionModels[8],sku:'24EC528-045-10-NW',color:'4000',colorCopy:'Neutralna linia światła',output:'1400',outputUnit:'lm/m',outputLabel:'STRUMIEŃ ŚWIATŁA',beam:'180',techLabel:'COB / LINIA ŚWIATŁA',headline:'gładka linia\nświatła?',title:'COB · neutralna biel',copy:'Ciągła warstwa luminoforu tworzy spokojną linię światła w barwie 4000 K.',level:1.1,light:'#e7f0ff',duration:4},
+ {...evolutionModels[7],family:'rgbw',detail:'SMD 5 × 5 mm · R/G/B + biel',sku:'E024-050-10-RGB+WW',power:'14,4',output:'700',color:'RGBW',colorCopy:'Kolory + osobna biel 3000 K',tech:'5050',techLabel:'SMD 5050 / RGBW',quality:'80',qualityUnit:'Ra',qualityLabel:'ODDAWANIE BARW',headline:'trochę\nkolorów?',title:'RGBW · kolor i osobna biel',copy:'Subtelna zmiana palety. Od ciepłego różu, przez lawendę, po spokojny błękit i turkus.',level:1.05,light:'#edb8da',duration:8}
+].map(m=>({...m,custom:true,beam:m.family.startsWith('cob')?'180':'120'}));
+const brandDuration=brandPresets.reduce((s,m)=>s+m.duration,0);
+export function brandState(seconds){
+ if(seconds<brandTiming.intro)return{a:brandIntro,b:brandIntro,model:brandIntro,intro:true,step:-1,from:-1,to:-1,blend:0,local:0,elapsed:seconds};
+ const run=seconds-brandTiming.intro,cycle=Math.floor(run/brandDuration);let elapsed=run%brandDuration,step=0;
+ while(step<brandPresets.length-1&&elapsed>=brandPresets[step].duration){elapsed-=brandPresets[step].duration;step++;}
+ const from=step===0?(cycle===0?-1:brandPresets.length-1):step-1,a=from===-1?brandIntro:brandPresets[from],b=brandPresets[step],t=Math.min(1,elapsed/brandTiming.transition);
+ return{a,b,model:b,intro:false,step,from,to:step,blend:t*t*(3-2*t),local:elapsed/b.duration,elapsed};
+}

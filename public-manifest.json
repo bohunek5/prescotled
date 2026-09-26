@@ -56,7 +56,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 953,
-  "bytesExcludingManifest": 275229144,
+  "bytesExcludingManifest": 275236663,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -3002,8 +3002,8 @@
       "source": "noir/koszulki/index.html"
     },
     "noir/app.mjs": {
-      "bytes": 6616,
-      "sha256": "281bd6f09749eb2af2ad935d3f3f9d89c22ddd394e24cd4c6a06fa87091ed6c7",
+      "bytes": 6633,
+      "sha256": "b4fe96611e763c6bd76d5f0c143f54dff6572acce5889bcffbbe82a5017e9c2e",
       "source": "noir/app.mjs"
     },
     "noir/card-motion.css": {
@@ -3053,7 +3053,7 @@
     },
     "noir/evolution-models.mjs": {
       "bytes": 13248,
-      "sha256": "ddb5fd69d63ed6c58842d0b713c21e6a245196b6e4935d5edaf36c8bc7399613",
+      "sha256": "92ba847d6d607c2165d4aab54a167a6d1353cce85cef240caf49a0a9de5f8835",
       "source": "noir/evolution-models.mjs"
     },
     "noir/evolution-voltage.css": {
@@ -4287,8 +4287,8 @@
       "source": "noir/offer-evolution.css"
     },
     "noir/offer-evolution.mjs": {
-      "bytes": 9912,
-      "sha256": "4ba78b46204ea7398103eda95598fb67f1fbf23046f2f3ba370c68a751b21ea3",
+      "bytes": 9948,
+      "sha256": "08059a6b1b39c126eb4910ba54ab55288d192017733a17c49fcc23b57b0204aa",
       "source": "noir/offer-evolution.mjs"
     },
     "noir/offer-families.css": {
@@ -4362,8 +4362,8 @@
       "source": "noir/sleeves-page.mjs"
     },
     "noir/strip-evolution-scene.mjs": {
-      "bytes": 29840,
-      "sha256": "d5ed29624f130507d21aeed89580719a23c62e98203344f85cbc6ad1762a9108",
+      "bytes": 29858,
+      "sha256": "d9eedc1cf1c27b73519ce2bc44e8acae44eb6e4b4bea7be668a0df1280b36fa1",
       "source": "noir/strip-evolution-scene.mjs"
     },
     "noir/style.css": {
@@ -4392,8 +4392,8 @@
       "source": "noir/touch-card.mjs"
     },
     "oferta/index.html": {
-      "bytes": 122809,
-      "sha256": "deb670e01173c4f5ba98ac55a4a0dc33b495a40b1f0685f4eb3217edfd950ba6",
+      "bytes": 122807,
+      "sha256": "5be4bc657ac53748d1828317eb46d541cb7643fff34ab2006751997824f3c92d",
       "source": "noir/oferta/index.html"
     },
     "oprawy/index.html": {
@@ -4812,23 +4812,23 @@
       "generated": true
     },
     "noir/offer-series.css": {
-      "bytes": 3547,
-      "sha256": "027570b7b1107b15d56b4d2c8a7f55d567dc2c51e5d38cac21fd51c4e6dbf78c",
+      "bytes": 6974,
+      "sha256": "54ce15a4fee962f7f1f5d2a4829b8f72469aeed3e9ca8452e8ac39012a4e33c3",
       "source": "noir/offer-series.css"
     },
     "noir/offer-series.mjs": {
-      "bytes": 12861,
-      "sha256": "b1f409dc3ed0f7592f2fdfdf7a8a411a7a9031a971215ea2628e553ce28f3eb6",
+      "bytes": 13072,
+      "sha256": "4c268fb974f71cee0be0c6d52d7d772595280898b9a8a84fe24de7479c44215d",
       "source": "noir/offer-series.mjs"
     },
     "noir/offer-series-models.mjs": {
-      "bytes": 19822,
-      "sha256": "84b37c31f34edb6e62d944b27700d0e314b440d7922553a33655560c418c8434",
+      "bytes": 22002,
+      "sha256": "6eee9dd58aba4af55cff5fa525367fba6ff4fd2dd20b4c7fdc6d29423e912df0",
       "source": "noir/offer-series-models.mjs"
     },
     "noir/offer-series-scene.mjs": {
-      "bytes": 32389,
-      "sha256": "d974f828a2fe958c60ffbd63ee52bd0dcaa81cb817d27349247847a7b0d7709e",
+      "bytes": 34021,
+      "sha256": "bf2ae41c60bdf9c6803b2a747da8cac7f780b067d92ade400e068c633e6b201e",
       "source": "noir/offer-series-scene.mjs"
     }
   }
