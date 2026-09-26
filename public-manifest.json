@@ -55,8 +55,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 949,
-  "bytesExcludingManifest": 275159773,
+  "fileCountExcludingManifest": 953,
+  "bytesExcludingManifest": 275228005,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -3002,8 +3002,8 @@
       "source": "noir/koszulki/index.html"
     },
     "noir/app.mjs": {
-      "bytes": 6505,
-      "sha256": "f879ba93d4961ecee982bcbe60511103e497324344f0a9b228cd21b395868840",
+      "bytes": 6616,
+      "sha256": "ab233b3bf47dc00b1c9dabd747169fe630d6b2ae454da5ed2e30e33cc86040a8",
       "source": "noir/app.mjs"
     },
     "noir/card-motion.css": {
@@ -4392,8 +4392,8 @@
       "source": "noir/touch-card.mjs"
     },
     "oferta/index.html": {
-      "bytes": 122168,
-      "sha256": "c2f6de326138895c89480fd7fa0be93370499afc52c05bbf44e15f8f8bf08713",
+      "bytes": 122809,
+      "sha256": "e3d8e76ca0730bc3f971b9580517b5ace8824b4c96edf9ed3b5ccbe93fec2668",
       "source": "noir/oferta/index.html"
     },
     "oprawy/index.html": {
@@ -4810,6 +4810,26 @@
       "bytes": 454,
       "sha256": "0d83d7a953e85c90b7af28bb0388ea6d6e8a2516edbc77ba56c64ae094e8e579",
       "generated": true
+    },
+    "noir/offer-series.css": {
+      "bytes": 3410,
+      "sha256": "b3998b8d934f49436cb69fa5288a9b19f27a508319a4e941264c8afcefc9a783",
+      "source": "noir/offer-series.css"
+    },
+    "noir/offer-series.mjs": {
+      "bytes": 12065,
+      "sha256": "94faafcf0392a6976eaa5038d5acd43258f3aaf5d449dcaea0c284b2dcc2ce8f",
+      "source": "noir/offer-series.mjs"
+    },
+    "noir/offer-series-models.mjs": {
+      "bytes": 19635,
+      "sha256": "165dda86c6d156eb33709530d659383fc2dd5257bbd13af7c9a577ade6b5f219",
+      "source": "noir/offer-series-models.mjs"
+    },
+    "noir/offer-series-scene.mjs": {
+      "bytes": 32370,
+      "sha256": "e8824fbcba4f42e7b20bb7551c560c0c92a92b855ba5b6124f504fa2857c453a",
+      "source": "noir/offer-series-scene.mjs"
     }
   }
 }

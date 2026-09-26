@@ -1,7 +1,8 @@
 import './theme.mjs';
 import './scharfer-showcase.mjs';
 import './sleeves-page.mjs';
-import './offer-evolution.mjs';
+if(document.querySelector('[data-evo-series-preview]')) import('./offer-series.mjs?v=20260926-series1');
+else import('./offer-evolution.mjs');
 import './offer-families.mjs';
 import './card-motion.mjs';
 import './delux-story.mjs';
