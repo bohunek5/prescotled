@@ -535,7 +535,7 @@ export const evolutionModels=[
     "voltage": "24",
     "cut": "71",
     "index": "14 / YOUR BRAND",
-    "title": "Twój pomysł. Twoja marka.",
+    "title": "Taśma dopasowana do Twojej marki.",
     "copy": "Wybierz konstrukcję, barwę i charakter światła. Dopasujemy taśmę oraz jej oznaczenie do Twojego projektu.",
     "ink": "#a8efdf",
     "hue": 164,

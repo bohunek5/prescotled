@@ -1,4 +1,4 @@
-import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState} from './offer-series-models.mjs?v=20260926-light1';
+import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState} from './offer-series-models.mjs?v=20260927-brand1';
 const root=document.querySelector('[data-evo-series-preview]');
 if(root){
  const stage=root.querySelector('.evolution-stage'),hosts=[...root.querySelectorAll('.evolution-canvas')];
@@ -54,8 +54,8 @@ if(root){
   const changed=next!==index;index=next;const m=models[index],custom=m.family==='custom';
   root.dataset.evolutionMode=m.family;root.dataset.brandIntro=String(custom);if(changed){brandSeconds=0;lastBrandStep=-2;lastBrandHeadline='YOUR BRAND';field('range').getAnimations().forEach(a=>a.cancel());field('name').getAnimations().forEach(a=>a.cancel());}
   field('family-label').textContent=custom?'PROJEKT INDYWIDUALNY':m.range+' '+m.name;
-  field('range').textContent=custom?'Twoja własna':m.range;
-  field('name').textContent=custom?'marka.':m.name;
+  field('range').textContent=custom?'Twój pomysł.':m.range;
+  field('name').textContent=custom?'Nasze możliwości.':m.name;
   field('series-description').textContent=custom?'zaprojektowana dla Twojej marki.':m.id==='3w1'?'z trzema poziomami mocy.':m.id==='cobip67'?'w przezroczystej osłonie.':'z serii '+m.range+' '+m.name+'.';
   field('index').textContent=m.index;field('title').textContent=m.title.replace(/<br\s*\/?>(?:\s*)/gi,' ');field('copy').textContent=m.copy;
   fillFacts(m);
@@ -74,11 +74,11 @@ if(root){
  function paintBrand(state){
   const {a,b,blend,model:chosen,step,intro}=state;
   if(step!==lastBrandStep){fillFacts(chosen);field('years').textContent=intro?'00':String(step+1).padStart(2,'0');lastBrandStep=step;}
-  const headline=intro?'marka.':chosen.headline;
+  const headline=intro?'Nasze możliwości.':chosen.headline;
   if(headline!==lastBrandHeadline){
    root.dataset.brandIntro=String(intro);
-   field('range').textContent=intro?'Twoja własna':'A może…';field('name').textContent=headline;lastBrandHeadline=headline;
-   field('title').textContent=intro?'Twój pomysł. Twoja marka.':chosen.title;
+   field('range').textContent=intro?'Twój pomysł.':'A może…';field('name').textContent=headline;lastBrandHeadline=headline;
+   field('title').textContent=intro?models.at(-1).title:chosen.title;
    field('copy').textContent=intro?models.at(-1).copy:chosen.copy;
    if(!reduced.matches)for(const el of[field('range'),field('name')]){el.getAnimations().forEach(a=>a.cancel());el.animate([{opacity:.3,filter:'blur(3px)',transform:'translateY(4px)'},{opacity:1,filter:'blur(0)',transform:'translateY(0)'}],{duration:420,easing:'cubic-bezier(.2,.7,.2,1)'});}
   }
@@ -158,7 +158,7 @@ if(root){
  stage.addEventListener('pointerleave',()=>{pointerX=pointerY=0;schedule();});
  root.evolution={inspect:()=>({progress,targetProgress,index,sku:models[index]?.sku,theme,chapterCount:models.length,brandSeconds,brandStep:lastBrandStep,powerMode:models[0].mode,renderer:root.dataset.renderer,reducedMotion:reduced.matches,shortViewport:shortViewport.matches,visible,playing:!!canRotate(),elapsedSeconds,renderedFrames,pendingFrame:!!frame,paintDirty,scene:scene?.inspect?.(),variants:scenes.map(item=>item.inspect?.())})};
  updateContent(0);schedule(true);
- import('./offer-series-scene.mjs?v=20260926-light1').then(({createEvolutionScene})=>{
+ import('./offer-series-scene.mjs?v=20260927-brand1').then(({createEvolutionScene})=>{
   hosts.forEach((host,i)=>{
    const item=createEvolutionScene(host,{presentation:host.dataset.evolutionVersion==='renewed'});
    scenes.push(item);if(i===0)scene=item;
