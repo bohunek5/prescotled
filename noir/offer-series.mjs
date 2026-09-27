@@ -141,10 +141,10 @@ if(root){
  reduced.addEventListener('change',viewModeChanged);shortViewport.addEventListener('change',viewModeChanged);
  function selectChapter(i){
   if(staticView()){
-   // Copy and 3w1 controls change the art's vertical position. Measure the
-   // selected model's layout, so its lower end stays above the mobile dock.
+   // Phone controls sit beside the model: changing series keeps the page still.
+   // Wider static layouts retain their existing centered preview.
    manualIndex=i;updateContent(i);schedule(true);
-   if(shortViewport.matches){const art=root.querySelector('.evolution-art').getBoundingClientRect();scrollTo({top:Math.max(0,scrollY+art.top+(art.height-innerHeight)/2),behavior:reduced.matches?'instant':'smooth'});}
+   if(shortViewport.matches&&!matchMedia('(max-width:760px)').matches){const art=root.querySelector('.evolution-art').getBoundingClientRect();scrollTo({top:Math.max(0,scrollY+art.top+(art.height-innerHeight)/2),behavior:reduced.matches?'instant':'smooth'});}
    return;
   }
   scrollTo({top:Math.ceil(scrollY+root.getBoundingClientRect().top+chapterProgress[i]*(root.offsetHeight-stage.offsetHeight)),behavior:'smooth'});
