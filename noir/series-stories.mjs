@@ -1,44 +1,69 @@
 /* One reversible scroll state drives every visual; no wheel/touch interception. */
 for(const root of document.querySelectorAll('[data-strip-story]')){
  const config=JSON.parse(root.querySelector('[data-story-config]').textContent);
- const scenes=[...root.querySelectorAll('[data-scene]')],art=[...root.querySelectorAll('[data-geometry]')];
+ const scenes=[...root.querySelectorAll('.strip-scene')],art=[...root.querySelectorAll('[data-geometry]')];
  const runway=root.querySelector('.strip-runway'),stage=root.querySelector('.strip-stage');
  const jumps=[...root.querySelectorAll('[data-story-jump]')];
  const reduced=matchMedia('(prefers-reduced-motion: reduce)');
  const short=matchMedia('(max-height:600px), (max-width:760px) and (max-height:719px)');
- let index=-1,frame=0,active=true,visible=true,progress=0,staticMode=false;
+ const details=root.querySelector('.strip-details'),benefits=[...root.querySelectorAll('[data-strip-benefit]')];
+ let index=-1,frame=0,active=true,visible=true,progress=0,staticMode=false,detailIndex=-1,detailBeat=0,detailTimer=0,lastVisual='';
  const clamp=n=>Math.max(0,Math.min(1,n));
  const staticView=()=>reduced.matches||short.matches;
  function setState(next){
   if(next===index)return;
+  root.style.setProperty('--copy-entry',next<index?'-18px':'18px');
   index=next;const state=config.states[index];
-  root.dataset.scene=String(index);root.dataset.channel=state.channel;
+  root.dataset.scene=String(index);
+  scenes.forEach((scene,i)=>{
+   scene.hidden=!staticMode&&i!==index;
+   scene.dataset.state=i===index?'active':i<index?'seen':'upcoming';
+   scene.setAttribute('aria-hidden',String(scene.hidden));
+   scene.inert=scene.hidden;
+  });
+  jumps.forEach((button,i)=>button.setAttribute('aria-current',i===index?'step':'false'));
+ }
+ function setVisual(state,night){
+  const key=JSON.stringify([state,night]);if(key===lastVisual)return;lastVisual=key;
+  root.dataset.channel=state.channel;
   root.dataset.sku=config.models[state.model].sku;
   root.style.setProperty('--strip-light',state.color);
   root.style.setProperty('--strip-core',state.color);
-  root.style.setProperty('--strip-strength',state.channel==='detail'?'.24':config.kind==='slim'&&state.model===3?'.95':config.kind==='bread'&&state.model===1?'.92':index===0?'.58':'.8');
-  scenes.forEach((scene,i)=>{
-   scene.dataset.state=i===index?'active':i<index?'seen':'upcoming';
-   scene.setAttribute('aria-hidden',String(!staticMode&&i!==index));
-   scene.inert=!staticMode&&i!==index;
-  });
-  art.forEach((layer,i)=>layer.dataset.active=String(i===state.geometry));
+  root.style.setProperty('--strip-strength',night?'.76':state.channel==='detail'?'.24':config.kind==='slim'&&state.model===3?'.95':config.kind==='bread'&&state.model===1?'.92':index===0?'.58':'.8');
+  art.forEach((layer,i)=>layer.dataset.active=String(i===(state.geometry??config.models[state.model].geometry)));
   for(const terminal of root.querySelectorAll('.strip-terminal')){
    const channel=terminal.dataset.channel;
    terminal.dataset.lit=String(channel.startsWith('+')||channel==='−'||state.channel===channel||state.channel==='RGB'&&['R','G','B'].includes(channel));
   }
-  jumps.forEach((button,i)=>button.setAttribute('aria-current',i===index?'step':'false'));
+  const model=config.models[state.model];
+  const readout=root.querySelector('.strip-detail-readout');
+  if(readout){readout.querySelector('[data-detail-value]').textContent=state.label||state.channel;readout.querySelector('[data-detail-spec]').textContent=model.spec;readout.querySelector('[data-detail-sku]').textContent=model.sku;}
+ }
+ function cycleDetail(running){
+  if(!running){if(detailTimer)clearTimeout(detailTimer);detailTimer=0;return;}
+  if(!detailTimer)detailTimer=setTimeout(()=>{detailTimer=0;detailBeat++;schedule();},2400);
  }
  function render(){
   frame=0;if(!active||document.hidden)return;
   staticMode=staticView();root.dataset.static=String(staticMode);
   const rect=runway.getBoundingClientRect();
-  visible=rect.bottom>0&&rect.top<innerHeight;
+  const fullRect=root.getBoundingClientRect();visible=fullRect.bottom>0&&fullRect.top<innerHeight;
   root.dataset.running=String(visible&&!staticMode);
   progress=staticMode?0:clamp(-rect.top/Math.max(1,runway.offsetHeight-stage.offsetHeight));
   const next=Math.min(scenes.length-1,Math.floor(progress*scenes.length));
   setState(next);
-  root.style.setProperty('--strip-shift',`${-progress*(innerWidth<761?55:110)}px`);
+  const detailTop=details?.getBoundingClientRect().top??Infinity;
+  const night=staticMode?0:clamp((innerHeight-detailTop)/(innerHeight*.35));
+  root.style.setProperty('--night',`${(night*100).toFixed(2)}%`);root.style.setProperty('--night-progress',String(night));
+  const inDetails=!staticMode&&detailTop<innerHeight*.7;root.dataset.details=String(inDetails);
+  let current=-1;benefits.forEach((el,i)=>{if(el.getBoundingClientRect().top<innerHeight*.57)current=i;});
+  if(current!==detailIndex){detailIndex=current;detailBeat=0;}
+  const detail=config.details?.[Math.max(0,detailIndex)];
+  const visual=inDetails&&detail?detail.colors[detailBeat%detail.colors.length]:config.states[index];
+  setVisual(visual,inDetails);
+  cycleDetail(inDetails&&visible&&!staticMode&&detail?.colors.length>1);
+  const shift=progress*(innerWidth<761?55:110)+Math.max(0,-detailTop)*.025;
+  root.style.setProperty('--strip-shift',`${-Math.min(shift,innerWidth<761?140:240)}px`);
  }
  function schedule(){if(!frame&&active&&!document.hidden)frame=requestAnimationFrame(render);}
  function reset(){index=-1;schedule();}
@@ -50,28 +75,10 @@ for(const root of document.querySelectorAll('[data-strip-story]')){
  }));
  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',reset,{passive:true});
  reduced.addEventListener('change',reset);short.addEventListener('change',reset);
- document.addEventListener('visibilitychange',()=>{if(document.hidden){root.dataset.running='false';if(frame)cancelAnimationFrame(frame);frame=0;}else schedule();});
- addEventListener('pagehide',()=>{active=false;root.dataset.running='false';if(frame)cancelAnimationFrame(frame);frame=0;});
+ document.addEventListener('visibilitychange',()=>{if(document.hidden){cycleDetail(false);root.dataset.running='false';if(frame)cancelAnimationFrame(frame);frame=0;}else schedule();});
+ addEventListener('pagehide',()=>{active=false;cycleDetail(false);root.dataset.running='false';if(frame)cancelAnimationFrame(frame);frame=0;});
  addEventListener('pageshow',()=>{active=true;schedule();});
  root.dataset.enhanced='true';
- root.stripStory={inspect:()=>({index,progress,staticMode,visible,sku:root.dataset.sku,channel:root.dataset.channel,sceneCount:scenes.length})};
+ root.stripStory={inspect:()=>({index,progress,staticMode,visible,detailIndex,detailBeat,night:root.style.getPropertyValue('--night'),sku:root.dataset.sku,channel:root.dataset.channel,sceneCount:scenes.length})};
  render();
 }
-
-// Open the exact catalog card from a variant summary, including keyboard activation.
-function revealModel(hash){
- if(!hash.startsWith('#model-'))return;
- const card=document.getElementById(decodeURIComponent(hash.slice(1)));
- if(!card?.classList.contains('model-card'))return;
- const rail=card.closest('.model-rail');if(!rail)return;
- rail.scrollTo({left:card.offsetLeft-rail.offsetLeft,behavior:'instant'});
-}
-document.addEventListener('click',event=>{
- const link=event.target.closest('.strip-variant-links a[href^="#model-"]');
- if(!link)return;
- event.preventDefault();const hash=link.getAttribute('href');revealModel(hash);
- const card=document.getElementById(hash.slice(1));const showcase=card?.closest('.showcase');
- if(showcase){history.replaceState(null,'',hash);showcase.scrollIntoView({behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'instant':'smooth',block:'start'});}
-});
-addEventListener('hashchange',()=>revealModel(location.hash));
-revealModel(location.hash);
