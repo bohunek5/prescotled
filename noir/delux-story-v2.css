@@ -1,5 +1,5 @@
-/* One approved PCB illustration stays on screen for the entire story. */
-.delux-story{--ribbon-x:66%;--ribbon-width:clamp(260px,22vw,380px);--drawing:1;--colors:0;--readout:0;--ambient:.24;--circuit-presence:1;--ds-ink:#e8ece9;--ds-warm:#f6bd88}
+/* The approved PCB becomes the original technical drawing at the detail heading. */
+.delux-story{--ribbon-x:66%;--ribbon-width:clamp(260px,22vw,380px);--detail-ribbon-width:240px;--detail-tape:0;--drawing:1;--colors:0;--readout:0;--ambient:.24;--circuit-presence:1;--ds-ink:#e8ece9;--ds-warm:#f6bd88}
 .delux-runway{height:480svh}
 .delux-stage{min-height:0;height:100svh;background:#080e10}
 .delux-static-strip{display:none}
@@ -15,14 +15,11 @@
 .delux-color small{font-size:12px;letter-spacing:0}.delux-color span{display:block;font-size:10px;color:#9faaa4;margin-top:8px}
 .delux-conductor{opacity:1}
 .delux-conductor-art{left:var(--ribbon-x);width:var(--ribbon-width);top:80px;bottom:96px;opacity:var(--drawing);mask-image:linear-gradient(180deg,transparent,#000 10%,#000 85%,transparent)}
-.delux-conductor-art::before{content:'';position:absolute;inset:0 -140%;background:radial-gradient(ellipse at center,#ffe6b722,transparent 65%);opacity:var(--ambient);transition:opacity .8s}
+.delux-conductor-art::before{content:'';position:absolute;inset:0 -140%;background:radial-gradient(ellipse at center,#ffe6b722,transparent 65%);opacity:calc(var(--ambient)*(1 - var(--detail-tape)));transition:opacity .8s}
 .delux-conductor-grid{opacity:calc(var(--drawing)*.5)}
-.delux-conductor-stage::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 66% 50%,#ffe6be17,transparent 52%);opacity:calc(var(--drawing)*var(--ambient));transition:opacity .8s}
+.delux-conductor-stage::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 66% 50%,#ffe6be17,transparent 52%);opacity:calc(var(--drawing)*var(--ambient)*(1 - var(--detail-tape)));transition:opacity .8s}
 .delux-circuit-readout{left:80%;top:43%;max-width:17%;opacity:var(--readout);transition:opacity .3s}
 .delux-circuit-readout>strong{font-size:clamp(28px,3vw,48px)}
-.delux-room{opacity:var(--room)}
-.delux-room>img{filter:brightness(calc(.3 + var(--light)*.7));transition:filter .9s}
-.delux-room-shade{background:linear-gradient(90deg,#080e10eb,#080e10bd 35%,#080e1030 68%,#080e108c),linear-gradient(0deg,#080e10,transparent 30%,transparent 75%,#080e1066)}
 .delux-room-copy{top:26%;left:5%;width:43%;max-width:640px}
 .delux-room-copy h2{font-size:clamp(40px,4.3vw,72px);line-height:1.09;margin-bottom:25px}
 .delux-room-copy>p:not(.delux-eyebrow){font-size:clamp(13px,1.05vw,17px);max-width:450px;line-height:1.85}
@@ -52,15 +49,13 @@
 @keyframes delux-channel-flow{from{stroke-dashoffset:1275}to{stroke-dashoffset:0}}
 .delux-series-books{--family-panel:#151d1e;--family-muted:#9baea4;--family-line:#a2b7ae2b;margin:35px 0 80px}
 .delux-series-books .family-panel{min-width:0}
-/* Keep the requested dark photographic opening in both site themes. */
+/* Keep the dark product presentation in both site themes. */
 html[data-theme=day] .delux-stage{background:#080e10;color:#e8ece9}
 html[data-theme=day] .delux-opening .delux-eyebrow,html[data-theme=day] .delux-colors>.delux-eyebrow{color:#a4b3ab}
 html[data-theme=day] .delux-opening em{color:#f6bd88}
 html[data-theme=day] .delux-room-copy,html[data-theme=day] .delux-room-copy h2{color:#e8ece9}
 html[data-theme=day] .delux-room-copy em{color:#f6bd88}
 html[data-theme=day] .delux-room-copy>p{color:#c4ceca}
-html[data-theme=day] .delux-room-shade{background:linear-gradient(90deg,#080e10ed,#080e10bf 36%,#080e1030 72%,#080e1090),linear-gradient(0deg,#080e10,transparent 40%)}
-html[data-theme=day] .delux-room>img{filter:brightness(calc(.3 + var(--light)*.7))}
 html[data-theme=day] .delux-modes button{background:#0c1515c9;color:#e8ece9;border-color:#bacfc544}
 html[data-theme=day] .delux-modes button[aria-pressed=true]{background:#655944a6;border-color:#ffefd498}
 html[data-theme=day] .delux-modes :is(button>span,button em,p),html[data-theme=day] .delux-chapters{color:#c4ceca}
@@ -113,3 +108,16 @@ html[data-theme=day] .delux-series-books{--family-panel:#f6f6ef;--family-muted:#
 .delux-story[data-static-view=true] .delux-conductor,html:not(.has-js) .delux-conductor{display:none}
 .delux-story[data-static-view=true] :is(.delux-chapters,.delux-detail-intro,.delux-detail-veil),html:not(.has-js) :is(.delux-chapters,.delux-detail-intro,.delux-detail-veil){display:none}
 @media(prefers-reduced-motion:reduce){.delux-tech-channel{animation:none!important;stroke-dasharray:none!important}.delux-modes button{transform:none!important}}
+
+/* Restore the original dark technical strip from the detail section onward. */
+.delux-conductor-art{width:calc(var(--ribbon-width)*(1 - var(--detail-tape)) + var(--detail-ribbon-width)*var(--detail-tape))}
+.delux-conductor-ribbon>.delux-approved{opacity:calc(1 - var(--detail-tape))}
+.delux-conductor-ribbon-detail{opacity:var(--detail-tape)}
+.delux-conductor-ribbon:not(.delux-conductor-ribbon-detail){transform:translateY(calc(clamp(150px,20svh,210px) - var(--ribbon-width)*2.369231 - var(--circuit-shift,0px)))}
+.delux-story .delux-technical-detail .delux-tech-energy{display:block}
+.delux-story .delux-technical-detail .delux-tech-pulse{stroke:#fff6e5;filter:drop-shadow(0 0 2px #fff7e580)}
+.delux-story .delux-technical-detail .delux-tech-emission{fill:#fff4dc;filter:drop-shadow(0 0 3px #fff1cc70)}
+.delux-story .delux-technical-detail{--tech-accent:#fff0d2}
+@media(min-width:761px) and (max-width:1100px){.delux-story{--detail-ribbon-width:210px}}
+@media(max-width:760px){.delux-story{--detail-ribbon-width:108px}.delux-conductor-ribbon:not(.delux-conductor-ribbon-detail){transform:translateY(calc(115px - var(--ribbon-width)*2.369231 - var(--circuit-shift,0px)))}}
+@media(max-width:359px){.delux-story{--detail-ribbon-width:92px}}

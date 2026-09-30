@@ -9,14 +9,14 @@ if(root){
  const ease=(p,a,b)=>{const t=clamp((p-a)/(b-a));return t*t*(3-2*t);};
  const buttons=[...root.querySelectorAll('[data-delux-power]')],nav=[...root.querySelectorAll('[data-delux-jump]')];
  const copy=root.querySelector('.delux-room-copy'),opening=root.querySelector('.delux-opening'),colors=root.querySelector('.delux-colors');
- const drawing=root.querySelector('.delux-technical');
- let frame=0,visible=true,pageActive=true,lastMode=-1,manual=null,manualY=0,progress=0,detailProgress=0,renderedFrames=0;
+ const drawings=[...root.querySelectorAll('.delux-technical')],detailHeading=benefits.querySelector('header');
+ let frame=0,visible=true,pageActive=true,lastMode=-1,manual=null,manualY=0,progress=0,detailProgress=0,technicalBlend=0,renderedFrames=0,openingMode=0,openingTimer=0;
  const names=['low','medium','high'],powers=[3,6,11],flux=[460,930,1750];
  const inViewport=()=>{const r=root.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth;};
  function mode(value){
   if(value===lastMode)return;lastMode=value;
   buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===value)));
-  root.dataset.currentMode=names[value];drawing?.setAttribute('data-power',names[value]);
+  root.dataset.currentMode=names[value];drawings.forEach(drawing=>drawing.setAttribute('data-power',names[value]));
   root.querySelector('[data-circuit-mode]').textContent=names[value].toUpperCase();
   root.querySelector('[data-circuit-watts]').textContent=powers[value];
   root.querySelector('[data-circuit-lumens]').textContent=flux[value];
@@ -24,17 +24,27 @@ if(root){
   root.style.setProperty('--ambient',[.24,.58,1][value]);
  }
  function running(){root.dataset.flowRunning=String(visible&&pageActive&&!document.hidden&&!reduced.matches);}
- function stop(){if(frame)cancelAnimationFrame(frame);frame=0;root.dataset.flowRunning='false';}
+ function clearOpeningTimer(){if(openingTimer)clearTimeout(openingTimer);openingTimer=0;}
+ function openingCycle(active){
+  if(!active){clearOpeningTimer();return;}
+  if(!openingTimer)openingTimer=setTimeout(()=>{openingTimer=0;openingMode=(openingMode+1)%3;schedule();},2400);
+ }
+ function stop(){if(frame)cancelAnimationFrame(frame);frame=0;clearOpeningTimer();root.dataset.flowRunning='false';}
  function render(){
   frame=0;if(!visible||!pageActive||document.hidden)return;renderedFrames++;
   const rect=runway.getBoundingClientRect(),br=benefits.getBoundingClientRect();
   progress=staticView()?0:clamp(-rect.top/Math.max(1,runway.offsetHeight-stage.offsetHeight));
   detailProgress=clamp((innerHeight*.65-br.top)/Math.max(1,benefits.offsetHeight-innerHeight*.3));
+  // Change the product illustration only as the "Duży efekt" heading enters.
+  // Both drawings share the same axis and power state, including reverse scroll.
+  technicalBlend=ease(innerHeight-detailHeading.getBoundingClientRect().top,0,innerHeight*.32);
+  root.style.setProperty('--detail-tape',technicalBlend.toFixed(4));
   if(manual!==null&&!staticView()&&Math.abs(scrollY-manualY)>40)manual=null;
   const inDetails=br.top<innerHeight*.62;
   let detailMode=0;
   benefits.querySelectorAll('.delux-benefit').forEach((article,i)=>{if(article.getBoundingClientRect().top<innerHeight*.55)detailMode=i;});
-  const band=manual??(inDetails?detailMode:progress<.56?0:progress<.72?1:2);mode(band);
+  const atOpening=!staticView()&&progress<.015;
+  const band=manual??(atOpening?openingMode:inDetails?detailMode:progress<.56?0:progress<.72?1:2);mode(band);
   const room=ease(progress,.28,.44)*(1-ease(progress,.86,1));
   const light=[.25,.56,1][band];
   const values={'--p':progress,'--room':room,'--light':light,'--hud':1-ease(progress,.24,.34),'--room-copy':ease(progress,.35,.44)*(1-ease(progress,.85,.94)),'--modes':ease(progress,.36,.44)*(1-ease(progress,.85,.94)),'--wash':ease(progress,.87,1),'--detail-intro':ease(progress,.91,.99)};
@@ -56,7 +66,7 @@ if(root){
   opening.setAttribute('aria-hidden',String(!staticView()&&progress>.34));
   colors?.setAttribute('aria-hidden',String(!staticView()&&colorPresence<.05));
   nav.forEach((b,i)=>b.setAttribute('aria-current',(progress<.035?0:progress<.34?1:2)===i?'step':'false'));
-  running();
+  running();openingCycle(atOpening&&manual===null);
  }
  function schedule(){
   visible=inViewport();
@@ -73,6 +83,6 @@ if(root){
  buttons.forEach((b,i)=>b.addEventListener('click',()=>{manual=i;manualY=scrollY;schedule();}));
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else schedule();});
  addEventListener('pagehide',()=>{pageActive=false;stop();});addEventListener('pageshow',()=>{pageActive=true;schedule();});
- root.deluxStory={inspect:()=>({progress,detailProgress,mode:lastMode,manual,reducedMotion:reduced.matches,shortViewport:short.matches,visible,pageActive,renderedFrames,pendingFrame:!!frame,flowRunning:root.dataset.flowRunning==='true',currentMode:root.dataset.currentMode})};
+ root.deluxStory={inspect:()=>({progress,detailProgress,technicalBlend,mode:lastMode,manual,reducedMotion:reduced.matches,shortViewport:short.matches,visible,pageActive,renderedFrames,pendingFrame:!!frame,flowRunning:root.dataset.flowRunning==='true',currentMode:root.dataset.currentMode})};
  visible=inViewport();render();
 }
