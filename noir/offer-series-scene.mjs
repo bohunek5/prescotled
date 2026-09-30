@@ -1,5 +1,5 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {evolutionModels as models,evolutionState,brandIntro} from './offer-series-models.mjs?v=20260927-brand1';
+import {evolutionModels as models,evolutionState,brandIntro} from './offer-series-models.mjs?v=20260930-direct1';
 
 // One physical PCB, with every contact, package and light particle sharing the
 // same deformation. A travelling front changes product technology along it.
@@ -123,7 +123,7 @@ export function createEvolutionScene(host,{presentation=false}={}){
  // CE / RoHS reproduce markings visible on DELUX photographs and the source
  // SLIM / S-Shape product cards; they do not add a certification claim.
  const printMaterials=[],printTextures={day:[],night:[]};let brandPrinted=false;
- const brandCanvas=document.createElement('canvas');brandCanvas.width=2048;brandCanvas.height=294;const brandInk=brandCanvas.getContext('2d');brandInk.font='600 228px Arial';brandInk.textAlign='center';brandInk.textBaseline='middle';brandInk.fillStyle='#c0fff0';brandInk.shadowColor='#48e1c7';brandInk.shadowBlur=24;brandInk.fillText('YOUR BRAND',1024,151);const brandTexture=textureFrom(brandCanvas);
+ const brandCanvas=document.createElement('canvas');brandCanvas.width=2048;brandCanvas.height=294;const brandInk=brandCanvas.getContext('2d');brandInk.font='600 228px Arial';brandInk.textAlign='center';brandInk.textBaseline='middle';brandInk.fillStyle='#142b4a';brandInk.fillText('YOUR BRAND',1024,151);const brandTexture=textureFrom(brandCanvas);
  function patchGeometry(spans,backside){
   const pos=[],uv=[],alongValues=[],indices=[];
   for(const {centre,span,left,right,depth} of spans){
@@ -308,7 +308,9 @@ export function createEvolutionScene(host,{presentation=false}={}){
   const a=sample?.a??resolveModel(models[state.from]),b=sample?.b??resolveModel(models[state.to]);
   const custom=Boolean(sample||(blend>=.5?b.custom:a.custom));
   if(custom!==brandPrinted){brandPrinted=custom;printMaterials.forEach(({material,kind})=>{material.map=custom?kind===0?brandTexture:null:printTextures[presentation?'day':theme][kind];material.opacity=material.map?.95:0;material.needsUpdate=true;});}
-  if(presentation){pcb.color.set(custom?0x293544:0xefefe4);back.color.set(custom?0x142031:0xcbd1c8);}
+  if(custom){pcb.color.set(0xfafaf5);back.color.set(0xf5f5ef);}
+  else if(presentation){pcb.color.set(0xefefe4);back.color.set(0xcbd1c8);}
+  else{pcb.color.set(day?0xe7e9dc:0xdadfce);back.color.set(day?0xc9ccbf:0x66706a);}
   uniforms.uEvoDigitalA.value=['cobdigital','digital'].includes(a.family)?1:0;uniforms.uEvoDigitalB.value=['cobdigital','digital'].includes(b.family)?1:0;
   const time=motion?seconds:0;
   coil.rotation.y=-.38+progress*TAU*1.32+time*.19+pointerX*.2;coil.rotation.z=-.035+pointerY*.022;

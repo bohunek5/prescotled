@@ -1,4 +1,4 @@
-import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState} from './offer-series-models.mjs?v=20260927-brand1';
+import {evolutionModels as models,chapterProgress,modelChapterProgress,modelIndex,storyProgress,setPowerMode,brandState} from './offer-series-models.mjs?v=20260930-direct1';
 const root=document.querySelector('[data-evo-series-preview]');
 if(root){
  const stage=root.querySelector('.evolution-stage'),hosts=[...root.querySelectorAll('.evolution-canvas')];
@@ -147,7 +147,13 @@ if(root){
    if(shortViewport.matches&&!matchMedia('(max-width:760px)').matches){const art=root.querySelector('.evolution-art').getBoundingClientRect();scrollTo({top:Math.max(0,scrollY+art.top+(art.height-innerHeight)/2),behavior:reduced.matches?'instant':'smooth'});}
    return;
   }
-  scrollTo({top:Math.ceil(scrollY+root.getBoundingClientRect().top+chapterProgress[i]*(root.offsetHeight-stage.offsetHeight)),behavior:'smooth'});
+  // A deliberate choice jumps straight to that model. Scroll scrubbing still
+  // uses the continuous story when the visitor moves the wheel or trackpad.
+  manualIndex=i;
+  progress=targetProgress=chapterProgress[i];
+  updateContent(i);
+  scrollTo({top:Math.ceil(scrollY+root.getBoundingClientRect().top+chapterProgress[i]*(root.offsetHeight-stage.offsetHeight)),behavior:'instant'});
+  schedule(true);
  }
  root.querySelectorAll('[data-evo-jump]').forEach((button,i)=>{button.dataset.evoJump=String(chapterProgress[i]);button.addEventListener('click',()=>selectChapter(i));});
  root.querySelectorAll('[data-evo-power-mode]').forEach((button,i)=>button.addEventListener('click',()=>{setPowerMode(i);updateContent(0,true);schedule();}));
@@ -158,7 +164,7 @@ if(root){
  stage.addEventListener('pointerleave',()=>{pointerX=pointerY=0;schedule();});
  root.evolution={inspect:()=>({progress,targetProgress,index,sku:models[index]?.sku,theme,chapterCount:models.length,brandSeconds,brandStep:lastBrandStep,powerMode:models[0].mode,renderer:root.dataset.renderer,reducedMotion:reduced.matches,shortViewport:shortViewport.matches,visible,playing:!!canRotate(),elapsedSeconds,renderedFrames,pendingFrame:!!frame,paintDirty,scene:scene?.inspect?.(),variants:scenes.map(item=>item.inspect?.())})};
  updateContent(0);schedule(true);
- import('./offer-series-scene.mjs?v=20260927-brand1').then(({createEvolutionScene})=>{
+ import('./offer-series-scene.mjs?v=20260930-direct1').then(({createEvolutionScene})=>{
   hosts.forEach((host,i)=>{
    const item=createEvolutionScene(host,{presentation:host.dataset.evolutionVersion==='renewed'});
    scenes.push(item);if(i===0)scene=item;

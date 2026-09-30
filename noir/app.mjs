@@ -1,11 +1,11 @@
 import './theme.mjs';
 import './scharfer-showcase.mjs';
 import './sleeves-page.mjs';
-if(document.querySelector('[data-evo-series-preview]')) import('./offer-series.mjs?v=20260927-brand1');
+if(document.querySelector('[data-evo-series-preview]')) import('./offer-series.mjs?v=20260930-direct1');
 else import('./offer-evolution.mjs?v=20260926-light1');
 import './offer-families.mjs';
 import './card-motion.mjs';
-import './delux-story.mjs';
+import './delux-story.mjs?v=20260930-approved1';
 import('./language.mjs').catch(()=>{});
 document.documentElement.classList.add('js');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
