@@ -1,6 +1,6 @@
 /* The approved PCB becomes the original technical drawing at the detail heading. */
 .delux-story{--ribbon-x:66%;--ribbon-width:clamp(260px,22vw,380px);--detail-ribbon-width:240px;--detail-tape:0;--drawing:1;--colors:0;--readout:0;--ambient:.24;--circuit-presence:1;--ds-ink:#e8ece9;--ds-warm:#f6bd88}
-.delux-runway{height:480svh}
+.delux-runway{height:570svh}
 .delux-stage{min-height:0;height:100svh;background:#080e10}
 .delux-static-strip{display:none}
 .delux-atmosphere{display:none}
@@ -13,11 +13,14 @@
 .delux-color>i{position:relative;display:block;width:34px;height:48px;border-radius:4px;background:var(--swatch);box-shadow:0 0 22px color-mix(in srgb,var(--swatch) 23%,transparent),inset 0 0 12px #fff6;flex:none}
 .delux-color strong{font-size:clamp(23px,2vw,34px);font-weight:400;letter-spacing:-.045em;color:var(--swatch);line-height:1.15;display:block}
 .delux-color small{font-size:12px;letter-spacing:0}.delux-color span{display:block;font-size:10px;color:#9faaa4;margin-top:8px}
+.delux-story[data-enhanced=true]:not([data-static-view=true]) .delux-color{opacity:0;transform:translateY(12px);transition:opacity .65s ease,transform .65s ease,border-color .65s ease}
+.delux-story[data-enhanced=true]:not([data-static-view=true]) .delux-color[data-color-state=active]{opacity:1;transform:none;border-color:color-mix(in srgb,var(--swatch) 50%,transparent)}
+.delux-story[data-enhanced=true]:not([data-static-view=true]) .delux-color[data-color-state=seen]{opacity:.36;transform:none}
 .delux-conductor{opacity:1}
 .delux-conductor-art{left:var(--ribbon-x);width:var(--ribbon-width);top:80px;bottom:96px;opacity:var(--drawing);mask-image:linear-gradient(180deg,transparent,#000 10%,#000 85%,transparent)}
-.delux-conductor-art::before{content:'';position:absolute;inset:0 -140%;background:radial-gradient(ellipse at center,#ffe6b722,transparent 65%);opacity:calc(var(--ambient)*(1 - var(--detail-tape)));transition:opacity .8s}
+.delux-conductor-art::before{content:'';position:absolute;inset:0 -140%;background:radial-gradient(ellipse at center,var(--cct-wash,#ffe6b722),transparent 65%);opacity:calc((var(--ambient) + var(--colors)*.35)*(1 - var(--detail-tape)));transition:opacity .8s}
 .delux-conductor-grid{opacity:calc(var(--drawing)*.5)}
-.delux-conductor-stage::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 66% 50%,#ffe6be17,transparent 52%);opacity:calc(var(--drawing)*var(--ambient)*(1 - var(--detail-tape)));transition:opacity .8s}
+.delux-conductor-stage::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(ellipse at 66% 50%,var(--cct-room,#ffe6be17),transparent 52%);opacity:calc(var(--drawing)*(var(--ambient) + var(--colors)*.35)*(1 - var(--detail-tape)));transition:opacity .8s}
 .delux-circuit-readout{left:80%;top:43%;max-width:17%;opacity:var(--readout);transition:opacity .3s}
 .delux-circuit-readout>strong{font-size:clamp(28px,3vw,48px)}
 .delux-room-copy{top:26%;left:5%;width:43%;max-width:640px}
@@ -36,8 +39,8 @@
 .delux-chapters button,.delux-chapters a{font-size:11px}
 .delux-scroll-meter{margin-left:20px}
 .delux-story .delux-technical .delux-tech-core,.delux-story .delux-technical .delux-tech-energy{display:none}
-.delux-approved-emission{opacity:.3;transition:opacity .8s,filter .8s}
-.delux-story .delux-approved[data-power=low] .delux-approved-emission{opacity:.58;filter:drop-shadow(0 0 7px #ffe4aa) drop-shadow(0 0 16px #ffe2a58c)}
+.delux-approved-emission{fill:var(--cct-led,#fff8e8);opacity:.3;transition:opacity .8s,filter .8s,fill .65s}
+.delux-story .delux-approved[data-power=low] .delux-approved-emission{opacity:calc(.58 + var(--colors)*.35);filter:drop-shadow(0 0 7px var(--cct-halo,#ffe4aa)) drop-shadow(0 0 16px var(--cct-soft,#ffe2a58c))}
 .delux-story .delux-approved[data-power=medium] .delux-approved-emission{opacity:.85;filter:drop-shadow(0 0 12px #fff0cd) drop-shadow(0 0 28px #ffe2abbf)}
 .delux-story .delux-approved[data-power=high] .delux-approved-emission{opacity:1;filter:drop-shadow(0 0 17px #fff9e8) drop-shadow(0 0 45px #ffe9bfdb)}
 .delux-approved-pad{transition:fill .6s,filter .6s}
@@ -71,7 +74,7 @@ html[data-theme=day] .delux-series-books{--family-panel:#f6f6ef;--family-muted:#
 }
 @media(max-width:760px){
  .delux-story{--ribbon-x:81%;--ribbon-width:164px}
- .delux-runway{height:490svh}
+ .delux-runway{height:580svh}
  .delux-stage{height:100svh;min-height:0}
  .delux-opening{top:24%;left:6%;width:88%;max-width:none}
  .delux-opening :is(h1,h2){font-size:clamp(29px,8.3vw,54px);max-width:100%;text-shadow:0 2px 30px #080e10}

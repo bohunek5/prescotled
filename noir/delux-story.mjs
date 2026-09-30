@@ -9,9 +9,37 @@ if(root){
  const ease=(p,a,b)=>{const t=clamp((p-a)/(b-a));return t*t*(3-2*t);};
  const buttons=[...root.querySelectorAll('[data-delux-power]')],nav=[...root.querySelectorAll('[data-delux-jump]')];
  const copy=root.querySelector('.delux-room-copy'),opening=root.querySelector('.delux-opening'),colors=root.querySelector('.delux-colors');
+ const swatches=[...root.querySelectorAll('.delux-color')],temperatures=[2700,3000,4000];
+ const colorStart=.015,colorEnd=.34;
+ const palettes=[{led:[255,217,156],halo:[255,173,68]},{led:[255,235,195],halo:[255,207,139]},{led:[244,247,255],halo:[222,237,255]}];
+ let colorIndex=0;
  const drawings=[...root.querySelectorAll('.delux-technical')],detailHeading=benefits.querySelector('header');
  let frame=0,visible=true,pageActive=true,lastMode=-1,manual=null,manualY=0,progress=0,detailProgress=0,technicalBlend=0,renderedFrames=0,openingMode=0,openingTimer=0;
  const names=['low','medium','high'],powers=[3,6,11],flux=[460,930,1750];
+ function timeline(){
+  const extra=staticView()?0:stage.offsetHeight*.9;
+  return {extra,base:Math.max(1,runway.offsetHeight-stage.offsetHeight-extra)};
+ }
+ function distanceAt(value){
+  const {extra,base}=timeline();
+  return value*base+extra*clamp((value-colorStart)/(colorEnd-colorStart));
+ }
+ const mix=(a,b,t)=>a.map((v,i)=>Math.round(v+(b[i]-v)*t));
+ function colorPreview(presence){
+  colorIndex=progress<.12?0:progress<.22?1:2;
+  root.dataset.colorTemperature=String(temperatures[colorIndex]);
+  swatches.forEach((swatch,i)=>{
+   swatch.dataset.colorState=i===colorIndex?'active':i<colorIndex?'seen':'upcoming';
+   swatch.setAttribute('aria-hidden',String(!staticView()&&i>colorIndex));
+  });
+  const keys=['--cct-led','--cct-halo','--cct-soft','--cct-wash','--cct-room'];
+  if(presence<.001){keys.forEach(key=>root.style.removeProperty(key));return;}
+  const tone=ease(progress,.105,.135)+ease(progress,.205,.235),index=Math.min(1,Math.floor(tone));
+  const led=mix([255,248,232],mix(palettes[index].led,palettes[index+1].led,tone-index),presence);
+  const halo=mix([255,228,170],mix(palettes[index].halo,palettes[index+1].halo,tone-index),presence);
+  const values=[`rgb(${led.join(',')})`,`rgb(${halo.join(',')})`,`rgba(${halo.join(',')},.55)`,`rgba(${halo.join(',')},.16)`,`rgba(${halo.join(',')},.1)`];
+  keys.forEach((key,i)=>root.style.setProperty(key,values[i]));
+ }
  const inViewport=()=>{const r=root.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth;};
  function mode(value){
   if(value===lastMode)return;lastMode=value;
@@ -33,7 +61,10 @@ if(root){
  function render(){
   frame=0;if(!visible||!pageActive||document.hidden)return;renderedFrames++;
   const rect=runway.getBoundingClientRect(),br=benefits.getBoundingClientRect();
-  progress=staticView()?0:clamp(-rect.top/Math.max(1,runway.offsetHeight-stage.offsetHeight));
+  const {extra,base}=timeline(),offset=Math.max(0,-rect.top),colorEntry=base*colorStart,colorExit=base*colorEnd+extra;
+  // Extra reading distance belongs only to the three colour previews.
+  // Subsequent chapters retain their original scroll distances and thresholds.
+  progress=staticView()?0:clamp(offset<=colorEntry?offset/base:offset<colorExit?colorStart+(offset-colorEntry)/(colorExit-colorEntry)*(colorEnd-colorStart):(offset-extra)/base);
   detailProgress=clamp((innerHeight*.65-br.top)/Math.max(1,benefits.offsetHeight-innerHeight*.3));
   // Change the product illustration only as the "Duży efekt" heading enters.
   // Both drawings share the same axis and power state, including reverse scroll.
@@ -50,10 +81,11 @@ if(root){
   const values={'--p':progress,'--room':room,'--light':light,'--hud':1-ease(progress,.24,.34),'--room-copy':ease(progress,.35,.44)*(1-ease(progress,.85,.94)),'--modes':ease(progress,.36,.44)*(1-ease(progress,.85,.94)),'--wash':ease(progress,.87,1),'--detail-intro':ease(progress,.91,.99)};
   for(const [name,value] of Object.entries(values))stage.style.setProperty(name,value.toFixed(4));
   root.style.setProperty('--drawing','1');
-  const colorPresence=ease(progress,.015,.07)*(1-ease(progress,.23,.32));
+  const colorPresence=ease(progress,.015,.045)*(1-ease(progress,.30,.34));
   root.style.setProperty('--colors',colorPresence.toFixed(4));
+  colorPreview(colorPresence);
   root.style.setProperty('--readout',ease(progress,.88,.96).toFixed(4));
-  const storyY=Math.max(0,-root.getBoundingClientRect().top),shift=staticView()?0:Math.min(innerWidth<761?110:250,storyY*.055);
+  const storyY=Math.max(0,-root.getBoundingClientRect().top)-extra*clamp((progress-colorStart)/(colorEnd-colorStart)),shift=staticView()?0:Math.min(innerWidth<761?110:250,storyY*.055);
   root.style.setProperty('--circuit-shift',shift.toFixed(2)+'px');
   // The bright front advances with reading position; a smaller repeating pulse
   // remains visible during pauses. Neither represents an electrical schematic.
@@ -79,10 +111,10 @@ if(root){
  },{threshold:.001});observer.observe(root);
  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});
  const viewChanged=()=>{manual=null;stop();schedule();};reduced.addEventListener('change',viewChanged);short.addEventListener('change',viewChanged);
- nav.forEach(b=>b.addEventListener('click',()=>{manual=null;const travel=runway.offsetHeight-stage.offsetHeight;scrollTo({top:scrollY+runway.getBoundingClientRect().top+Number(b.dataset.deluxJump)*travel,behavior:reduced.matches?'instant':'smooth'});}));
+ nav.forEach(b=>b.addEventListener('click',()=>{manual=null;scrollTo({top:scrollY+runway.getBoundingClientRect().top+distanceAt(Number(b.dataset.deluxJump)),behavior:reduced.matches?'instant':'smooth'});}));
  buttons.forEach((b,i)=>b.addEventListener('click',()=>{manual=i;manualY=scrollY;schedule();}));
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else schedule();});
  addEventListener('pagehide',()=>{pageActive=false;stop();});addEventListener('pageshow',()=>{pageActive=true;schedule();});
- root.deluxStory={inspect:()=>({progress,detailProgress,technicalBlend,mode:lastMode,manual,reducedMotion:reduced.matches,shortViewport:short.matches,visible,pageActive,renderedFrames,pendingFrame:!!frame,flowRunning:root.dataset.flowRunning==='true',currentMode:root.dataset.currentMode})};
+ root.deluxStory={inspect:()=>({progress,detailProgress,technicalBlend,colorTemperature:temperatures[colorIndex],mode:lastMode,manual,reducedMotion:reduced.matches,shortViewport:short.matches,visible,pageActive,renderedFrames,pendingFrame:!!frame,flowRunning:root.dataset.flowRunning==='true',currentMode:root.dataset.currentMode})};
  visible=inViewport();render();
 }

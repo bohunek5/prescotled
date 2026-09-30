@@ -5,7 +5,7 @@ if(document.querySelector('[data-evo-series-preview]')) import('./offer-series.m
 else import('./offer-evolution.mjs?v=20260926-light1');
 import './offer-families.mjs';
 import './card-motion.mjs';
-import './delux-story.mjs?v=20260930-detail2';
+import './delux-story.mjs?v=20260930-colors3';
 import('./language.mjs').catch(()=>{});
 document.documentElement.classList.add('js');
 const reduce = matchMedia('(prefers-reduced-motion: reduce)');
