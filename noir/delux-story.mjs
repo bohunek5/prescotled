@@ -30,7 +30,7 @@ if(root){
   root.dataset.colorTemperature=String(temperatures[colorIndex]);
   swatches.forEach((swatch,i)=>{
    swatch.dataset.colorState=i===colorIndex?'active':i<colorIndex?'seen':'upcoming';
-   swatch.setAttribute('aria-hidden',String(!staticView()&&i>colorIndex));
+   swatch.setAttribute('aria-hidden',String(!staticView()&&i!==colorIndex));
   });
   const keys=['--cct-led','--cct-halo','--cct-soft','--cct-wash','--cct-room'];
   if(presence<.001){keys.forEach(key=>root.style.removeProperty(key));return;}
@@ -43,7 +43,8 @@ if(root){
  const inViewport=()=>{const r=root.getBoundingClientRect();return r.bottom>0&&r.top<innerHeight&&r.right>0&&r.left<innerWidth;};
  function mode(value){
   if(value===lastMode)return;lastMode=value;
-  buttons.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===value)));
+  buttons.forEach((b,i)=>{b.setAttribute('aria-pressed',String(i===value));b.dataset.powerState=i===value?'active':i<value?'seen':'upcoming';});
+  selectors.forEach((b,i)=>b.setAttribute('aria-pressed',String(i===value)));
   root.dataset.currentMode=names[value];drawings.forEach(drawing=>drawing.setAttribute('data-power',names[value]));
   root.querySelector('[data-circuit-mode]').textContent=names[value].toUpperCase();
   root.querySelector('[data-circuit-watts]').textContent=powers[value];
@@ -93,7 +94,7 @@ if(root){
   const controls=staticView()||(progress>.37&&progress<.92);
   root.dataset.modeControls=String(controls);root.dataset.final=String(progress>.95);root.dataset.detailVisible=String(inDetails);
   root.dataset.staticView=String(staticView());
-  buttons.forEach(b=>b.tabIndex=controls?0:-1);root.querySelector('.delux-modes').inert=!controls;
+  buttons.forEach((b,i)=>{b.tabIndex=controls&&(staticView()||i===lastMode)?0:-1;b.setAttribute('aria-hidden',String(!staticView()&&i!==lastMode));});root.querySelector('.delux-modes').inert=!controls;
   copy.setAttribute('aria-hidden',String(!staticView()&&(progress<.35||progress>.95)));
   opening.setAttribute('aria-hidden',String(!staticView()&&progress>.34));
   colors?.setAttribute('aria-hidden',String(!staticView()&&colorPresence<.05));
@@ -112,7 +113,10 @@ if(root){
  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});
  const viewChanged=()=>{manual=null;stop();schedule();};reduced.addEventListener('change',viewChanged);short.addEventListener('change',viewChanged);
  nav.forEach(b=>b.addEventListener('click',()=>{manual=null;scrollTo({top:scrollY+runway.getBoundingClientRect().top+distanceAt(Number(b.dataset.deluxJump)),behavior:reduced.matches?'instant':'smooth'});}));
- buttons.forEach((b,i)=>b.addEventListener('click',()=>{manual=i;manualY=scrollY;schedule();}));
+ const picker=document.createElement('div');picker.className='delux-mode-picker';picker.setAttribute('role','group');picker.setAttribute('aria-label','Poziom mocy');
+ const selectors=names.map((name,i)=>{const button=document.createElement('button');button.type='button';button.textContent=['L','M','H'][i];button.setAttribute('aria-label',`${name.toUpperCase()} · ${powers[i]} W/m`);picker.append(button);return button;});
+ root.querySelector('.delux-modes').append(picker);
+ [buttons,selectors].forEach(group=>group.forEach((b,i)=>b.addEventListener('click',()=>{manual=i;manualY=scrollY;schedule();})));
  document.addEventListener('visibilitychange',()=>{if(document.hidden)stop();else schedule();});
  addEventListener('pagehide',()=>{pageActive=false;stop();});addEventListener('pageshow',()=>{pageActive=true;schedule();});
  root.deluxStory={inspect:()=>({progress,detailProgress,technicalBlend,colorTemperature:temperatures[colorIndex],mode:lastMode,manual,reducedMotion:reduced.matches,shortViewport:short.matches,visible,pageActive,renderedFrames,pendingFrame:!!frame,flowRunning:root.dataset.flowRunning==='true',currentMode:root.dataset.currentMode})};
