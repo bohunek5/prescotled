@@ -45,6 +45,13 @@ for(const root of document.querySelectorAll('[data-strip-story]')){
   const model=config.models[state.model];
   const readout=root.querySelector('.strip-detail-readout');
   if(readout){readout.dataset.wide=String((callout?.value||state.label||state.channel).length>9);readout.querySelector('[data-detail-value]').textContent=callout?.value||state.label||state.channel;readout.querySelector('[data-detail-caption]').textContent=callout?.label||'';readout.querySelector('[data-detail-spec]').textContent=model.spec;readout.querySelector('[data-detail-sku]').textContent=model.sku;}
+  const facts=readout?.querySelector('[data-detail-facts]');
+  if(facts){
+   facts.replaceChildren(...(callout?.facts||[]).filter(key=>model.facts[key]&&!model.facts[key].includes('—')).map(key=>{
+    const row=document.createElement('div'),label=document.createElement('dt'),value=document.createElement('dd');
+    label.textContent=key;value.textContent=model.facts[key];row.append(label,value);return row;
+   }));
+  }
  }
  function cycleDetail(running){
   if(!running){if(detailTimer)clearTimeout(detailTimer);detailTimer=0;return;}
