@@ -163,9 +163,41 @@ html[data-theme=day] .strip-details h2 em{color:var(--strip-light)}
 .strip-story:not([data-enhanced=true]) .strip-scene:not(:first-child) .strip-scene-copy,.strip-story[data-static=true] .strip-scene:not(:first-child) .strip-scene-copy{width:100%;max-width:700px}
 .strip-story:not([data-enhanced=true]) .strip-skip,.strip-story[data-static=true] .strip-skip{display:none}
 .strip-story[data-static=true] .strip-travel{display:none}
-@media(prefers-reduced-motion:reduce){.strip-story *,.strip-book{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+@media(prefers-reduced-motion:reduce){.strip-story *{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 .strip-story:not([data-enhanced=true]) .strip-conductor-stage,.strip-story[data-static=true] .strip-conductor-stage{position:relative;height:650px}
 .strip-story:not([data-enhanced=true]) .strip-details>*,.strip-story[data-static=true] .strip-details>*{width:100%;max-width:700px}
 .strip-story:not([data-enhanced=true]) .strip-detail-readout,.strip-story[data-static=true] .strip-detail-readout{display:none}
 @media(prefers-reduced-motion:reduce){.strip-story *{animation:none!important;transition:none!important}}
+
+/* Construction-specific illustrations: COB coatings, separate channels and S necks. */
+.strip-board .s-neck{fill:none;stroke:color-mix(in srgb,#efeee5,#304b49 var(--night));stroke-width:12;stroke-linecap:round}
+.strip-board .emission{opacity:calc(var(--strip-strength)*var(--emitter,1))}
+.strip-board .emission-hotspot{opacity:calc(var(--strip-strength)*var(--emitter,1)*.65)}
+.strip-board .cob-cover{fill:color-mix(in srgb,#eedca2,#344843 var(--night));stroke:color-mix(in srgb,#e4d89d,#729b8e var(--night));stroke-width:.6}
+.strip-board .wcob-cover{fill:color-mix(in srgb,#f5f4ef,#738a82 var(--night));stroke:#b1c7bf;stroke-width:.5}
+.strip-board .cob-highlight{fill:none;stroke:#fffcf1;stroke-width:1.5;opacity:calc(var(--strip-strength)*var(--emitter,1)*.6)}
+.strip-board .cut-guide{stroke:#88978a;stroke-width:.6;stroke-dasharray:3 3;fill:none}
+.strip-board .ic{fill:#142024;stroke:#668279;stroke-width:.7}.strip-board .ic-print{fill:#9ab5a8;font:5px Arial,sans-serif}
+.strip-story[data-running=true] .board-digital .cob-section{animation:digital-wave 3.6s ease-in-out infinite;animation-delay:calc(var(--section)*-.48s)}
+@keyframes digital-wave{0%,100%{opacity:.32}45%,70%{opacity:1}}
+.strip-story[data-channel=RGB][data-running=true] .board-digital .cob-emission{animation:digital-colour 7s linear infinite;animation-delay:calc(var(--section)*-.8s)}
+@keyframes digital-colour{0%,100%{fill:#d58dff}33%{fill:#78c3ff}66%{fill:#88f1b2}}
+@media(prefers-reduced-motion:reduce){.strip-story .cob-section,.strip-story .cob-emission{animation:none!important}}
+
+/* Keep the reading size consistent with the DELUX 3w1 reference. */
+.strip-details>header,.strip-benefit,.strip-detail-close{max-width:730px}
+.strip-details p:not(.eyebrow){font-size:clamp(16px,1.25vw,21px);line-height:1.85;max-width:650px;color:#b3c4bc}
+.strip-details h3{font-size:clamp(36px,3.5vw,64px)}
+.strip-details .eyebrow{font-size:11px}.strip-benefit dt{font-size:11px}.strip-benefit dd{font-size:clamp(24px,2.1vw,36px)}
+.strip-detail-readout>span{font-size:11px}.strip-detail-readout p{font-size:clamp(12px,1vw,16px)}.strip-detail-readout small{font-size:10px}
+@media(max-width:760px){.strip-details p:not(.eyebrow){font-size:14px}.strip-details h3{font-size:clamp(29px,7.7vw,42px)}.strip-details .eyebrow{font-size:9px}.strip-benefit dt{font-size:9px}.strip-benefit dd{font-size:21px}.strip-detail-readout>span{font-size:7px}.strip-detail-readout p{font-size:9px}.strip-detail-readout strong{font-size:21px}}
+
+.strip-detail-readout[data-wide=true] strong{font-size:clamp(22px,2.1vw,36px)}
+.strip-detail-readout .strip-detail-caption{color:#c4d5cd;font-size:12px;line-height:1.65;margin:0 0 24px}
+@media(max-width:760px){.strip-detail-readout[data-wide=true] strong{font-size:16px}.strip-detail-readout .strip-detail-caption{font-size:9px;margin-bottom:12px;line-height:1.6}}
+
+.strip-travel{left:calc(50% + var(--pcb-half,28%) + 9px)}
+.strip-board .freecut-tick{fill:none;stroke:#a4b9a8;stroke-width:.8;opacity:.65}
+
+@media(max-width:760px){.strip-detail-readout{padding:7px 0 20px;background:linear-gradient(#080f11 65%,#080f11dd 85%,transparent)}}

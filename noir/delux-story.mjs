@@ -72,11 +72,18 @@ if(root){
   technicalBlend=ease(innerHeight-detailHeading.getBoundingClientRect().top,0,innerHeight*.32);
   root.style.setProperty('--detail-tape',technicalBlend.toFixed(4));
   if(manual!==null&&!staticView()&&Math.abs(scrollY-manualY)>40)manual=null;
-  const inDetails=br.top<innerHeight*.62;
+  const inDetails=technicalBlend>.01;
   let detailMode=0;
   benefits.querySelectorAll('.delux-benefit').forEach((article,i)=>{if(article.getBoundingClientRect().top<innerHeight*.55)detailMode=i;});
   const atOpening=!staticView()&&progress<.015;
   const band=manual??(atOpening?openingMode:inDetails?detailMode:progress<.56?0:progress<.72?1:2);mode(band);
+  const readout=root.querySelector('.delux-circuit-readout');
+  const contextual=inDetails&&detailMode>0;
+  readout.querySelector('[data-circuit-mode]').textContent=contextual?(detailMode===1?'50 mm':'7 lat'):names[band].toUpperCase();
+  readout.querySelector('span').textContent=contextual?(detailMode===1?'DELUX 3w1 / PRECYZJA MONTAŻU':'DELUX 3w1 / POLSKA PRODUKCJA'):'DELUX 3w1 / 24 V DC';
+  readout.querySelector('[data-circuit-watts]').closest('p').style.display=contextual?'none':'';
+  featureReadout.style.display=contextual?'block':'none';featureReadout.textContent=detailMode===1?'Moduł cięcia · 10 mm PCB · 160 LED/m':'Gwarancja DELUX · płytka PCB 4 oz';
+  readout.querySelector('div').style.display=contextual?'none':'';
   const room=ease(progress,.28,.44)*(1-ease(progress,.86,1));
   const light=[.25,.56,1][band];
   const values={'--p':progress,'--room':room,'--light':light,'--hud':1-ease(progress,.24,.34),'--room-copy':ease(progress,.35,.44)*(1-ease(progress,.85,.94)),'--modes':ease(progress,.36,.44)*(1-ease(progress,.85,.94)),'--wash':ease(progress,.87,1),'--detail-intro':ease(progress,.91,.99)};
@@ -85,7 +92,7 @@ if(root){
   const colorPresence=ease(progress,.015,.045)*(1-ease(progress,.30,.34));
   root.style.setProperty('--colors',colorPresence.toFixed(4));
   colorPreview(colorPresence);
-  root.style.setProperty('--readout',ease(progress,.88,.96).toFixed(4));
+  root.style.setProperty('--readout',technicalBlend.toFixed(4));
   const storyY=Math.max(0,-root.getBoundingClientRect().top)-extra*clamp((progress-colorStart)/(colorEnd-colorStart)),shift=staticView()?0:Math.min(innerWidth<761?110:250,storyY*.055);
   root.style.setProperty('--circuit-shift',shift.toFixed(2)+'px');
   // The bright front advances with reading position; a smaller repeating pulse
@@ -95,7 +102,9 @@ if(root){
   root.dataset.modeControls=String(controls);root.dataset.final=String(progress>.95);root.dataset.detailVisible=String(inDetails);
   root.dataset.staticView=String(staticView());
   buttons.forEach((b,i)=>{b.tabIndex=controls&&(staticView()||i===lastMode)?0:-1;b.setAttribute('aria-hidden',String(!staticView()&&i!==lastMode));});root.querySelector('.delux-modes').inert=!controls;
-  copy.setAttribute('aria-hidden',String(!staticView()&&(progress<.35||progress>.95)));
+  copy.setAttribute('aria-hidden',String(!staticView()&&(progress<.35||progress>=.90)));
+  copy.style.visibility=staticView()||progress>=.35&&progress<.90?'visible':'hidden';
+  root.querySelector('.delux-detail-intro').style.visibility=!staticView()&&progress>=.91?'visible':'hidden';
   opening.setAttribute('aria-hidden',String(!staticView()&&progress>.34));
   colors?.setAttribute('aria-hidden',String(!staticView()&&colorPresence<.05));
   nav.forEach((b,i)=>b.setAttribute('aria-current',(progress<.035?0:progress<.34?1:2)===i?'step':'false'));
@@ -113,6 +122,7 @@ if(root){
  addEventListener('scroll',schedule,{passive:true});addEventListener('resize',schedule,{passive:true});
  const viewChanged=()=>{manual=null;stop();schedule();};reduced.addEventListener('change',viewChanged);short.addEventListener('change',viewChanged);
  nav.forEach(b=>b.addEventListener('click',()=>{manual=null;scrollTo({top:scrollY+runway.getBoundingClientRect().top+distanceAt(Number(b.dataset.deluxJump)),behavior:reduced.matches?'instant':'smooth'});}));
+ const featureReadout=document.createElement('p');featureReadout.className='delux-feature-readout';root.querySelector('.delux-circuit-readout').append(featureReadout);
  const picker=document.createElement('div');picker.className='delux-mode-picker';picker.setAttribute('role','group');picker.setAttribute('aria-label','Poziom mocy');
  const selectors=names.map((name,i)=>{const button=document.createElement('button');button.type='button';button.textContent=['L','M','H'][i];button.setAttribute('aria-label',`${name.toUpperCase()} · ${powers[i]} W/m`);picker.append(button);return button;});
  root.querySelector('.delux-modes').append(picker);

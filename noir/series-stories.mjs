@@ -23,21 +23,28 @@ for(const root of document.querySelectorAll('[data-strip-story]')){
   });
   jumps.forEach((button,i)=>button.setAttribute('aria-current',i===index?'step':'false'));
  }
- function setVisual(state,night){
-  const key=JSON.stringify([state,night]);if(key===lastVisual)return;lastVisual=key;
+ function setVisual(state,night,callout){
+  const key=JSON.stringify([state,night,callout?.value]);if(key===lastVisual)return;lastVisual=key;
   root.dataset.channel=state.channel;
   root.dataset.sku=config.models[state.model].sku;
   root.style.setProperty('--strip-light',state.color);
   root.style.setProperty('--strip-core',state.color);
   root.style.setProperty('--strip-strength',night?'.76':state.channel==='detail'?'.24':config.kind==='slim'&&state.model===3?'.95':config.kind==='bread'&&state.model===1?'.92':index===0?'.58':'.8');
-  art.forEach((layer,i)=>layer.dataset.active=String(i===(state.geometry??config.models[state.model].geometry)));
+  const geometry=state.geometry??config.models[state.model].geometry;
+  art.forEach((layer,i)=>layer.dataset.active=String(i===geometry));
+  root.style.setProperty('--pcb-half',Number(art[geometry].querySelector('.strip-board').dataset.width)*10/180*50+'%');
   for(const terminal of root.querySelectorAll('.strip-terminal')){
    const channel=terminal.dataset.channel;
-   terminal.dataset.lit=String(channel.startsWith('+')||channel==='−'||state.channel===channel||state.channel==='RGB'&&['R','G','B'].includes(channel));
+   terminal.dataset.lit=String(channel.startsWith('+')||['−','D','GND'].includes(channel)||state.channel==='CCT'&&['CW','WW'].includes(channel)||state.channel===channel||state.channel==='RGB'&&['R','G','B'].includes(channel));
+  }
+  for(const led of root.querySelectorAll('[data-led-channel]')){
+   const ch=led.dataset.ledChannel;
+   const lit=ch==='ALL'||state.channel==='detail'||state.channel===ch||state.channel==='RGB'&&['R','G','B'].includes(ch)||state.channel==='CCT'&&['CW','WW'].includes(ch)||ch==='RGB'&&['R','G','B'].includes(state.channel);
+   led.style.setProperty('--emitter',lit?'1':'.035');
   }
   const model=config.models[state.model];
   const readout=root.querySelector('.strip-detail-readout');
-  if(readout){readout.querySelector('[data-detail-value]').textContent=state.label||state.channel;readout.querySelector('[data-detail-spec]').textContent=model.spec;readout.querySelector('[data-detail-sku]').textContent=model.sku;}
+  if(readout){readout.dataset.wide=String((callout?.value||state.label||state.channel).length>9);readout.querySelector('[data-detail-value]').textContent=callout?.value||state.label||state.channel;readout.querySelector('[data-detail-caption]').textContent=callout?.label||'';readout.querySelector('[data-detail-spec]').textContent=model.spec;readout.querySelector('[data-detail-sku]').textContent=model.sku;}
  }
  function cycleDetail(running){
   if(!running){if(detailTimer)clearTimeout(detailTimer);detailTimer=0;return;}
@@ -60,7 +67,7 @@ for(const root of document.querySelectorAll('[data-strip-story]')){
   if(current!==detailIndex){detailIndex=current;detailBeat=0;}
   const detail=config.details?.[Math.max(0,detailIndex)];
   const visual=inDetails&&detail?detail.colors[detailBeat%detail.colors.length]:config.states[index];
-  setVisual(visual,inDetails);
+  setVisual(visual,inDetails,inDetails?detail:null);
   cycleDetail(inDetails&&visible&&!staticMode&&detail?.colors.length>1);
   const shift=progress*(innerWidth<761?55:110)+Math.max(0,-detailTop)*.025;
   root.style.setProperty('--strip-shift',`${-Math.min(shift,innerWidth<761?140:240)}px`);
