@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1136,
-  "bytesExcludingManifest": 307993016,
+  "bytesExcludingManifest": 307993551,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -5681,8 +5681,8 @@
       "source": "noir/voltage-placement.mjs"
     },
     "targi/index.html": {
-      "bytes": 2930,
-      "sha256": "a514ed01b641bbeee7ae518d31450b745cc0edb659988b3b9a2e27d1d15aa443",
+      "bytes": 3465,
+      "sha256": "88dbb76ed1ba8807fe59c581f6e1c57fca89e330ac389bfa52375a7bfc6ad3c1",
       "source": "targi/index.html"
     },
     "targi/media/profile-klus.jpg": {
