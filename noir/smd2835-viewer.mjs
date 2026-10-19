@@ -1,11 +1,11 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-7';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-8';
 import {mainFilmProducts,filmProductsForFamily} from './strip-film-selection.mjs?v=detail-4';
 import {resolveFilmVariant} from './strip-product-variants.mjs?v=1';
 import {createPresentation,sampleVariant} from './strip-presentation.mjs?v=detail-8';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
-import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-9';
+import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-10';
 import {createNumberAnimator} from './film-numbers.mjs?v=capture-1';
 import {createVoltageCue} from './strip-lighting.mjs?v=detail-10';
 import {frameStripSection} from './strip-section-camera.mjs?v=detail-4';
@@ -273,6 +273,7 @@ function updateColorVariant(local=0){
   if(key===colorKey)return;
   const previousSource=effectiveProduct.sourceProductId??effectiveProduct.id;
   colorKey=key;colorVariant=v;effectiveProduct=resolveFilmVariant(p,v);
+  model.setPrintedProduct?.(effectiveProduct);
   if(previousSource!==effectiveProduct.sourceProductId)featureIcons.update(effectiveProduct);
   model.setTemperature(v.kelvin);featureIcons.setColor(v.kelvin);
   model.group.userData.catalogueDensity=Number(effectiveProduct.density);

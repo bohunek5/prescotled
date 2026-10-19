@@ -41,7 +41,7 @@ async function load(card){
   const url=new URL('../model-smd-2835/',location.href);
   url.searchParams.set('family',card.group);url.searchParams.set('embed','1');url.searchParams.set('autoplay','0');
   if(film)url.searchParams.set('film','1');
-  url.searchParams.set('scale',String(card.scale));url.searchParams.set('v','quad-master-1');
+  url.searchParams.set('scale',String(card.scale));url.searchParams.set('v','quad-master-2');
   card.frame.src=url.href;
  });
  const started=performance.now();

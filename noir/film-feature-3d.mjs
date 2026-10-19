@@ -194,56 +194,53 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     const glow=mesh(v.actor,keep(new T.PlaneGeometry(4.3,4.3)),glowMaterial,0,0,-.3);v.moving.push({object:glow,type:'glow'});
   }
   function bread(v){
+    // One intact kaiser roll: its five curved scores are recessed into a
+    // continuous crust. There are no detached halves or crumb particles.
     const smooth=x=>{const t=T.MathUtils.clamp(x,0,1);return t*t*(3-2*t);};
-    const crust=mat(0xffffff,{vertexColors:true,roughness:.56,metalness:0,clearcoat:.18,sheen:.2,sheenColor:0xffd59a,sheenRoughness:.7});
-    const score=mat(0xb37737,{roughness:.82,metalness:0,clearcoat:0});
-    const pore=mat(0xc49554,{roughness:1,metalness:0,clearcoat:0});
-    const halves=[];
-    for(const side of [-1,1]){
-      const half=new T.Group();v.actor.add(half);halves.push({half,side});
-      const geometry=keep(new T.SphereGeometry(1,48,32,side===1?Math.PI/2:-Math.PI/2,Math.PI)),positions=geometry.attributes.position,colors=[];
-      for(let i=0;i<positions.count;i++){
-        const x=positions.getX(i),y=positions.getY(i),z=positions.getZ(i),grain=Math.sin(x*31+y*47+z*29)*Math.sin(y*37-x*19);
-        const uneven=1+.009*grain+.013*Math.sin(x*7+y*5)*Math.sin(z*8);
-        positions.setXYZ(i,x*1.16*uneven,y*1.04*uneven,z*.7*uneven);
-        const warmth=.5+.21*Math.sin(x*8-y*11)+.07*grain;
-        const color=new T.Color(0x87431e).lerp(new T.Color(0xc88939),T.MathUtils.clamp(warmth+.14*Math.max(0,z),0,1));colors.push(color.r,color.g,color.b);
-      }
-      geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();mesh(half,geometry,crust);
-      const inside=keep(new T.CircleGeometry(1,48));inside.rotateY(Math.PI/2);inside.scale(1,1.035,.695);
-      mesh(half,inside,mat(0xf3d89c,{roughness:.88,metalness:0,clearcoat:0,side:T.DoubleSide}),side*.002,0,0);
-      const poreGeometry=keep(new T.SphereGeometry(1,8,6));
-      for(let i=0;i<17;i++){
-        const radius=Math.sqrt((i+.5)/17)*.86,angle=i*2.39996,y=Math.cos(angle)*radius,z=Math.sin(angle)*radius*.64;
-        const hole=mesh(half,poreGeometry,pore,side*.008,y,z);hole.scale.set(.007,.018+(i%3)*.011,.024+(i%4)*.007);
-      }
-    }
-    // Five gently curved scores give the roll its characteristic crown.
-    for(let arm=0;arm<5;arm++){
-      const points=[];
-      for(let i=0;i<=22;i++){const r=.09+.8*i/22,a=arm*Math.PI*2/5+.35*r;points.push(new T.Vector3(Math.cos(a)*r*1.16,Math.sin(a)*r*1.04,.7*Math.sqrt(1-r*r)-.016));}
-      const owner=halves[points[4].x<0?0:1].half;
-      mesh(owner,keep(new T.TubeGeometry(new T.CatmullRomCurve3(points),28,.025,8,false)),score);
-    }
-    const seedGeometry=keep(new T.SphereGeometry(1,10,8)),seedMaterials=[0xe9cb8d,0xcfa363,0xf1d89f].map(color=>mat(color,{roughness:.48,metalness:0,clearcoat:.22}));
-    for(let i=0;i<29;i++){
-      const r=Math.sqrt((i+.4)/29)*.86,a=i*2.39996+.4,x=Math.cos(a)*r*1.16,y=Math.sin(a)*r*1.04,z=.7*Math.sqrt(1-r*r);
-      const seed=mesh(halves[x<0?0:1].half,seedGeometry,seedMaterials[i%3],x,y,z+.025);
-      seed.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),new T.Vector3(x/1.3456,y/1.0816,z/.49).normalize());seed.rotateZ(a+.6*Math.sin(i*3.1));seed.scale.set(.04,.092+(i%3)*.012,.024);
-    }
-    const crumbs=[];
-    for(let i=0;i<6;i++){
-      const material=mat(0xe6bf7e,{roughness:.86,metalness:0,clearcoat:0,transparent:true,opacity:0});
-      const piece=mesh(v.actor,keep(new T.IcosahedronGeometry(.025+(i%3)*.012,0)),material);piece.visible=false;crumbs.push(piece);
-    }
-    distinction={kind:'bread',shape:'kaiser-roll',sunflowerSeeds:29,halves:2,crumbs:6,opening:0,visibleCrumbs:0};
-    v.animate=(time,reduced)=>{
-      const phase=((time%7)+7)%7/7,opening=reduced?0:smooth((phase-.12)/.18)*(1-smooth((phase-.67)/.22));
-      for(const {half,side} of halves){half.position.x=side*opening*.14;half.rotation.y=side*opening*.3;half.rotation.z=-side*opening*.025;}
-      crust.roughness=reduced?.56:.56+.025*Math.sin(time*.8);let visible=0;
-      crumbs.forEach((piece,i)=>{const age=(phase-(.29+i*.025))/.31;piece.visible=!reduced&&age>=0&&age<1;if(!piece.visible)return;visible++;const side=i%2?1:-1;piece.position.set(side*(.04+.31*age),.24-1.7*age*age,.64+.12*age);piece.rotation.set(age*3+i,age*4-i,age*2);piece.material.opacity=smooth(age/.1)*(1-smooth((age-.7)/.3));});
-      distinction.opening=opening;distinction.visibleCrumbs=visible;
+    const surface=(radius,angle,front=true)=>{
+      const wave=angle-.56*radius-.18;
+      const nearest=Math.abs(Math.atan2(Math.sin(5*wave),Math.cos(5*wave)))/5;
+      const distance=radius*Math.sin(nearest),scoreWidth=.026+.035*radius;
+      const pentagon=.17*Math.cos(Math.PI/5)/Math.cos(nearest);
+      const center=1-smooth((radius-pentagon)/.05);
+      const groove=(1-smooth(distance/scoreWidth))*(1-smooth((radius-.78)/.18));
+      const score=front?Math.max(center,groove):0;
+      const lobe=1+.027*Math.cos(5*wave)*radius*radius;
+      const x=Math.cos(angle)*radius*1.16*lobe,y=Math.sin(angle)*radius*1.04*lobe;
+      const grain=Math.sin(x*79+y*61)*Math.sin(y*53-x*43);
+      const z=(front?.7:-.42)*Math.sqrt(Math.max(0,1-radius*radius))-(front?.065*score:0)+.001*grain;
+      return {x,y,z,score,grain};
     };
+    const positions=[],colors=[],indices=[],rings=72,sectors=160;
+    const toast=new T.Color(0x965025),gold=new T.Color(0xc28135),cut=new T.Color(0xdbbd82);
+    for(let ring=0;ring<=rings;ring++){
+      const phi=ring/rings*Math.PI,radius=Math.sin(phi),front=phi<=Math.PI/2;
+      for(let segment=0;segment<=sectors;segment++){
+        const angle=segment/sectors*Math.PI*2,p=surface(radius,angle,front);
+        positions.push(p.x,p.y,p.z);
+        const warmth=.65+.11*Math.sin(p.x*6-p.y*8)+.025*p.grain+(front?.05:-.2);
+        const color=toast.clone().lerp(gold,T.MathUtils.clamp(warmth,0,1)).lerp(cut,p.score*.96);
+        colors.push(color.r,color.g,color.b);
+        if(ring<rings&&segment<sectors){const a=ring*(sectors+1)+segment,b=a+sectors+1;indices.push(a,b,a+1,b,b+1,a+1);}
+      }
+    }
+    const geometry=keep(new T.BufferGeometry());geometry.setAttribute('position',new T.Float32BufferAttribute(positions,3));geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.setIndex(indices);geometry.computeVertexNormals();
+    const crust=mat(0xffffff,{vertexColors:true,roughness:.7,metalness:0,clearcoat:.035,sheen:.12,sheenColor:0xe2ac66,sheenRoughness:.85});
+    const roll=mesh(v.actor,geometry,crust);roll.name='Whole kaiser roll / five scored lobes';
+    const seedGeometry=keep(new T.SphereGeometry(1,10,8));
+    const seedMaterials=[0x303a23,0x453322,0x41472a].map(color=>mat(color,{roughness:.88,metalness:0,clearcoat:0}));
+    let seeds=0;
+    for(let i=0;i<100&&seeds<17;i++){
+      const noise=Math.sin((i+1)*12.9898)*43758.5453;
+      const radius=Math.sqrt(noise-Math.floor(noise))*.84,angle=i*2.39996+.4;
+      const p=surface(radius,angle);
+      if(p.score>.12||radius<.23)continue;
+      const seed=mesh(v.actor,seedGeometry,seedMaterials[seeds%3],p.x,p.y,p.z+.012);seed.name='Small dark seed';
+      seed.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),new T.Vector3(p.x/1.3456,p.y/1.0816,p.z/.49).normalize());
+      seed.rotateZ(angle+.6*Math.sin(i*3.1));seed.scale.set(.013,.027+(seeds%3)*.004,.009);seeds++;
+    }
+    // The common icon choreography only floats and rotates the complete roll.
+    distinction={kind:'bread',shape:'kaiser-roll',whole:true,lobes:5,curvedScores:5,seedCount:seeds,seedColors:'dark-green-and-brown',halves:0,crumbs:0,opening:0,visibleCrumbs:0,motion:'whole-roll'};
   }
   function slim(v,p){
     const width=.74,height=3.45;

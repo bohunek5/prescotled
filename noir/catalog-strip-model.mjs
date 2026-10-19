@@ -70,6 +70,14 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
   const group=new T.Group();group.name=`${product.range} ${product.name}`;
   const resources=new Set(),keep=v=>(resources.add(v),v),material=o=>keep(new T.MeshPhysicalMaterial(o));
   let disposed=false,lightOn=false;
+  let printedProduct=product,refreshPrintedProduct=null;
+  function setPrintedProduct(activeProduct=product){
+    if(!opaque||disposed)return;
+    // The merged WCOB family shares one physical body. Keep its concealed
+    // PCB facts in sync even if a variant is selected before artwork is ready.
+    printedProduct=activeProduct;
+    refreshPrintedProduct?.();
+  }
   function baseFrame(d){
     const u=d/length,a=(u-.5)*sweep+Math.PI/2;
     const p=new T.Vector3(radius*Math.cos(a),spec.height*(.5-u),radius*Math.sin(a));
@@ -419,11 +427,15 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     const rohsBounds=text('RoHS',rohs.x,rohs.y,rohs.size,true);
     if(printLayout)printLayout.marks.push({name:'rohs',...rohsBounds});
     }
-    if(cob){
+    const unprintedWcob=opaque?ctx.getImageData(0,0,c.width,c.height):null;
+    const originalFacts=printLayout.facts?.slice()??[];
+    function drawCobFacts(factProduct){
+      if(!cob)return;
+      if(unprintedWcob){ctx.putImageData(unprintedWcob,0,0);printLayout.facts=originalFacts.slice();}
       // Facts belong to the PCB mask, including WCOB and IP67. Their existing
       // physical cover may conceal this print; never move it onto silicone.
-      const copperFact=number(product.copperOz)>0?` · ${product.copperOz} oz`:'';
-      const facts=[['density',`${product.density} LED/m`],['pcb-data',`PCB ${product.width} mm${copperFact}`]];
+      const copperFact=number(factProduct.copperOz)>0?` · ${factProduct.copperOz} oz`:'';
+      const facts=[['density',`${factProduct.density} LED/m`],['pcb-data',`PCB ${factProduct.width} mm${copperFact}`]];
       const rail=opaque||sealed?.65:Math.max(.18,Math.min(.64,(width-(coatingLayout?.laneWidth??0))/4));
       const size=width<4?.28:.48;
       const obstacles=[...componentLayout().footprints.map(p=>({x:p.minX+width/2,y:p.start,width:p.maxX-p.minX,height:p.end-p.start})),...printLayout.marks,...printLayout.legends];
@@ -445,10 +457,22 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
         }
         if(placed){printLayout.facts.push(placed);obstacles.push(placed);}
       }
-      printLayout.data={density:product.density,width:product.width,copperOz:product.copperOz??null};
+      printLayout.data={density:factProduct.density,width:factProduct.width,copperOz:factProduct.copperOz??null};
     }
+    drawCobFacts(printedProduct);
     const printed=document.createElement('canvas');printed.width=c.width;printed.height=c.height;const pc=printed.getContext('2d');pc.translate(c.width,c.height);pc.rotate(Math.PI);pc.drawImage(c,0,0);
     const map=keep(new T.CanvasTexture(printed));map.colorSpace=T.SRGBColorSpace;map.anisotropy=anisotropy;map.wrapT=T.RepeatWrapping;map.repeat.y=sections;mask.map=map;mask.color.set(0xffffff);mask.needsUpdate=true;
+    if(opaque){
+      const printKey=p=>`${p.density}|${p.width}|${p.copperOz??''}`;
+      let appliedKey=printKey(printedProduct);
+      refreshPrintedProduct=()=>{
+        const nextKey=printKey(printedProduct);if(nextKey===appliedKey)return;
+        drawCobFacts(printedProduct);pc.drawImage(c,0,0);
+        // Reuse the canvas and GPU texture: no network request, async swap,
+        // material recompilation or geometry rebuild between white and CCT.
+        map.needsUpdate=true;appliedKey=nextKey;
+      };
+    }
   });
   const ledCount=cob?Math.round(density*length/1000):leds.length;
   function componentLayout(){
@@ -477,7 +501,7 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
   if(rgbw784)group.userData.contactLayout={source:'noir/media/segment-24ec784-071-12-rgbnw.webp',measurement:'photographic proportions',positions:contacts.map((name,i)=>({name,x:contactX[i]}))};
   if(sealed)group.userData.sleeveLayout={outerWidth:sealedWidth,overallHeight:sealedHeight,baseBottom:sealedBottom,topHeight:sealedTop,pcbWidth:width,backingZ,hollow:true,source:'assets/tasmy-2026/karty/44c2ebd0869d82b1.pdf#page=2'};
   if(sshape)group.userData.sShape={...sShapeOutline,componentAxis:'straight',artworkUV:'physical-width',sectionBounds:Array.from({length:321},(_,i)=>{const d=i/320*section;return {d,minX:sShapeEdges[0](d),maxX:sShapeEdges[1](d)};})};
-  return {group,frame,ready,specification:spec,setLight(on){lightOn=on;phosphor.emissive.set(0xffe6b2);phosphor.emissiveIntensity=on?2:0;},setPower(){},setTemperature(){},
+  return {group,frame,ready,specification:spec,setPrintedProduct,setLight(on){lightOn=on;phosphor.emissive.set(0xffe6b2);phosphor.emissiveIntensity=on?2:0;},setPower(){},setTemperature(){},
     inspect:()=>({...group.userData,printLayout,componentLayout:componentLayout(),meshCount:group.children.length,radiusMm:radius,emissiveIntensity:phosphor.emissiveIntensity,lightOn}),
     dispose(){disposed=true;resources.forEach(r=>r.dispose());group.removeFromParent();}};
 }

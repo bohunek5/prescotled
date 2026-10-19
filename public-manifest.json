@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1142,
-  "bytesExcludingManifest": 308050938,
+  "bytesExcludingManifest": 308146132,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4843,12 +4843,12 @@
     "model-smd-2835/index.html": {
       "source": "model-smd-2835/index.html",
       "bytes": 5302,
-      "sha256": "6add0b9a5f0c80223e5f7bbc84211648e1fc46da61ece7e3671c5e916da1d470"
+      "sha256": "56edf160b490b7004540ff6e6b19220620d40579e8347456414694de9646851f"
     },
     "noir/catalog-strip-model.mjs": {
       "source": "noir/catalog-strip-model.mjs",
-      "bytes": 37812,
-      "sha256": "9df8b251123fbafdcba4b6f7b41fbe6710a5cce9b94f671584f7d9e12d376511"
+      "bytes": 39063,
+      "sha256": "f766530f44ee898d3c5ccf43b73ca63764cd327e7ebd80855127cdb3720872a5"
     },
     "noir/delux-pcb-artwork.mjs": {
       "bytes": 5827,
@@ -4862,8 +4862,8 @@
     },
     "noir/film-feature-3d.mjs": {
       "source": "noir/film-feature-3d.mjs",
-      "bytes": 44720,
-      "sha256": "7f382f8afbdcd94ec5f1fff0af3733c53f41997e4097c0f134a2eb71cf918fe9"
+      "bytes": 44068,
+      "sha256": "b35fa5fc6a40a7c28f030126d66d460fe261a46d6a24c51481b9599334ca3ba4"
     },
     "noir/film-numbers.mjs": {
       "source": "noir/film-numbers.mjs",
@@ -5622,8 +5622,8 @@
     },
     "noir/smd2835-viewer.mjs": {
       "source": "noir/smd2835-viewer.mjs",
-      "bytes": 32874,
-      "sha256": "7b9fbe0a7fac405084077a1a98309740a18964ff91d985eaebe0da3dcf83e882"
+      "bytes": 32922,
+      "sha256": "923480727c996b4f972a22076d6e29e10fac192feb83352de29cc14c7a0efc9d"
     },
     "noir/strip-appearance.mjs": {
       "bytes": 1057,
@@ -5681,9 +5681,9 @@
       "source": "noir/voltage-placement.mjs"
     },
     "targi/index.html": {
-      "bytes": 3465,
-      "sha256": "88dbb76ed1ba8807fe59c581f6e1c57fca89e330ac389bfa52375a7bfc6ad3c1",
-      "source": "targi/index.html"
+      "source": "targi/index.html",
+      "bytes": 3487,
+      "sha256": "04c041e274ee120ed5304d85454a05f5fbbd4aec56a6416d2dac191f7d07f2fe"
     },
     "targi/media/profile-klus.jpg": {
       "bytes": 160173,
@@ -5691,14 +5691,14 @@
       "source": "targi/media/profile-klus.jpg"
     },
     "targi/media/tasmy-cztery.jpg": {
-      "bytes": 139731,
-      "sha256": "ba3e637c8755cd861fcaa2bdeb726688f9bcd83c0ef32948fc3332439337730a",
-      "source": "targi/media/tasmy-cztery.jpg"
+      "source": "targi/media/tasmy-cztery.jpg",
+      "bytes": 175029,
+      "sha256": "eae7dfaa5e07da30fc4511f9082f878f1db1f51b213b0a3be2c45a6949665735"
     },
     "targi/media/tasmy-final.jpg": {
-      "bytes": 86418,
-      "sha256": "cf8650f695cb1ac6faca0b030d1bb39a6f5f1caeeac57d94484cea8256b82493",
-      "source": "targi/media/tasmy-final.jpg"
+      "source": "targi/media/tasmy-final.jpg",
+      "bytes": 145644,
+      "sha256": "ca51322fdf5fe1f4d12641cbde37c2dd6783ba701e260230dfd58c1c46e5192f"
     },
     "targi/targi.css": {
       "bytes": 3075,
@@ -5717,8 +5717,8 @@
     },
     "tasmy-opcja-2/index.html": {
       "source": "tasmy-opcja-2/index.html",
-      "bytes": 1230,
-      "sha256": "32b67a2eba18c651a26bc50edf61c3a347eb4be2db068be6606129a47194c334"
+      "bytes": 1231,
+      "sha256": "ba44b873d8c073560f2ed9b0e61d7985e433268f557efc509b7a02ba63806d3f"
     },
     "tasmy-opcja-2/mini-shot.mjs": {
       "bytes": 4904,
@@ -5733,7 +5733,7 @@
     "tasmy-opcja-2/presentation.mjs": {
       "source": "tasmy-opcja-2/presentation.mjs",
       "bytes": 4632,
-      "sha256": "b31da01e092b35559ef8a671d6aded4048da9e3be671513fe888cc0dbe938efc"
+      "sha256": "7e98b3859788f114793089376c6602aa4f73af74a0f04caacf0b6169acc2b38f"
     },
     "tasmy-opcja-2/product-details.mjs": {
       "bytes": 4553,
