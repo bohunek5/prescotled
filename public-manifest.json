@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1136,
-  "bytesExcludingManifest": 307992899,
+  "bytesExcludingManifest": 307992913,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4841,8 +4841,8 @@
       "source": "model-profile-micro/index.html"
     },
     "model-smd-2835/index.html": {
-      "bytes": 5297,
-      "sha256": "9cb903726774acc0a8a6fb330aff90364e88e96b16d1ded24d97895b3966d965",
+      "bytes": 5298,
+      "sha256": "60e08591b9bf1ecc288f946514cc198778fbc632160004157e38d67857cfea65",
       "source": "model-smd-2835/index.html"
     },
     "noir/catalog-strip-model.mjs": {
@@ -5622,7 +5622,7 @@
     },
     "noir/smd2835-viewer.mjs": {
       "bytes": 22814,
-      "sha256": "1f5492020b84567f15fa8a4b13644b85fc1c78fa42b1b970ed717c214d5c0c5a",
+      "sha256": "9fbda944ae25c6d8db116b292e9404aaed1b2a6e7293bff9e45c03f9d619f753",
       "source": "noir/smd2835-viewer.mjs"
     },
     "noir/strip-appearance.mjs": {
@@ -5656,8 +5656,8 @@
       "source": "noir/strip-light-program.mjs"
     },
     "noir/strip-lighting.mjs": {
-      "bytes": 22391,
-      "sha256": "14aeaabd4b5bf506b351d85d139dda489431ae96a6ebdef04213246666a555cc",
+      "bytes": 22404,
+      "sha256": "b6c0b3f48f64015453b549cc88e88b5eed7e082f562c227dd72e98e623e23e3f",
       "source": "noir/strip-lighting.mjs"
     },
     "noir/strip-presentation.mjs": {

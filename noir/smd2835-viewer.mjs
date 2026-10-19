@@ -6,7 +6,7 @@ import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
 import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-4';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-4';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-5';
 import {frameStripSection} from './strip-section-camera.mjs';
 
 // Review these three constructions before extending the film to the catalogue.

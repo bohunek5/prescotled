@@ -257,7 +257,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       mode.style.opacity=String(typing);
       const lineY=ty+9*cueScale,exitX=nearPad?placement.exitX:tx+leaderWidth;
       svg.classList.toggle('feature-linked',!!cue?.featureCue);
-      if(cue?.featureCue&&featureElement){
+      if(cue?.featureCue&&featureElement&&!threeInOne){
         const iconRect=featureElement.getBoundingClientRect(),hostRect=host.getBoundingClientRect();
         // Desktop films keep the feature row to the left of the stage. Follow
         // its empty gutter, outside all parameter cells, to the caption start.
