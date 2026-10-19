@@ -1,7 +1,7 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs';
-import {sampleStripLight,temperatureColor} from './strip-light-program.mjs?v=detail-2';
-import {describeStripFeature} from './strip-detail-cues.mjs?v=detail-7';
+import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
+import {sampleStripLight,temperatureColor} from './strip-light-program.mjs?v=detail-3';
+import {describeStripFeature} from './strip-detail-cues.mjs?v=detail-8';
 
 // Five real miniature models share the film clock. A card can also use its
 // parent's renderer, so an overview with four cards still has one WebGL context.
@@ -43,6 +43,24 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     mesh(g,rounded(.07,.34,.018,.02),mat(0x414b4b),.94,-.72,.32);
     return {group:g,emitter};
   }
+  function rgbwLed(parent){
+    const g=new T.Group();g.position.z=.16;g.scale.setScalar(.5);parent.add(g);
+    const ceramic=mat(0xf9f6e9,{metalness:0,roughness:.32}),silver=mat(0xbfc7cc,{metalness:.85,roughness:.21});
+    mesh(g,rounded(5,5,.16,.12),ceramic);
+    const rimShape=rounded(5,5,.43,.12).parameters.shapes;
+    const hole=new T.Path(),s=2.175,r=.15;
+    hole.moveTo(-s+r,-s);hole.lineTo(s-r,-s);hole.quadraticCurveTo(s,-s,s,-s+r);hole.lineTo(s,s-r);hole.quadraticCurveTo(s,s,s-r,s);hole.lineTo(-s+r,s);hole.quadraticCurveTo(-s,s,-s,s-r);hole.lineTo(-s,-s+r);hole.quadraticCurveTo(-s,-s,-s+r,-s);
+    rimShape.holes.push(hole);
+    mesh(g,keep(new T.ExtrudeGeometry(rimShape,{depth:.43,bevelEnabled:true,bevelSize:.035,bevelThickness:.035,bevelSegments:3,curveSegments:8,steps:1})),ceramic,0,0,.21);
+    // Match the photographed RGBW package: one white-channel phosphor area
+    // above a silver cavity containing the three smaller, bare RGB dies.
+    mesh(g,rounded(4.1,1.18,.13,.09),mat(0xf0c333,{metalness:0,roughness:.48}),0,1.02,.35);
+    mesh(g,rounded(4.1,2.16,.07,.15),mat(0xbfcacc,{metalness:.88,roughness:.25}),0,-.84,.29);
+    const die=mat(0xcad4d7,{metalness:.45,roughness:.3,clearcoat:.2});
+    for(const x of [-1.05,0,1.05])mesh(g,rounded(.55,.58,.12,.045),die,x,-.79,.38);
+    for(const side of [-1,1])mesh(g,rounded(.34,3.35,.18,.06),silver,side*2.57,0,.025);
+    mesh(g,rounded(.08,.45,.018,.02),mat(0x414b4b),2.35,0,.66);
+  }
   function board(parent,cob=false,digital=false,segment=false,product=null){
     const w=segment?3.35:1.9,h=segment?1.45:3.2;
     mesh(parent,rounded(w,h,.13,.12),mat(0xeceee4,{roughness:.56,metalness:0}));
@@ -81,14 +99,14 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     // like dark fabric as it turned. Keep this illustration self-illuminated.
     const light=(color,options={})=>keep(new T.MeshBasicMaterial({color,toneMapped:false,...options}));
     mesh(v.actor,rounded(.55,.12,.28,.05),light(0xfff3c9),0,.93,.05);
-    const beamMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,side:T.DoubleSide,toneMapped:false,uniforms:{strength:{value:.8}},vertexShader:'varying vec2 beamUV; void main(){beamUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 beamUV; uniform float strength; void main(){float r=clamp(length((beamUV-.5)*2.),0.,1.);float fade=.2+.8*pow(1.-r,.65);gl_FragColor=vec4(1.,.97,.84,strength*fade);}'}));
+    const beamMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,side:T.DoubleSide,toneMapped:false,uniforms:{strength:{value:.8}},vertexShader:'varying vec2 beamUV; void main(){beamUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 beamUV; uniform float strength; void main(){float r=clamp(length((beamUV-.5)*2.),0.,1.);float fade=.2+.8*pow(1.-r,.65);gl_FragColor=vec4(1.,.84,.35,strength*fade);}'}));
     // Both boundary rays originate at the emitting point. At 180 degrees
     // the real sector is a half-disc, rather than a finite-width cone.
     const fan=mesh(v.actor,keep(new T.CircleGeometry(radius,64,start,half*2)),beamMaterial,0,sourceY,.02);v.moving.push({object:fan,type:'beam'});
     const boundary=[[0,sourceY,.025],...Array.from({length:65},(_,i)=>{const a=start+half*2*i/64;return [Math.cos(a)*radius,sourceY+Math.sin(a)*radius,.025];}),[0,sourceY,.025]];
     const outline=keep(new T.BufferGeometry().setFromPoints(boundary.map(p=>new T.Vector3(...p))));
-    v.actor.add(new T.Line(outline,keep(new T.LineBasicMaterial({color:0xffeab1,transparent:true,opacity:.5,toneMapped:false,depthWrite:false}))));
-    const haloMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,toneMapped:false,uniforms:{strength:{value:.2}},vertexShader:'varying vec2 glowUV; void main(){glowUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 glowUV; uniform float strength; void main(){float r=length((glowUV-.5)*2.); gl_FragColor=vec4(1.,.91,.64,pow(max(0.,1.-r),2.)*strength);}'}));
+    v.actor.add(new T.Line(outline,keep(new T.LineBasicMaterial({color:0xf4cd66,transparent:true,opacity:.6,toneMapped:false,depthWrite:false}))));
+    const haloMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,toneMapped:false,uniforms:{strength:{value:.2}},vertexShader:'varying vec2 glowUV; void main(){glowUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 glowUV; uniform float strength; void main(){float r=length((glowUV-.5)*2.); gl_FragColor=vec4(1.,.84,.36,pow(max(0.,1.-r),2.)*strength);}'}));
     const halo=mesh(v.actor,keep(new T.PlaneGeometry(radius*2+.25,3.5)),haloMaterial,0,.1,-1.8);v.moving.push({object:halo,type:'beamHalo'});
   }
   function sun(v){
@@ -143,8 +161,23 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     if(opaque){
       mesh(v.actor,keep(new T.CylinderGeometry(width/2,width/2,height,48,1,false,-Math.PI/2,Math.PI)),mat(0xf4f3ec,{roughness:.34,metalness:0,clearcoat:.35}),0,0,.13);
     }else{
-      mesh(v.actor,rounded(.61,height-.25,.13,.09),mat(0xf2c330,{roughness:.52,metalness:0}),0,0,.15);
-      mesh(v.actor,rounded(width+.25,height+.15,.58,.19),mat(0xe4edf0,{roughness:.12,metalness:0,clearcoat:1,transparent:true,opacity:.34,depthWrite:false}),0,0,-.04);
+      // The IP67 card shows white U-shaped walls around a hollow cream arch,
+      // with yellow COB inside. Keep the same small icon envelope.
+      const scale=(width+.25)/10.5;
+      const profile=(points,material,length=height+.15)=>{
+        const shape=new T.Shape(points.map(([x,z])=>new T.Vector2(x*scale,z*scale+.14)));
+        const geometry=keep(new T.ExtrudeGeometry(shape,{depth:length,bevelEnabled:false,steps:1}));
+        geometry.translate(0,0,-length/2);geometry.rotateX(Math.PI/2);mesh(v.actor,geometry,material);
+      };
+      profile([[-5.05,-1.12],[-5.25,-.92],[-5.25,1.25],[-5.05,1.45],[-3.75,1.45],[-3.75,0],[-4,0],[-4,-.28],[4,-.28],[4,0],[3.75,0],[3.75,1.45],[5.05,1.45],[5.25,1.25],[5.25,-.92],[5.05,-1.12]],mat(0xf1f1ea,{roughness:.43,metalness:0,clearcoat:.16}));
+      const arch=[[-3.75,0],[-3.75,1.45]];
+      for(let i=1;i<=24;i++){const a=-Math.PI/2+i/24*Math.PI;arch.push([Math.sin(a)*3.75,1.45+Math.cos(a)*1.93]);}
+      arch.push([3.75,0],[2.85,0],[2.85,1.03]);
+      for(let i=1;i<=24;i++){const a=Math.PI/2-i/24*Math.PI;arch.push([Math.sin(a)*2.85,1.03+Math.cos(a)*1.51]);}
+      arch.push([-2.85,0]);profile(arch,mat(0xffebad,{roughness:.46,metalness:0,clearcoat:.1}));
+      const core=[[1.7,.025],[-1.7,.025]];
+      for(let i=1;i<=20;i++){const a=Math.PI-i/20*Math.PI;core.push([Math.cos(a)*1.7,.025+Math.sin(a)*1.75]);}
+      profile(core,mat(0xf2c32e,{roughness:.58,metalness:0,clearcoat:.03}),height);
     }
     distinction={kind:opaque?'coating':'sleeve',opaque,ip:p.ip,cover:true};
   }
@@ -337,7 +370,7 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     resources.forEach(r=>r.dispose());resources=new Set();palette=null;distinction=null;emitterMaterials=[];featureProduct=p;featureColor=p.color;views=Array.from({length:5},view);revision++;kind=feature.kind;
     const appearance=stripAppearance(p),cob=appearance.kind!=='smd';
     emitterInfo={kind:appearance.kind,color:cob?unlitEmitterColor(p):0xf0c333,opaqueFront:appearance.opaqueFront};
-    if(cob)board(views[0].actor,true,false,false,p);else if(p.digital)board(views[0].actor,false,true);else led(views[0].actor);
+    if(cob)board(views[0].actor,true,false,false,p);else if(p.digital)board(views[0].actor,false,true);else if(p.control==='RGBW')rgbwLed(views[0].actor);else led(views[0].actor);
     board(views[1].actor,cob,false,!cob,p);drop(views[2],p.ipOptions.length===1?p.ip:'variants');beam(views[3],p.beam);
     if(kind==='brightness')sun(views[4]);else if(kind==='accent')accent(views[4],p);else if(kind==='bread')bread(views[4]);else if(kind==='slim')slim(views[4],p);else if(kind==='cut')precisionCut(views[4],p);else if(kind==='flex')flexibleBoard(views[4]);else if(kind==='coating'||kind==='sleeve')enclosure(views[4],p,kind==='coating');else if(['digital','cct','channels'].includes(kind))lightControl(views[4],p,kind==='digital');else colorFan(views[4],kind==='cri'&&Number(p.quality)>=97);
     views[4].baseScale=views[4].actor.scale.clone();
@@ -378,7 +411,7 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       v.animate?.(time,reducedMotion);
       v.camera.aspect=r.width/r.height;v.camera.updateProjectionMatrix();
       v.actor.rotation.set(-.16+Math.sin(t*.7+i)*.07,Math.sin(t*.85+i*.8)*.38,-.08+Math.sin(t*.5+i)*.045);v.actor.position.y=Math.sin(t*1.3+i)*.11;
-      for(const {object:o,type} of v.moving){if(type==='ripple'){o.scale.setScalar(.9+.16*Math.sin(t*2));o.material.opacity=.35+.2*Math.sin(t*2);}if(type==='beam')o.material.uniforms.strength.value=(theme==='night'?.85:.38)+.025*Math.sin(t*1.6);if(type==='beamHalo')o.material.uniforms.strength.value=theme==='night'?.3:.08;if(type==='cut')o.position.y=Math.sin(t*.9)*.9;if(type==='sun')o.material.emissiveIntensity=sunLevel*1.6;if(type==='glow'){o.material.uniforms.strength.value=sunLevel*.8;o.scale.setScalar(.8+sunLevel*.4);}if(type==='rays'){o.rotation.z=t*.13;o.scale.setScalar(.84+sunLevel*.16);}}
+      for(const {object:o,type} of v.moving){if(type==='ripple'){o.scale.setScalar(.9+.16*Math.sin(t*2));o.material.opacity=.35+.2*Math.sin(t*2);}if(type==='beam')o.material.uniforms.strength.value=(theme==='night'?.85:.6)+.025*Math.sin(t*1.6);if(type==='beamHalo')o.material.uniforms.strength.value=theme==='night'?.3:.12;if(type==='cut')o.position.y=Math.sin(t*.9)*.9;if(type==='sun')o.material.emissiveIntensity=sunLevel*1.6;if(type==='glow'){o.material.uniforms.strength.value=sunLevel*.8;o.scale.setScalar(.8+sunLevel*.4);}if(type==='rays'){o.rotation.z=t*.13;o.scale.setScalar(.84+sunLevel*.16);}}
       if(i===4){
         // Apply after every icon animation, preserving SLIM's authored scale
         // and the CRI fan's independent unfolding. No wall-clock state.

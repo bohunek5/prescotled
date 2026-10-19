@@ -1,19 +1,20 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-4';
-import {mainFilmProducts as products} from './strip-film-selection.mjs';
-import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-4';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-5';
+import {mainFilmProducts as products} from './strip-film-selection.mjs?v=detail-2';
+import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-5';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
-import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-5';
+import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-6';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-7';
-import {frameStripSection} from './strip-section-camera.mjs?v=detail-2';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-8';
+import {frameStripSection} from './strip-section-camera.mjs?v=detail-3';
 import {createFactHighlight} from './strip-fact-highlight.mjs';
 import {createWcobSectionDetail} from './wcob-section-detail.mjs';
 import {sampleWcobDetailCue} from './wcob-detail-cues.mjs';
 
 const PLAYBACK_RATE=1.15;
-const modelOption=(product,sku=product.sku)=>`${product.range} · ${product.name} · ${sku}`;
+const smdVoltageName=product=>/^SMD\s+(?:12|24)\s*V(?:\s*·|$)/.test(product.name)?`${product.name.split(' · ')[0]} · ${product.density}\u00a0LED/m`:null;
+const modelOption=(product,sku=product.sku)=>`${product.range} · ${smdVoltageName(product)??product.name} · ${sku}`;
 let colorVariant=null,colorKey='';
 let lightProgram=null;
 const catalogueNumber=value=>{const text=String(value??'').trim().replace(',','.');return /^\d+(?:\.\d+)?$/.test(text)?Number(text):null;};
@@ -176,7 +177,7 @@ function updateLighting(){
   const variantIndex=sampleVariant(shot?.productTime??0,variants.length);
   const previousVariant=p.id==='3w1'?colorVariant:variants[Math.max(0,variantIndex-1)]??colorVariant;
   const variantBegin=shot?.variantStart??4;
-  const variantDuration=(detailEnd-variantBegin)/Math.max(1,variants.length);
+  const variantDuration=((shot?.variantEnd??detailEnd)-variantBegin)/Math.max(1,variants.length);
   const variantStart=variantBegin+variantIndex*variantDuration;
   const variantProgress=T.MathUtils.clamp((local-variantStart)/variantDuration,0,1);
   const variantBlend=seeking||p.id==='3w1'?1:smoothBlend((local-variantStart)/.7);
@@ -219,7 +220,7 @@ function selectModel(index){
   for(const [key,value] of Object.entries(fields))document.querySelector(`[data-product="${key}"]`).textContent=value;
   fact('efficacy',p.efficacy??'—');fact('copper',p.copperOz??'—');
   document.querySelector('[data-product="copper-unit"]').textContent=p.copperOz?'oz':'';
-  const heading=document.querySelector('#product-title');heading.replaceChildren();const range=document.createElement('small');const series=document.createElement('b');series.className='series-caption';series.textContent='SERIA';const seriesName=document.createElement('span');seriesName.className='series-name';seriesName.textContent=p.range;range.append(series,seriesName);const name=document.createElement('span');const mainName=p.name.split(' \u00b7 ')[0];name.textContent=mainName;
+  const heading=document.querySelector('#product-title');heading.replaceChildren();const range=document.createElement('small');const series=document.createElement('b');series.className='series-caption';series.textContent='SERIA';const seriesName=document.createElement('span');seriesName.className='series-name';seriesName.textContent=p.range;range.append(series,seriesName);const name=document.createElement('span');const mainName=smdVoltageName(p)??p.name.split(' \u00b7 ')[0];name.textContent=mainName;
   const reference=document.createElement('em');reference.className='model-variant';reference.dataset.product='sku';reference.setAttribute('aria-label','Symbol katalogowy');reference.textContent=p.sku;
   heading.append(range,name,reference);heading.dataset.long=String(mainName.length>13);
   document.querySelector('[data-product="warranty"]').textContent=`${p.warrantyYears} ${p.warrantyYears===3?'lata':'lat'} gwarancji`;

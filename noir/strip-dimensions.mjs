@@ -56,7 +56,7 @@ export function projectStripDimension(model,camera,viewport,kind){
   // integral package count. Do not call its 57.14 mm model segment 50 mm.
   if(kind==='section'&&cutMismatch&&data.construction!=='cob')return null;
   const span=kind==='section'&&freeCut?{...section,start:section.center-catalogueCut/2,end:section.center+catalogueCut/2,length:catalogueCut}:section;
-  const half=spec.width/2;
+  const measuredWidth=data.sleeveLayout?.outerWidth??spec.width,half=measuredWidth/2;
   const at=(distance,side=0,lift=.25)=>{
     const frame=model.frame(distance);
     return frame.p.clone().addScaledVector(frame.x,side).addScaledVector(frame.z,lift);
@@ -65,7 +65,7 @@ export function projectStripDimension(model,camera,viewport,kind){
     const world=local.clone().applyMatrix4(model.group.matrixWorld),ndc=world.clone().project(camera);
     return {x:(ndc.x*.5+.5)*viewport.width,y:(-.5*ndc.y+.5)*viewport.height,local:local.toArray(),world:world.toArray()};
   };
-  const measurement={kind,sectionIndex:section.index,start:span.start,end:span.end,length:span.length,width:spec.width,
+  const measurement={kind,sectionIndex:section.index,start:span.start,end:span.end,length:span.length,width:measuredWidth,pcbWidth:spec.width,
     leds,density,catalogueCut,modelSectionLength:spec.section,modelLeds:spec.ledsPerSection,catalogueCutMismatch:cutMismatch};
   if(kind==='width'){
     // Measure directly between the real PCB edges over exposed solder mask.

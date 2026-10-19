@@ -16,11 +16,13 @@ export function frameStripSection(camera,model,shot,aspect){
   model.group.rotation.set(shot.tilt??0,fullRotation+shortestAngle(fullRotation,faceRotation)*alignment,-.045);
   model.group.updateMatrixWorld(true);
   const center=middle.p.clone().applyMatrix4(model.group.matrixWorld);
+  const outerWidth=model.group.userData.sleeveLayout?.outerWidth??spec.width;
+  const topHeight=model.group.userData.sleeveLayout?model.group.userData.coverHeight+.2:1.1;
   const points=[];
   // Include components, the PCB width and a short margin past each cut.
   for(let step=0;step<=24;step++){
     const frame=model.frame(start-.85+(spec.section+1.7)*step/24);
-    for(const side of [-1,1])points.push(frame.p.clone().addScaledVector(frame.x,side*(spec.width/2+.45)).addScaledVector(frame.z,1.1).applyMatrix4(model.group.matrixWorld));
+    for(const side of [-1,1])points.push(frame.p.clone().addScaledVector(frame.x,side*(outerWidth/2+.45)).addScaledVector(frame.z,topHeight).applyMatrix4(model.group.matrixWorld));
   }
   if(shot.detailBounds){
     const {min,max}=shot.detailBounds;
@@ -29,7 +31,7 @@ export function frameStripSection(camera,model,shot,aspect){
   }
   const tangent=Math.tan(T.MathUtils.degToRad(camera.fov/2));
   const radius=model.frame(spec.length/2).p;
-  const horizontalExtent=Math.max(48,Math.hypot(radius.x,radius.z)+spec.width/2+8);
+  const horizontalExtent=Math.max(48,Math.hypot(radius.x,radius.z)+outerWidth/2+8);
   const fit=Math.max(136,horizontalExtent/ratio)/tangent;
   let macroDistance=40;
   for(const point of points){

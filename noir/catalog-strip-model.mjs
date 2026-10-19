@@ -1,10 +1,10 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {createSmd2835Model} from './smd2835-model.mjs?v=detail-3';
 import {createBackingTexture} from './strip-backing.mjs';
-import {filmProducts} from './film-catalog.mjs';
+import {filmProducts} from './film-catalog.mjs?v=detail-2';
 import {applyPcbFinish} from './pcb-finish.mjs';
-import {installStripLighting} from './strip-lighting.mjs?v=detail-7';
-import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs';
+import {installStripLighting} from './strip-lighting.mjs?v=detail-8';
+import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
 import {createDeluxArtwork,sectionFrame} from './delux-pcb-artwork.mjs?v=detail-3';
 import {createCatalogFilmArtwork,supportsCatalogFilmArtwork} from './catalog-film-artwork.mjs?v=detail-7';
 
@@ -59,6 +59,10 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
   const section=cob?(freeCut?50:catalogCut):count*1000/density;
   const sections=Math.max(1,Math.round(500/section)),length=section*sections;
   const spec={width,thickness:.28,section,sections,ledsPerSection:count,length,turns,height:235};
+  const sealedWidth=number(product.outerWidth)||10.5,sealedHeight=number(product.overallHeight)||4.5;
+  // The IP67 drawing measures the finished sleeve from its flat underside.
+  // Keep PCB top at z=0 and move only its release liner to the sleeve bottom.
+  const sealedBottom=-1.12*sealedHeight/4.5,sealedTop=sealedBottom+sealedHeight;
   // Original WCOB MONO/CCT datasheets specify an 8 × 5 mm section, measured
   // from the flat reverse to the crown of its opaque silicone diffuser.
   const wcobTopHeight=5-spec.thickness;
@@ -146,7 +150,11 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
   const phosphor=material({color:unlitEmitterColor(product),roughness:opaque?.48:cob?.72:.48,clearcoat:opaque?.22:cob?.025:.12});
   const dark=material({color:0x252b28,roughness:.6});
   const board=mesh('White solder mask / front',surface(-width/2,width/2,0,0),mask);
-  mesh('Printed reverse / 0.28 mm PCB',surface(-width/2,width/2,-.28,-.28,true),reverse);
+  const backingZ=sealed?sealedBottom-.04:-.28;
+  const reverseMesh=mesh('Printed reverse / 0.28 mm PCB',surface(-width/2,width/2,backingZ,backingZ,true),reverse);
+  // The sleeve and adhesive liner touch physically. Do not project the sleeve's
+  // near-coplanar shadow onto its print: that creates false stippling on 3M.
+  if(sealed){reverseMesh.receiveShadow=false;reverse.polygonOffset=true;reverse.polygonOffsetFactor=-1;reverse.polygonOffsetUnits=-1;}
   mesh('PCB edge / left',surface(-width/2,-width/2,-.28,0),edge);
   mesh('PCB edge / right',surface(width/2,width/2,0,-.28),edge);
   mesh('Copper layer / left',surface(-width/2-.002,-width/2-.002,-.13,-.095),copper);
@@ -187,10 +195,27 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     const move=(l,dx,dy,z)=>({...l,x:(l.x||0)+dx*Math.cos(l.angle)-dy*Math.sin(l.angle),d:l.d+dx*Math.sin(l.angle)+dy*Math.cos(l.angle),z});
     instances('LED ceramic base',rounded(w,h,.16),ceramic,leds);
     instances('LED raised ceramic rim',rounded(w,h,.43,.12,[w-.65,h-.65,.15]),ceramic,leds.map(l=>({...l,z:.21})));
-    const multicolor=product.control.startsWith('RGB'),dies=multicolor?(product.control==='RGB'?3:product.control==='RGBW'?4:5):1;
-    const emitters=leds.flatMap(l=>Array.from({length:dies},(_,i)=>move(l,(i-(dies-1)/2)*(w-.9)/dies,0,.35)));
-    if(product.control==='CCT')emitters.forEach((p,i)=>{p.color=i%2?0xfff6b0:0xf0b943;});
-    instances('LED phosphor',rounded((w-.9)/dies*.9,h-.9,.13,.1),phosphor,emitters);
+    if(product.control==='RGBW'){
+      // The supplied 42170.webp reference has one white-channel phosphor
+      // area beside a metallic cavity with three small RGB dies, not four
+      // equally sized yellow squares. All four channels share one 5050 body.
+      const white=instances('LED phosphor / white channel',rounded(w-.9,1.18,.13,.09),phosphor,leds.map(l=>move(l,0,1.02,.35)));
+      white.userData.emitterChannels=['W'];
+      const cavity=material({color:0xd7dedf,metalness:.48,roughness:.32});
+      instances('RGBW silver die cavity',rounded(w-.9,2.16,.07,.15),cavity,leds.map(l=>move(l,0,-.84,.29)));
+      const bareDie=material({color:0xcad4d7,metalness:.45,roughness:.3,clearcoat:.2});
+      const rgb=instances('LED phosphor / RGB dies',rounded(.55,.58,.12,.045),bareDie,leds.flatMap(l=>[-1.05,0,1.05].map(x=>move(l,x,-.79,.38))));
+      rgb.userData.emitterChannels=['R','G','B'];
+    }else{
+      const dualWhite=product.control==='CCT',multicolor=product.control.startsWith('RGB');
+      const dies=dualWhite?2:multicolor?(product.control==='RGB'?3:5):1;
+      const emitters=leds.flatMap(l=>Array.from({length:dies},(_,i)=>move(l,(i-(dies-1)/2)*(w-.9)/dies,0,.35)));
+      // 44649.webp shows both warm and cool phosphor halves in every package.
+      // Alternating whole warm/cool packages misrepresents this dual-white LED.
+      if(dualWhite)emitters.forEach((p,i)=>{p.color=i%2?0xffffcb:0xffcb79;});
+      const emitter=instances('LED phosphor',rounded((w-.9)/dies*.9,h-.9,.13,.1),phosphor,emitters);
+      if(dualWhite)emitter.userData.emitterChannels=['WW','CW'];
+    }
     const terminals=leds.flatMap(l=>[-1,1].map(side=>move(l,side*(w/2+.07),0,.025)));
     instances('LED tin terminals',rounded(.34,h*.67,.18,.06),tin,terminals);
     const fillet=keep(new T.SphereGeometry(1,12,8,0,Math.PI*2,0,Math.PI/2));fillet.rotateX(Math.PI/2);fillet.scale(.22,h*.35,.14);
@@ -213,10 +238,51 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     const ends=keep(new T.ShapeGeometry(end,24));ends.rotateX(Math.PI/2);
     const endMaterial=material({color:0xf4f3ec,roughness:.52,side:T.DoubleSide});
     instances('WCOB opaque end faces',ends,endMaterial,[{d:0},{d:length}]);
+  }else if(sealed){
+    // Original 24EC320XXIP67 card, page 2: 10.5 × 4.5 mm overall, 8 mm PCB.
+    // Trace its hollow arch and silicone side walls; this is distinct from
+    // the untouched solid milky WCOB cover above. Interior contour proportions
+    // follow the drawing and are not additional manufacturer dimensions.
+    const sx=sealedWidth/10.5,sz=sealedHeight/4.5;
+    const scaled=points=>points.map(([x,z])=>[x*sx,z*sz]);
+    function sweepProfile(name,profile,mat){
+      const positions=[],indices=[],steps=1600,ring=profile.length,mid=frame(length/2);
+      for(let row=0;row<=steps;row++)for(let col=0;col<ring;col++){
+        const [x,z]=profile[col],p=point(frame(row/steps*length),x,z).sub(mid.p);
+        positions.push(p.dot(mid.x),p.dot(mid.y),p.dot(mid.z));
+        if(row<steps){const a=row*ring+col,b=row*ring+(col+1)%ring;indices.push(a,b,a+ring,b,b+ring,a+ring);}
+      }
+      const capTriangles=T.ShapeUtils.triangulateShape(profile.map(([x,z])=>new T.Vector2(x,z)),[]);
+      // Cut faces have flat normals, independent of the rounded long sides.
+      const start=positions.length/3,end=start+ring;
+      positions.push(...positions.slice(0,ring*3),...positions.slice(steps*ring*3,(steps+1)*ring*3));
+      for(const [a,b,c] of capTriangles){indices.push(start+a,start+b,start+c,end+a,end+c,end+b);}
+      const g=keep(new T.BufferGeometry());g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.setIndex(indices);g.computeVertexNormals();
+      return instances(name,g,mat,[{d:length/2}]);
+    }
+    const wall=material({color:0xf1f1ea,roughness:.43,clearcoat:.16});
+    sweepProfile('IP67 silicone sleeve / white side walls and base',scaled([
+      [-5.05,-1.12],[-5.25,-.92],[-5.25,1.25],[-5.05,1.45],[-3.75,1.45],[-3.75,0],[-4,0],[-4,-.28],
+      [4,-.28],[4,0],[3.75,0],[3.75,1.45],[5.05,1.45],[5.25,1.25],[5.25,-.92],[5.05,-1.12]
+    ]),wall);
+    const arch=[[-3.75,0],[-3.75,1.45]];
+    for(let i=1;i<=32;i++){const a=-Math.PI/2+i/32*Math.PI;arch.push([Math.sin(a)*3.75,1.45+Math.cos(a)*1.93]);}
+    arch.push([3.75,0],[2.85,0],[2.85,1.03]);
+    for(let i=1;i<=32;i++){const a=Math.PI/2-i/32*Math.PI;arch.push([Math.sin(a)*2.85,1.03+Math.cos(a)*1.51]);}
+    arch.push([-2.85,0]);
+    sweepProfile('IP67 continuous phosphor / hollow rounded cover',scaled(arch),phosphor);
+    const core=[[1.7,.025],[-1.7,.025]];
+    for(let i=1;i<=28;i++){const a=Math.PI-i/28*Math.PI;core.push([Math.cos(a)*1.7,.025+Math.sin(a)*1.75]);}
+    const coreMaterial=material({color:0xf2c32e,roughness:.58,clearcoat:.03});
+    sweepProfile('IP67 COB phosphor / inner yellow core',scaled(core),coreMaterial);
+    coatingLayout={kind:'hollow-rounded-phosphor-cover',lanes:1,totalBand:7.5*sx,baseHeight:0,topHeight:sealedTop,closed:true,hollow:true};
   }else{
     // Each curved phosphor segment is real geometry following the same PCB frame.
     // It is a coating over the emitters, not a protective sleeve around the strip.
-    const lanes=digital||sealed?1:product.control==='CCT'?2:product.control==='RGBW'||product.control==='RGB+CCT'?2:1;
+    // Warm and cool CCT channels sit under one shared phosphor band. The
+    // three analogue connections (+V, CW, WW) do not imply two visible strips.
+    // The actual 24EC784 RGBW photograph likewise shows a single milky band.
+    const lanes=digital||sealed||product.control==='CCT'||product.id==='cobrgbw'?1:product.control==='RGBW'||product.control==='RGB+CCT'?2:1;
     const totalBand=sealed?width*.76:width<4?width*.73:width*.52,laneWidth=totalBand/lanes-.10;
     const steps=64,across=12;
     const padLegendEnd=padLength*1.5+1+.325+.25;
@@ -249,14 +315,6 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
       const g=keep(new T.BufferGeometry());g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.setIndex(indices);g.computeVertexNormals();
       const segments=Array.from({length:sections},(_,s)=>({d:(s+.5)*section,z:0,color:lane&&!digital?0xffe595:0xffffff}));
       instances(`COB continuous phosphor ${lane}`,g,phosphor,segments);
-    }
-    if(sealed){
-      // IP67 reference has a flatter band enclosed by a clear/milky jacket,
-      // unlike the opaque half-round WCOB. Keep its edges visible in macro.
-      const jacket=material({color:0xf3f4f0,transparent:true,opacity:.24,roughness:.22,clearcoat:1,metalness:0,depthWrite:false});
-      mesh('IP67 sealed front jacket',surface(-width/2-.2,width/2+.2,.65,.65),jacket);
-      mesh('IP67 jacket left edge',surface(-width/2-.2,-width/2-.2,-.4,.65),jacket);
-      mesh('IP67 jacket right edge',surface(width/2+.2,width/2+.2,.65,-.4),jacket);
     }
     if(digital){
       const controllers=Array.from({length:sections},(_,s)=>({d:s*section+4.6,x:0,z:.06,section:s}));
@@ -356,7 +414,8 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     const clearances=resistorParts.flatMap(r=>[...obstacles,...printBounds].map(o=>distance(r,o)));
     return {resistorLane:'center',leds:leds.filter(l=>l.section===0).map(l=>({d:l.d,x:l.x??0,angle:l.angle})),resistors:resistors.filter(r=>r.section===0).map(r=>({d:r.d,x:r.x,between:r.between})),pads:pads.filter(p=>p.d<section).map(p=>({d:p.d,x:p.x,width:padWidth,length:padLength})),controllers:controllerLayout,coating:coatingLayout,footprints,resistorClearanceMm:clearances.length?Math.min(...clearances):null};
   }
-  group.userData={units:'mm',family:product.id,productId:product.id,specification:spec,ledCount,padCount:opaque||sealed?0:pads.length,contacts,rearPrintMirrored:false,sectionLedCounts:cob?[]:Array(sections).fill(count),sleeve:sealed,construction:cob?'cob':sshape?'s-shape':'smd',appearance:appearance.kind,opaqueFront:opaque,macroSide:appearance.macroSide,coverHeight:opaque?wcobTopHeight:sealed?.65:cob?.32:.5,concealedContacts:opaque||sealed,packageSize,printMarksPerSection:opaque||sealed?{brand:0,ce:0,rohs:0}:{brand:1,ce:1,rohs:1}};
+  group.userData={units:'mm',family:product.id,productId:product.id,specification:spec,ledCount,padCount:opaque||sealed?0:pads.length,contacts,rearPrintMirrored:false,sectionLedCounts:cob?[]:Array(sections).fill(count),sleeve:sealed,construction:cob?'cob':sshape?'s-shape':'smd',appearance:appearance.kind,opaqueFront:opaque,macroSide:appearance.macroSide,coverHeight:opaque?wcobTopHeight:sealed?sealedTop:cob?.32:.5,concealedContacts:opaque||sealed,packageSize,printMarksPerSection:opaque||sealed?{brand:0,ce:0,rohs:0}:{brand:1,ce:1,rohs:1}};
+  if(sealed)group.userData.sleeveLayout={outerWidth:sealedWidth,overallHeight:sealedHeight,baseBottom:sealedBottom,topHeight:sealedTop,pcbWidth:width,backingZ,hollow:true,source:'assets/tasmy-2026/karty/44c2ebd0869d82b1.pdf#page=2'};
   if(sshape)group.userData.sShape={...sShapeOutline,componentAxis:'straight',artworkUV:'physical-width',sectionBounds:Array.from({length:321},(_,i)=>{const d=i/320*section;return {d,minX:sShapeEdges[0](d),maxX:sShapeEdges[1](d)};})};
   return {group,frame,ready,specification:spec,setLight(on){lightOn=on;phosphor.emissive.set(0xffe6b2);phosphor.emissiveIntensity=on?2:0;},setPower(){},setTemperature(){},
     inspect:()=>({...group.userData,printLayout,componentLayout:componentLayout(),meshCount:group.children.length,radiusMm:radius,emissiveIntensity:phosphor.emissiveIntensity,lightOn}),

@@ -1,10 +1,10 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {unlitEmitterColor} from './strip-appearance.mjs';
-import {sampleStripLight} from './strip-light-program.mjs?v=detail-2';
+import {unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
+import {sampleStripLight} from './strip-light-program.mjs?v=detail-3';
 import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-4';
-import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-7';
-import {projectStripDimension} from './strip-dimensions.mjs?v=detail-5';
-import {planStripCue} from './strip-cue-layout.mjs?v=detail-5';
+import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-8';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-6';
+import {planStripCue} from './strip-cue-layout.mjs?v=detail-6';
 
 const supplyAnchors=new WeakMap();
 export function supplyAnchor(model,contactIndex=0,sectionIndex=null){
@@ -108,9 +108,12 @@ export function installStripLighting(model,product){
       material.color.copy(resting[i]);material.emissive.set(0xffffff);material.emissiveIntensity=emissionGain*strength;
     });
     for(const {mesh,color,intensity} of emitterAttributes){
+      const channels=mesh.userData.emitterChannels;
       for(let i=0;i<mesh.count;i++){
         const sample=modules[product.digital?Math.min(moduleCount-1,i):0];
-        color.setXYZ(i,sample.color.r,sample.color.g,sample.color.b);intensity.setX(i,sample.intensity);
+        const channel=channels?.length?sample.channels?.[channels[i%channels.length]]:null;
+        const emission=channel?.color??sample.color;
+        color.setXYZ(i,emission.r,emission.g,emission.b);intensity.setX(i,sample.intensity*(channel?.intensity??1));
       }
       color.needsUpdate=intensity.needsUpdate=true;
     }
@@ -119,7 +122,9 @@ export function installStripLighting(model,product){
       glowColor.copy(sample.color).multiplyScalar(sample.intensity);glow.setColorAt(i,glowColor);
     }
     glow.instanceColor.needsUpdate=true;
-    glow.visible=strength>.001;glow.material.opacity=(isCob?.15:.48)*strength;
+    // IP67's curved diffuser emits continuously. Discrete halo planes would
+    // incorrectly reveal a row of bright spots through its silicone sleeve.
+    glow.visible=strength>.001&&product.id!=='cobip67';glow.material.opacity=(isCob?.15:.48)*strength;
     const inspected=product.digital?modules:[global,global,global];
     samples=inspected.map((sample,module)=>({module,color:`#${sample.color.getHexString()}`,intensity:sample.intensity*strength}));
     return {program:current.program,phase:current.phase,color:`#${current.color.getHexString()}`,warmMix:current.warmMix,digital:!!product.digital};
@@ -144,7 +149,8 @@ export function installStripLighting(model,product){
   const inspect=model.inspect;
   model.inspect=()=>({...inspect(),lightOn:level>0,lightLevel:level,lightPower:power,lightColor:`#${current.color.getHexString()}`,
     lightProgram:current.program,lightPhase:current.phase,lightWarmMix:current.warmMix,digital:!!product.digital,
-    lightSamples:samples.map(sample=>({...sample})),emissionGain,unlitEmitterColors:resting.map(c=>`#${c.getHexString()}`)});
+    lightSamples:samples.map(sample=>({...sample})),emissionGain,unlitEmitterColors:resting.map(c=>`#${c.getHexString()}`),
+    emitterChannels:emitterAttributes.filter(({mesh})=>mesh.userData.emitterChannels?.length).map(({mesh,color,intensity})=>({mesh:mesh.name,channels:mesh.userData.emitterChannels.map((channel,i)=>({channel,color:`#${new T.Color(color.getX(i),color.getY(i),color.getZ(i)).getHexString()}`,intensity:intensity.getX(i)*level*Math.pow(power,.82)}))}))});
   refresh();return ()=>{
     // Release the added GPU attributes while they are still attached. The
     // owner's later geometry disposal remains safe and owns the CPU geometry.
@@ -168,12 +174,12 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
   const witnessHalves=dimensionWitnesses.map(first=>{const second=first.cloneNode();dimensionGroup.append(second);return [first,second];});
   const matrix=new T.Matrix4(),localMatrix=new T.Matrix4(),point=new T.Vector3(),normal=new T.Vector3(),toward=new T.Vector3();
   let activeVoltage=null,activeContact=null,drawProgress=0,placement=null,placementModel=null,activeAnnotation=null,measurement=null,placementKey='',activeAnchor=null,stages=null,featureLink=null;
-  const plans=new WeakMap();
+  const plans=new WeakMap(),copperAnchors=new WeakMap(),sleeveAnchors=new WeakMap();
   const drawPath=(element,progress)=>{
     element.style.strokeDasharray='1';element.style.strokeDashoffset=String(1-progress);
     element.style.visibility=progress>0?'visible':'hidden';
   };
-  function featureAnchor(model,kind){
+  function featureAnchor(model,kind,camera){
     const section=model.sectionFrame(Math.max(0,Math.floor(model.specification.sections/2)-1));
     let frame=kind==='cut'?section.startFrame:section.frame,edgeOffset=model.specification.width/2;
     if(kind==='edge'&&model.group.userData.productId==='sshape'){
@@ -187,6 +193,38 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
     const result=new T.Matrix4().makeBasis(frame.x,frame.y,frame.z);
     result.setPosition(frame.p.clone().addScaledVector(frame.x,kind==='edge'?edgeOffset:0)
       .addScaledVector(frame.z,kind==='coating'||kind==='sleeve'?(model.group.userData.coverHeight??.5):0));
+    if(kind==='sleeve'&&model.group.userData.sleeveLayout){
+      if(sleeveAnchors.has(model))return sleeveAnchors.get(model);
+      const shape=model.group.userData.sleeveLayout;
+      // The pointer belongs to the white silicone wall beside the luminous
+      // arch. Keep it off the phosphor so sleeve and light remain distinct.
+      const edges=[-1,1].map(side=>frame.p.clone()
+        .addScaledVector(frame.x,side*4.4*shape.outerWidth/10.5)
+        .addScaledVector(frame.z,1.45*shape.overallHeight/4.5));
+      const projected=edges.map(point=>point.clone().applyMatrix4(model.group.matrixWorld).project(camera));
+      result.setPosition(edges[projected[0].y>projected[1].y?0:1]);sleeveAnchors.set(model,result);return result;
+    }
+    if(kind==='copper'){
+      if(copperAnchors.has(model))return copperAnchors.get(model);
+      // Use the actual exposed copper mesh, not the full PCB or a solder pad.
+      // Keep the chosen side fixed throughout the caption to prevent jumping.
+      const candidates=['left','right'].flatMap(side=>{
+        const mesh=model.group.getObjectByName(`Copper layer / ${side}`);
+        if(!mesh?.visible)return [];
+        const positions=mesh.geometry.getAttribute('position');
+        let best=null,distance=Infinity;
+        for(let i=0;i<positions.count-1;i+=2){
+          const point=new T.Vector3().fromBufferAttribute(positions,i)
+            .add(new T.Vector3().fromBufferAttribute(positions,i+1)).multiplyScalar(.5).applyMatrix4(mesh.matrix);
+          const score=point.distanceToSquared(frame.p);
+          if(score<distance){distance=score;best=point;}
+        }
+        if(!best)return [];
+        return [{point:best,distance:best.clone().applyMatrix4(model.group.matrixWorld).distanceToSquared(camera.position)}];
+      }).sort((a,b)=>a.distance-b.distance);
+      if(!candidates.length)return null;
+      result.setPosition(candidates[0].point);copperAnchors.set(model,result);return result;
+    }
     if(kind==='emitter'){
       const leds=model.group.getObjectByName('LED ceramic base'),candidate=new T.Matrix4(),position=new T.Vector3();let closest=Infinity;
       if(leds)for(let i=0;i<leds.count;i++){
@@ -208,14 +246,14 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       model.group.updateMatrixWorld(true);camera.updateMatrixWorld(true);
       measurement=cue?.measurement?projectStripDimension(model,camera,{width,height},cue.measurement):null;
       const sectionIndex=Math.max(0,Math.floor(model.specification.sections/2)-1);
-      const anchor=measurement?featureAnchor(model,'section'):cue&&cue.anchor!=='contact'?featureAnchor(model,cue.anchor):supplyAnchor(model,contactIndex,sequence?sectionIndex:null);
+      const anchor=measurement?featureAnchor(model,'section',camera):cue&&cue.anchor!=='contact'?featureAnchor(model,cue.anchor,camera):supplyAnchor(model,contactIndex,sequence?sectionIndex:null);
       if(!anchor){svg.style.opacity='0';return;}
       localMatrix.copy(anchor);
       if(cue?.anchorLocal)localMatrix.setPosition(new T.Vector3().fromArray(cue.anchorLocal));
       if(measurement)localMatrix.setPosition(measurement.anchorLocal);
       matrix.multiplyMatrices(model.group.matrixWorld,localMatrix);point.setFromMatrixPosition(matrix);
       normal.setFromMatrixColumn(matrix,2).normalize();toward.copy(camera.position).sub(point).normalize();
-      if(!measurement)point.addScaledVector(normal,.16);
+      if(!measurement&&!['copper','sleeve'].includes(cue?.anchor))point.addScaledVector(normal,.16);
       point.project(camera);
       if(normal.dot(toward)<.1||point.z>1||Math.abs(point.x)>.95||Math.abs(point.y)>.95){svg.style.opacity='0';return;}
       activeVoltage=product.voltage;
@@ -243,7 +281,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       const witnessProgress=measurement?(cue?.witnesses??tipProgress):0;
       stages={typing,highlightFacts:cue?.highlightFacts??[],highlightLevel:cue?.highlightLevel??0,featureSource:cue?.featureSource??0,featureSourceOpacity:cue?.featureSourceOpacity??0,featureEmphasis:cue?.featureEmphasis??0,underline:underlineProgress,pointer:pointerProgress,endpoint:endpointProgress,branches:branchProgress,tips:tipProgress,witnesses:witnessProgress,highlight:branchProgress};
       label.textContent=fullLabel;mode.textContent=cue?.subline??(threeInOne?`+${product.voltage} V DC  /  ${activeContact}`:'');
-      activeAnnotation={label:fullLabel,anchor:cue?.anchor??'contact',index:cue?.index??0};
+      activeAnnotation={label:fullLabel,anchor:cue?.anchor??'contact',index:cue?.index??0,local:new T.Vector3().setFromMatrixPosition(localMatrix).toArray()};
       const emphasis=!!measurement;
       svg.classList.toggle('measuring',emphasis);
       if(compact||nearPad){label.style.fontSize=(nearPad?(emphasis?25:22):23)*cueScale+'px';mode.style.fontSize=(emphasis?12:11)*cueScale+'px';}

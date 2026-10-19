@@ -2089,7 +2089,7 @@ export const filmProducts = [
     "ip": "IP20",
     "beam": "180",
     "image": "/prescotled/noir/media/40382.webp",
-    "sleeve": false,
+    "sleeve": true,
     "source": "Downloads/prescot-katalog-2026-2027-a4.pdf#page=10",
     "colorVariants": [
       {
@@ -4457,7 +4457,10 @@ export const filmProducts = [
     "color": "3000",
     "unit": "K",
     "colorCopy": "Ciepła biel",
-    "width": "10",
+    "width": "8",
+    "outerWidth": "10,5",
+    "overallHeight": "4,5",
+    "dimensionSource": "assets/tasmy-2026/karty/44c2ebd0869d82b1.pdf#page=2",
     "density": "320",
     "cut": "50",
     "quality": "90",

@@ -262,6 +262,13 @@ body[data-theme="day"] .voltage-dot{fill:#ab7932}
   .feature-icon{height:63px}
   .product-feature[data-feature=detail] .feature-icon{height:71px}
 }
+/* Keep wrapped RGBW/IP captions inside short desktop frames. */
+@media(min-width:761px) and (min-height:701px) and (max-height:760px){
+  .color-block[data-multicolor=true]{padding:7px 0 8px}
+  .color-block[data-multicolor=true] .color-fact{gap:8px}
+  .color-block[data-multicolor=true] .color-availability{margin-top:7px}
+  .intro:has(.color-block[data-multicolor=true]) .product-bottom{padding-top:10px}
+}
 /* Cue emphasis keeps the original glyph metrics and the unit positions. */
 .product-facts>div[data-fact-key]{--fact-emphasis:0;--fact-emphasis-ink:color-mix(in srgb,var(--text) 76%,CanvasText)}
 .product-facts>div[data-fact-key]>dt{

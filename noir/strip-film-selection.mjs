@@ -1,4 +1,4 @@
-import {filmProducts} from './film-catalog.mjs';
+import {filmProducts} from './film-catalog.mjs?v=detail-2';
 
 // Verified catalogue selection. Keep the three reviewed constructions first.
 // This single-film sequence is independent of the four-family TV overview.

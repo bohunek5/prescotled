@@ -4,6 +4,7 @@ const clamp=(value,min=0,max=1)=>Math.max(min,Math.min(max,value));
 const smooth=value=>{const t=clamp(value);return t*t*(3-2*t);};
 const numeric=value=>Number(String(value??'').replace(',','.'));
 const printed=value=>String(value??'').replace('.',',');
+export const hasCopperDetail=product=>numeric(product?.copperOz)>0;
 
 // One feature description drives both the miniature and its physical cue.
 // Catalogue facts stay in the catalogue; these are presentation choices only.
@@ -32,6 +33,9 @@ export function sampleDetailCue(product,shot,powerMode=0){
   const local=Math.max(0,Number(shot?.local)||0);
   const three=product.id==='3w1',wcob=product.id.startsWith('wcob'),feature=describeStripFeature(product);
   const starts=three?[2.5,6,9,12,15.5]:wcob?[2.5,30,34]:[2.5,7,10];
+  const widthIndex=starts.length-1,sectionIndex=widthIndex-1;
+  const copperStart=hasCopperDetail(product)?(shot?.copperStart??(three?19:13)):null;
+  if(copperStart!==null)starts.push(copperStart);
   const index=Math.max(0,starts.findLastIndex(start=>local>=start));
   const start=starts[index],elapsed=local-start;
   const voltage=`+${printed(product.voltage)} V DC`;
@@ -40,7 +44,7 @@ export function sampleDetailCue(product,shot,powerMode=0){
   const ledWord=leds===1?'dioda':leds%10>=2&&leds%10<=4&&(leds%100<12||leds%100>14)?'diody':'diod';
   let label=voltage,subline='Zasilanie',anchor='contact',contactIndex=0,measurement=null,highlightFacts=['voltage'];
   const section=()=>{label=cutOnly?`Cięcie co ${printed(product.cut)} mm`:`${leds} ${ledWord} / sekcja`;subline=cutOnly?`${printed(product.density)} LED/m`:`${printed(product.density)} LED/m · cięcie co ${printed(product.cut)} mm`;anchor='section';measurement='section';highlightFacts=['density'];};
-  const width=()=>{label=`PCB ${printed(product.width)} mm`;subline='Szerokość taśmy';anchor='width';measurement='width';highlightFacts=['width'];};
+  const width=()=>{label=product.outerWidth?`Koszulka ${printed(product.outerWidth)} mm`:`PCB ${printed(product.width)} mm`;subline=product.outerWidth?`PCB ${printed(product.width)} mm · wysokość ${printed(product.overallHeight)} mm`:'Szerokość taśmy';anchor='width';measurement='width';highlightFacts=['width'];};
 
   if(three&&index<3){
     const mode=clamp(Math.floor(Number(powerMode)||0),0,2);
@@ -51,14 +55,18 @@ export function sampleDetailCue(product,shot,powerMode=0){
     subline=`${voltage} / ${contacts[mode]}`;
     contactIndex=mode+1;
     highlightFacts=['voltage','power','output','efficacy'];
-  }else if(index===starts.length-2){section();}
-  else if(index===starts.length-1){width();}
+  }else if(index===sectionIndex){section();}
+  else if(index===widthIndex){width();}
+  else if(copperStart!==null&&index===starts.length-1){
+    label=`Miedź PCB · ${printed(product.copperOz)} oz`;
+    subline='Gramatura miedzi';anchor='copper';highlightFacts=['copper'];
+  }
   else{
     ({label,subline,anchor,highlightFacts}=feature);
     measurement=feature.measurement??null;
   }
 
-  // Show the product benefit first, then section/density, then PCB width.
+  // Benefit, section/density, width, then documented copper weight.
   // Each caption clears before the next one; the last fades at pullback.
   const featureCue=three?index<3:index===0;
   const typing=smooth(elapsed/.4);
@@ -76,7 +84,7 @@ export function sampleDetailCue(product,shot,powerMode=0){
   const tips=measurement?smooth((elapsed-branchStart-branchDuration)/.08):0;
   const witnesses=measurement==='width'?smooth((elapsed-branchStart-branchDuration)/.26):0;
   const fadeIn=smooth(elapsed/.2);
-  const next=wcob&&index===0?6:starts[index+1],detailEnd=wcob?38:three?19:13;
+  const next=wcob&&index===0?6:starts[index+1],detailEnd=shot?.detailEnd??((wcob?38:three?19:13)+(copperStart!==null?3:0));
   const fadeOut=next?1-smooth((local-(next-.3))/.3):1-smooth((local-detailEnd)/.5);
   const end=next??detailEnd+.5;
   // A brief rise, hold and return marks each benefit without leaving the
