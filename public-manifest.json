@@ -59,8 +59,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 1136,
-  "bytesExcludingManifest": 307993285,
+  "fileCountExcludingManifest": 1141,
+  "bytesExcludingManifest": 308039095,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4841,13 +4841,13 @@
       "source": "model-profile-micro/index.html"
     },
     "model-smd-2835/index.html": {
-      "bytes": 5298,
-      "sha256": "c7c722ed9c6ac7dc549b16195d3c6ae0fbd70f239151a84349ee268d75aebe25",
+      "bytes": 5300,
+      "sha256": "45cf7fbd6d85cf0f1dcdf0a2f41eed518908e72817aa53f9513ea2af83f280b9",
       "source": "model-smd-2835/index.html"
     },
     "noir/catalog-strip-model.mjs": {
-      "bytes": 27620,
-      "sha256": "14f360c7bb99346652eb94c706bbac9d1d576a24142917a8994589ab3e13029a",
+      "bytes": 28722,
+      "sha256": "524563c152bf2791e2185fc99ba2bc8747e290a29cf2a63cd22b5ebb2d7055c1",
       "source": "noir/catalog-strip-model.mjs"
     },
     "noir/delux-pcb-artwork.mjs": {
@@ -4861,8 +4861,8 @@
       "source": "noir/film-catalog.mjs"
     },
     "noir/film-feature-3d.mjs": {
-      "bytes": 28763,
-      "sha256": "404b29e5201058be1076c9f6cb608e09d02791d9fe449f6892762fa1cfb99fed",
+      "bytes": 32553,
+      "sha256": "d33a439adc1c5c71f9a343444cf67f15cad7f61bf4d5af6ed257f2f477946f7b",
       "source": "noir/film-feature-3d.mjs"
     },
     "noir/film-numbers.mjs": {
@@ -5616,13 +5616,13 @@
       "source": "noir/smd2835-model.mjs"
     },
     "noir/smd2835-viewer.css": {
-      "bytes": 25091,
-      "sha256": "27380953249883dd704a3a219c047b3219ed1364effbb76d9ccd6f94b80c97a0",
+      "bytes": 25989,
+      "sha256": "c213c1d57a490df87651c580be674ab8f6ce804d402a4b4c5df5dbf8fd5869e5",
       "source": "noir/smd2835-viewer.css"
     },
     "noir/smd2835-viewer.mjs": {
-      "bytes": 22735,
-      "sha256": "b3ee68697ce7d40e016c5146a17b29d20046b1f4967e56889a594137aa1c61ce",
+      "bytes": 26065,
+      "sha256": "fbfd024a548e30a79c3208191e0c9582a5fc9e43c0aba85718f729483729a316",
       "source": "noir/smd2835-viewer.mjs"
     },
     "noir/strip-appearance.mjs": {
@@ -5636,33 +5636,33 @@
       "source": "noir/strip-backing.mjs"
     },
     "noir/strip-cue-layout.mjs": {
-      "bytes": 1825,
-      "sha256": "9c07a8ff358e57e92d26437453a908b910703c93167e88d1c760a4ddfe123d71",
+      "bytes": 3016,
+      "sha256": "d28ee52d6afbf0a64508401bb279878d0022cc995249607b7ceeba7e018f2578",
       "source": "noir/strip-cue-layout.mjs"
     },
     "noir/strip-detail-cues.mjs": {
-      "bytes": 3833,
-      "sha256": "799ff1a233915c97841b2a8ca0d8e42be5a98edaf75d08cd04d037ee80db2d54",
+      "bytes": 7274,
+      "sha256": "3a5a51ca260fe8e13d770550d036c86e989e1d70de5efd74261815dcaaa37b29",
       "source": "noir/strip-detail-cues.mjs"
     },
     "noir/strip-dimensions.mjs": {
-      "bytes": 4573,
-      "sha256": "1f30cf80c270a6df5a19134c7fd6dc1f0422060195bc4cc11f3ad4b64f516fc8",
+      "bytes": 8165,
+      "sha256": "0d26406f3ef16d4a835af147cb357ad84a1b5a1032ffc579d65d1e4a85e9d615",
       "source": "noir/strip-dimensions.mjs"
     },
     "noir/strip-light-program.mjs": {
-      "bytes": 3402,
-      "sha256": "72ca25e28dadbbe0e7cb51a0748f591d7f04b5fa1a7c10136ad328cfae112944",
+      "bytes": 4068,
+      "sha256": "87bba59c44d51fd87f1eeff86cfea73d0d2eeac2a114d3465ecbd5c1f9989a80",
       "source": "noir/strip-light-program.mjs"
     },
     "noir/strip-lighting.mjs": {
-      "bytes": 22404,
-      "sha256": "ed32320a747de0f5d4bbb898564506b278fa87403d531781c71a5b28e3d97d86",
+      "bytes": 23271,
+      "sha256": "4d39da5f9bfb687b17d2ca3cc32abe4352e1f59ee391aedeac44b097484a93c3",
       "source": "noir/strip-lighting.mjs"
     },
     "noir/strip-presentation.mjs": {
-      "bytes": 2751,
-      "sha256": "b938588c0dac8a6838f83a9a6d3a34ac4e45f41227595fdb4d78d09b2581be8c",
+      "bytes": 3082,
+      "sha256": "e2a12f6f3a65508ef991b3043f3e6ea5e0357aae7c725db5bc222fe432e180de",
       "source": "noir/strip-presentation.mjs"
     },
     "noir/strip-rebuild.mjs": {
@@ -5671,13 +5671,13 @@
       "source": "noir/strip-rebuild.mjs"
     },
     "noir/strip-section-camera.mjs": {
-      "bytes": 2749,
-      "sha256": "38f13eba20df4cf2dd1683e332b63bdaf06cf1a8edf5c3a25b322c8c6765fbc6",
+      "bytes": 3137,
+      "sha256": "818b1bb46515b3a33fc00f10b18841ea092c9e2dc42ba8fba93b76d12179d370",
       "source": "noir/strip-section-camera.mjs"
     },
     "noir/voltage-placement.mjs": {
-      "bytes": 2926,
-      "sha256": "fb8f506233d09dce0273939b08afe9da0ed67bd330f29ef4904e84fdcd1ee8be",
+      "bytes": 3115,
+      "sha256": "9d568654a70431c6f9cfe84d9bcd48c81b81d14abacbc20ff14496d90a0687c4",
       "source": "noir/voltage-placement.mjs"
     },
     "targi/index.html": {
@@ -5749,6 +5749,31 @@
       "bytes": 4668,
       "sha256": "6a84af57c97b3ca1b290a14cae9303998271be4d9786f841eabde4cd07743f50",
       "source": "noir/media/smd2835-pcb-print.svg"
+    },
+    "noir/catalog-film-artwork.mjs": {
+      "bytes": 5592,
+      "sha256": "d6ac1c0eca27030e3e72ec0a47a61a0e1103beeb394582ebe3cc679565a1a916",
+      "source": "noir/catalog-film-artwork.mjs"
+    },
+    "noir/strip-fact-highlight.mjs": {
+      "bytes": 1542,
+      "sha256": "59f0a58b4f3900b3c0766ba3da51e9674e76665513f4806c8f4bb3d0544f26c5",
+      "source": "noir/strip-fact-highlight.mjs"
+    },
+    "noir/strip-film-selection.mjs": {
+      "bytes": 1028,
+      "sha256": "1de4ba91d0cf342ce54b82b26c292db910eeb6cbda599dac22493e446e210e93",
+      "source": "noir/strip-film-selection.mjs"
+    },
+    "noir/wcob-detail-cues.mjs": {
+      "bytes": 1827,
+      "sha256": "f50b1c27a835322c49a77c59317d20d41b90b801b327c4a5668e475062583cba",
+      "source": "noir/wcob-detail-cues.mjs"
+    },
+    "noir/wcob-section-detail.mjs": {
+      "bytes": 16034,
+      "sha256": "4956807185d1472a72222e354c2d14ff5b65227f772daa17e38259f91b31cdd9",
+      "source": "noir/wcob-section-detail.mjs"
     }
   }
 }

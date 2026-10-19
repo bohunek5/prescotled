@@ -25,7 +25,7 @@ function rainbow(position){
 function whiteLabel(warmMix){return warmMix>.7?'Ciepła biel':warmMix<.3?'Chłodna biel':'Neutralna biel';}
 function whiteBalance(warmMix){return warmMix>=.5?mix(neutral,warm,smooth((warmMix-.5)*2)):mix(neutral,cool,smooth((.5-warmMix)*2));}
 
-export function sampleStripLight(product,time,{variant=product.color,previousVariant=variant,variantBlend=1,module=0,moduleCount=1}={}){
+export function sampleStripLight(product,time,{variant=product.color,previousVariant=variant,variantBlend=1,variantProgress=null,module=0,moduleCount=1}={}){
   const seconds=Math.max(0,Number(time)||0),digital=!!product.digital,control=product.control;
   const white=mix(temperatureColor(previousVariant),temperatureColor(variant),smooth(variantBlend));
   const position=module/Math.max(1,moduleCount),wave=.5+.5*Math.cos(turn*(position-seconds*.16));
@@ -41,13 +41,19 @@ export function sampleStripLight(product,time,{variant=product.color,previousVar
     phase=digital?'Płynące moduły · RGB + biel':'Płynne przejście RGB';
     if(control!=='RGB'){
       const whiteWave=.5+.5*Math.cos(turn*((seconds-7)/11-(digital?position:0)+(digital?.24:0)));
-      const whiteAmount=control==='RGB+CCT'?smooth((seconds-12)/1.4):digital?smooth((whiteWave-.91)/.08):smooth((whiteWave-.55)/.35);
+      const variantWhiteCue=!digital&&control==='RGBW'&&Number.isFinite(variantProgress);
+      const variantCctCue=!digital&&control==='RGB+CCT'&&Number.isFinite(variantProgress);
+      const progress=variantWhiteCue||variantCctCue?clamp(variantProgress,0,1):0;
+      // A three-second catalogue variant leaves 1.5 seconds of unmixed white.
+      // Matching white at both ends also avoids a colour jump between SKUs.
+      const variantWhite=1-smooth(progress/.12)+smooth((progress-.22)/.28);
+      const whiteAmount=variantWhiteCue?variantWhite:variantCctCue?smooth((progress-.35)/.1):control==='RGB+CCT'?smooth((seconds-12)/1.4):digital?smooth((whiteWave-.91)/.08):smooth((whiteWave-.55)/.35);
       let whiteChannel=white;
       if(control==='RGB+CCT'){
-        warmMix=1-smooth((seconds-13)/4);whiteChannel=whiteBalance(warmMix);
+        warmMix=1-smooth(variantCctCue?(progress-.48)/.4:(seconds-13)/4);whiteChannel=whiteBalance(warmMix);
       }
       color.lerp(whiteChannel,whiteAmount);
-      if(!digital&&whiteAmount>.6)phase=control==='RGB+CCT'?whiteLabel(warmMix):'Osobny kanał bieli';
+      if(!digital&&(variantWhiteCue||variantCctCue?whiteAmount===1:whiteAmount>.6))phase=control==='RGB+CCT'?whiteLabel(warmMix):'Osobny kanał bieli';
     }
   }else if(digital){program='digital-mono';phase='Płynące moduły · biel';}
   return {program,phase,color,intensity,warmMix,digital,module};

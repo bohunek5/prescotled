@@ -5,8 +5,8 @@ const overlap=(a,b)=>Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left
 
 // Choose nearby negative space using the projected PCB, including the other
 // turns of the helix. Never reserve a distant corner for a small contact label.
-export function placeVoltageLabel(model,camera,{width,height,x,y,labelWidth,twoLines,scale=1,choice=-1,leftBound=14,raise=0,branchAxis=null}){
-  const obstacles=[];
+export function placeVoltageLabel(model,camera,{width,height,x,y,labelWidth,twoLines,scale=1,choice=-1,leftBound=14,raise=0,branchAxis=null,extraObstacles=[]}){
+  const obstacles=[...extraObstacles];
   const samples=Math.ceil(model.specification.length/5),half=model.specification.width/2+.6;
   let previous;
   for(let i=0;i<=samples;i++){
@@ -21,6 +21,7 @@ export function placeVoltageLabel(model,camera,{width,height,x,y,labelWidth,twoL
   // Width needs a visible junction: a nearly parallel leader would cover one
   // branch. These are additional positions for that measurement only.
   const offsets=[...(branchAxis?[[-2.2,-70],[-2.7,-105],[-3.2,-150],[-2,-30],[-2.8,-180]]:[]),[-1.35,-85],[-.65,-125],[.2,-135],[-1.35,-175],[-.65,-220],[.3,-225],[-1.6,-35],[.7,-280],[-.8,-280]];
+  if(extraObstacles.length)for(const horizontal of [-1.35,-.65,.2])for(const vertical of [-360,-450,-540,90,180,270])offsets.push([horizontal,vertical]);
   const candidates=offsets.map(([horizontal,vertical],index)=>{
     const tx=clamp(x+horizontal*labelWidth,leftBound,width-labelWidth-14);
     const ty=clamp(y+vertical*scale-raise,32,height-(twoLines?40:20));

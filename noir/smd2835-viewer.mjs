@@ -1,19 +1,19 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-3';
-import {filmProducts} from './film-catalog.mjs';
-import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-3';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-4';
+import {mainFilmProducts as products} from './strip-film-selection.mjs';
+import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-4';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
-import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-4';
+import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-5';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-6';
-import {frameStripSection} from './strip-section-camera.mjs';
-
-// Review these three constructions before extending the film to the catalogue.
-const products=['3w1','slim','truecolor10'].map(id=>filmProducts.find(product=>product.id===id));
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-7';
+import {frameStripSection} from './strip-section-camera.mjs?v=detail-2';
+import {createFactHighlight} from './strip-fact-highlight.mjs';
+import {createWcobSectionDetail} from './wcob-section-detail.mjs';
+import {sampleWcobDetailCue} from './wcob-detail-cues.mjs';
 
 const PLAYBACK_RATE=1.15;
-const modelOption=(product,sku=product.sku)=>`${product.range} · ${product.name.split(' · ')[0]} · ${sku}`;
+const modelOption=(product,sku=product.sku)=>`${product.range} · ${product.name} · ${sku}`;
 let colorVariant=null,colorKey='';
 let lightProgram=null;
 const catalogueNumber=value=>{const text=String(value??'').trim().replace(',','.');return /^\d+(?:\.\d+)?$/.test(text)?Number(text):null;};
@@ -29,6 +29,7 @@ function energy(value){
 }
 
 const host=document.querySelector('#stage'),loading=document.querySelector('#loading'),intro=document.querySelector('.intro');
+const factHighlight=createFactHighlight(intro);
 let pendingProductReveal=false;
 const featureIcons=createFeatureIcons();
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
@@ -41,9 +42,33 @@ renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
 host.append(renderer.domElement);
 const voltageCue=createVoltageCue(host,{nearPad:true,avoidElement:intro,sequence:true});
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(32,1,1,2000);
-let sectionFraming=null;
-const models=products.map(product=>createCatalogStrip(product,{anisotropy:Math.min(8,renderer.capabilities.getMaxAnisotropy())}));
-models.forEach((m,i)=>{scene.add(m.group);m.group.visible=i===0;});
+let sectionFraming=null,wcobDetail=null;
+// Keep the reviewed opening and adjacent chapters ready. The catalogue is
+// loaded on demand instead of retaining every model's textures on the GPU.
+const models=Array(products.length).fill(null),modelPromises=[],modelLoaded=[];
+function ensureModel(index){
+  if(models[index])return models[index];
+  const product=products[index],cut=Number(product.cut);
+  const m=createCatalogStrip(product,{anisotropy:Math.min(8,renderer.capabilities.getMaxAnisotropy()),turns:Math.min(2.25,112.5/cut)});
+  models[index]=m;modelLoaded[index]=false;scene.add(m.group);m.group.visible=false;
+  m.setLight(false);m.setTemperature(product.color);
+  modelPromises[index]=m.ready.then(()=>{if(models[index]===m)modelLoaded[index]=true;return m;});
+  return m;
+}
+function keepAdjacent(index){
+  const next=(index+1)%products.length,previous=(index+products.length-1)%products.length;
+  ensureModel(next);
+  const retained=new Set([0,1,2,index,next,previous]);
+  models.forEach((m,i)=>{
+    if(!m||retained.has(i))return;
+    scene.remove(m.group);m.dispose();models[i]=null;modelLoaded[i]=false;modelPromises[i]=null;
+  });
+}
+function shotModelsReady(candidate){
+  const indices=candidate.rebuild?[candidate.rebuild.from,candidate.rebuild.to]:[candidate.model];
+  indices.forEach(ensureModel);return indices.every(i=>modelLoaded[i]);
+}
+[0,1,2].forEach(ensureModel);models[0].group.visible=true;
 let model=models[0],modelIndex=0,powerMode=0;
 
 
@@ -64,7 +89,7 @@ const key=new T.DirectionalLight(0xfff0d6,3.2);key.position.set(-130,140,210);ke
 key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-140,right:140,top:150,bottom:-150,near:1,far:600});key.shadow.bias=-.00006;key.shadow.normalBias=.035;key.shadow.radius=3;scene.add(key);
 const fill=new T.DirectionalLight(0xdbe8ff,1.3);fill.position.set(140,20,100);scene.add(fill);
 const rim=new T.DirectionalLight(0xffe4c0,2.4);rim.position.set(50,100,-180);scene.add(rim);
-models.forEach((m,i)=>{m.setLight(false);m.setTemperature(products[i].color);});models[0].setPower(3/11);
+models[0].setPower(3/11);
 
 let rotating=!reduced.matches,lit=false,zoom=0,targetZoom=0,rotation=-.22,tilt=-.04,view='full',theme='day',visible=true;
 let touring=!reduced.matches,tourSeconds=0,shot=null,cameraTargetY=0,ready=false;
@@ -82,7 +107,9 @@ function render(now){
   if(rotating){
     elapsed+=delta;
     if(touring){
-      tourSeconds+=delta*PLAYBACK_RATE;shot=samplePresentation(tourSeconds,products.length);
+      const nextSeconds=tourSeconds+delta*PLAYBACK_RATE,nextShot=samplePresentation(nextSeconds,products.length);
+      if(!shotModelsReady(nextShot)){inRender=false;raf=requestAnimationFrame(render);return;}
+      tourSeconds=nextSeconds;shot=nextShot;
       if(shot.model!==modelIndex)selectModel(shot.model);
       if(products[modelIndex].id==='3w1'&&!shot.rebuild&&powerMode!==shot.powerMode)setPowerMode(shot.powerMode);
       updateColorVariant(shot.productTime);
@@ -98,10 +125,21 @@ function render(now){
   if(needsPaint){
     resize();
     const focusModel=shot?.rebuild?models[shot.rebuild.from]:model;
-    sectionFraming=frameStripSection(camera,focusModel,{...shot,zoom,rotation,tilt},camera.aspect);
+    if(wcobDetail){
+      wcobDetail.update(shot?.wcobDetail??0,{lightLevel:0,kelvin:colorVariant?.kelvin});
+    }
+    const detailBounds=wcobDetail?.group.visible?wcobDetail.inspect().boundsLocal:null;
+    sectionFraming=frameStripSection(camera,focusModel,{...shot,zoom,rotation,tilt,detailBounds},camera.aspect);
     model.group.rotation.copy(focusModel.group.rotation);activeRebuild?.group.rotation.copy(focusModel.group.rotation);
-    voltageCue.update(model,products[modelIndex],camera,reduced.matches?null:shot,width,height,powerMode);
-    renderer.render(scene,camera);featureIcons.render(shot?.iconTime??0,reduced.matches||!touring,reduced.matches,voltageCue.inspect().cueStages?.featureEmphasis??0);painted++;needsPaint=false;
+    let cueShot=shot;
+    if(wcobDetail){
+      wcobDetail.group.rotation.copy(model.group.rotation);wcobDetail.group.updateMatrixWorld(true);
+      if(shot?.wcobDetail!==null&&shot?.wcobDetail!==undefined)cueShot={...shot,detailCue:sampleWcobDetailCue(wcobDetail,shot.local)};
+    }
+    voltageCue.update(model,products[modelIndex],camera,reduced.matches?null:cueShot,width,height,powerMode);
+    const cueStages=voltageCue.inspect().cueStages;
+    factHighlight.update(cueStages?.highlightFacts,cueStages?.highlightLevel);
+    renderer.render(scene,camera);featureIcons.render(shot?.iconTime??0,reduced.matches||!touring,reduced.matches,cueStages?.featureEmphasis??0);painted++;needsPaint=false;
   }
   inRender=false;
   if(rotating||Math.abs(zoom-targetZoom)>.0001)raf=requestAnimationFrame(render);
@@ -109,12 +147,12 @@ function render(now){
 function schedule(){needsPaint=true;if(!raf&&!inRender&&!document.hidden&&!disposed&&visible&&ready)raf=requestAnimationFrame(render);}
 function clearRebuild(){
   if(activeRebuild){activeRebuild.dispose();rebuilds.fill(null);activeRebuild=null;}
-  models.forEach((m,i)=>{m.group.visible=i===modelIndex;});
+  models.forEach((m,i)=>{if(m)m.group.visible=i===modelIndex;});
 }
 function applyRebuild(from,progress){
   if(!rebuilds[from]){rebuilds[from]=createStripRebuild(models[from],models[(from+1)%models.length]);scene.add(rebuilds[from].group);}
   activeRebuild=rebuilds[from];activeRebuild.group.visible=true;
-  models.forEach(m=>{m.group.visible=false;});activeRebuild.update(progress);
+  models.forEach(m=>{if(m)m.group.visible=false;});activeRebuild.update(progress);
 }
 function setPowerMode(index){
   powerMode=index;const mode=powerModes[index];models[0].setPower(Number(mode.power)/11);
@@ -137,7 +175,10 @@ function updateLighting(){
   const level=reduced.matches||incoming||shot?.rebuild?0:p.digital?(local<=detailEnd?1:shot?.lightLevel??0):shot?.lightLevel??0;
   const variantIndex=sampleVariant(shot?.productTime??0,variants.length);
   const previousVariant=p.id==='3w1'?colorVariant:variants[Math.max(0,variantIndex-1)]??colorVariant;
-  const variantStart=variants.length?4+variantIndex*(detailEnd-4)/variants.length:0;
+  const variantBegin=shot?.variantStart??4;
+  const variantDuration=(detailEnd-variantBegin)/Math.max(1,variants.length);
+  const variantStart=variantBegin+variantIndex*variantDuration;
+  const variantProgress=T.MathUtils.clamp((local-variantStart)/variantDuration,0,1);
   const variantBlend=seeking||p.id==='3w1'?1:smoothBlend((local-variantStart)/.7);
   // Compare optical output only within the same construction, using catalogue
   // flux. This is presentation brightness, not a cross-product lux simulation.
@@ -146,8 +187,9 @@ function updateLighting(){
   function flux(v,mode){return catalogueNumber(v?.outputs[mode]??p.output)??reference;}
   function variantFlux(mode){return T.MathUtils.lerp(flux(previousVariant,mode),flux(colorVariant,mode),variantBlend);}
   let power=variantFlux(0)/reference;
+  if(p.id==='deluxlow'||p.id==='coblow')power*=.23;
   if(p.id==='3w1'&&shot)power=T.MathUtils.lerp(variantFlux(Math.max(0,powerMode-1)),variantFlux(powerMode),shot.powerBlend)/reference;
-  lightProgram=model.updateLightAnimation(local,{lightLevel:level,power,variant:colorVariant?.kelvin??p.color,previousVariant:previousVariant?.kelvin??p.color,variantBlend});
+  lightProgram=model.updateLightAnimation(local,{lightLevel:level,power,variant:colorVariant?.kelvin??p.color,previousVariant:previousVariant?.kelvin??p.color,variantBlend,variantProgress});
   lit=level>0;
   const block=document.querySelector('.color-block');
   block.dataset.lightProgram=lit?'active':'off';
@@ -160,11 +202,17 @@ function updateLighting(){
   }
 }
 function selectModel(index){
+  wcobDetail?.dispose();wcobDetail=null;
   model.setLight(false);lit=false;lightProgram=null;
+  factHighlight.update();
   numbers.finish();
   colorVariant=null;colorKey='';
-  modelIndex=index;model=models[index];models.forEach((m,i)=>{m.group.visible=i===index;});
+  modelIndex=index;model=models[index];models.forEach((m,i)=>{if(m)m.group.visible=i===index;});
+  keepAdjacent(index);
   const p=products[index];document.body.dataset.model=p.id;
+  if(p.id.startsWith('wcob')){wcobDetail=createWcobSectionDetail(model,p);scene.add(wcobDetail.group);}
+  const catalogueSectionCount=Number(p.density)*Number(p.cut)/1000;
+  const integralSectionCount=Math.abs(catalogueSectionCount-Math.round(catalogueSectionCount))<.15;
   document.querySelector('#model-select').value=String(index);
   document.querySelector('#model-count').textContent=`${String(index+1).padStart(2,'0')} / ${products.length}`;
   const fields={kelvin:p.color,'color-unit':p.unit,color:p.colorCopy,power:p.power,output:p.output,density:p.density,voltage:p.voltage,width:p.width,'output-label':p.outputLabel,'output-unit':p.outputUnit,quality:p.quality,'quality-unit':p.qualityUnit,'quality-label':p.qualityLabel,tech:p.tech.includes('COB')?p.tech:`SMD ${p.tech}`,ip:p.ip,beam:p.beam,section:p.tech.includes('COB')?`Cięcie ${p.cut} mm`:`${model.specification.ledsPerSection} LED / sekcja`};
@@ -249,12 +297,22 @@ function visibility(){if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0
 document.addEventListener('visibilitychange',visibility);
 function motionChanged(){rotating=touring=!reduced.matches;if(reduced.matches){numbers.finish();clearRebuild();model.setLight(false);lit=false;document.querySelectorAll('[data-reveal]').forEach(el=>el.getAnimations().forEach(a=>a.cancel()));}schedule();}reduced.addEventListener('change',motionChanged);
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);raf=0;loading.hidden=false;loading.textContent='Podgląd 3D został wstrzymany. Odśwież stronę, aby go przywrócić.';disposed=true;});
-function dispose(){disposed=true;numbers.finish();cancelAnimationFrame(raf);observer.disconnect();visibilityObserver.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',motionChanged);rebuilds.forEach(r=>r?.dispose());models.forEach(m=>m.dispose());featureIcons.dispose();voltageCue.dispose();environment.dispose();renderer.dispose();}
+function dispose(){disposed=true;wcobDetail?.dispose();numbers.finish();cancelAnimationFrame(raf);observer.disconnect();visibilityObserver.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',motionChanged);rebuilds.forEach(r=>r?.dispose());models.forEach(m=>m?.dispose());featureIcons.dispose();factHighlight.dispose();voltageCue.dispose();environment.dispose();renderer.dispose();}
 addEventListener('pagehide',e=>{if(e.persisted){cancelAnimationFrame(raf);raf=0;last=0;}else dispose();});
 addEventListener('pageshow',()=>{if(!disposed)schedule();});
 // Deterministic film seeking for frame capture/export; no playback UI is shown.
+let seekRequest=0;
 function seek(seconds,{play=false}={}){
   if(!ready)return false;
+  const request=++seekRequest,candidate=samplePresentation(Math.max(0,seconds),products.length);
+  if(!shotModelsReady(candidate)){
+    rotating=touring=false;last=0;
+    const indices=candidate.rebuild?[candidate.rebuild.from,candidate.rebuild.to]:[candidate.model];
+    return Promise.all(indices.map(i=>modelPromises[i])).then(()=>request===seekRequest?seekReady(seconds,{play}):false);
+  }
+  return seekReady(seconds,{play});
+}
+function seekReady(seconds,{play=false}={}){
   seeking=true;numbers.finish();
   tourSeconds=Math.max(0,seconds);shot=samplePresentation(tourSeconds,products.length);
   clearRebuild();selectModel(shot.model);
@@ -266,7 +324,7 @@ function seek(seconds,{play=false}={}){
   if(shot.rebuild&&!reduced.matches)applyRebuild(shot.rebuild.from,shot.rebuild.progress);
   seeking=false;schedule();return true;
 }
-window.smdViewer={seek,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,modelIndex,productId:products[modelIndex].id,modelCount:products.length,models:products.map(p=>p.id),sectionFraming,featureIcons:featureIcons.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
+window.smdViewer={seek,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,modelIndex,productId:products[modelIndex].id,modelCount:products.length,loadedModelCount:models.filter(Boolean).length,chapterStarts:products.map((_,i)=>presentationStart(i)),models:products.map(p=>p.id),sectionFraming,wcobDetail:wcobDetail?.inspect()??null,featureIcons:featureIcons.inspect(),factHighlight:factHighlight.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
 const modelSelect=document.querySelector('#model-select');
 products.forEach((p,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=modelOption(p);modelSelect.append(option);});
 function startModel(index){if(!ready)return;seek(presentationStart((index+products.length)%products.length),{play:true});}
@@ -275,7 +333,7 @@ document.querySelector('[data-model-step="-1"]').addEventListener('click',()=>st
 document.querySelector('[data-model-step="1"]').addEventListener('click',()=>startModel(modelIndex+1));
 document.querySelector('[data-model-restart]').addEventListener('click',()=>startModel(modelIndex));
 resize();setTheme('day');
-Promise.all(models.map(m=>m.ready)).then(()=>{
+Promise.all([0,1,2].map(i=>modelPromises[i])).then(()=>{
   if(disposed)return;
   ready=true;loading.hidden=true;document.querySelectorAll('.film-preview-nav button,.film-preview-nav select').forEach(el=>el.disabled=false);selectModel(0);schedule();
 }).catch(error=>{loading.textContent='Nie udało się wczytać nadruków modelu. Odśwież stronę.';console.error(error);});

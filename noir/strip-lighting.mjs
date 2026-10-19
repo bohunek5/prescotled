@@ -1,10 +1,10 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {unlitEmitterColor} from './strip-appearance.mjs';
-import {sampleStripLight} from './strip-light-program.mjs';
-import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-3';
-import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-6';
-import {projectStripDimension} from './strip-dimensions.mjs?v=detail-4';
-import {planStripCue} from './strip-cue-layout.mjs?v=detail-4';
+import {sampleStripLight} from './strip-light-program.mjs?v=detail-2';
+import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-4';
+import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-7';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-5';
+import {planStripCue} from './strip-cue-layout.mjs?v=detail-5';
 
 const supplyAnchors=new WeakMap();
 export function supplyAnchor(model,contactIndex=0,sectionIndex=null){
@@ -95,12 +95,12 @@ export function installStripLighting(model,product){
   glow.setColorAt(0,new T.Color(0xffffff));glow.instanceColor.setUsage(T.DynamicDrawUsage);
   glow.material.color.set(0xffffff);glow.material.needsUpdate=true;
   restore.push(()=>{glow.instanceColor=oldGlowColors;});
-  let level=0,power=1,time=0,variant=product.color,previousVariant=variant,variantBlend=1;
+  let level=0,power=1,time=0,variant=product.color,previousVariant=variant,variantBlend=1,variantProgress=null;
   let samples=[],current=sampleStripLight(product,0,{variant});
   const moduleCount=Math.max(1,model.specification.sections),emissionGain=isCob?1.65:2.2;
   function refresh(){
     const strength=level*Math.pow(power,.82);illumination.value=strength;
-    const parameters={variant,previousVariant,variantBlend,moduleCount};
+    const parameters={variant,previousVariant,variantBlend,variantProgress,moduleCount};
     const global=sampleStripLight(product,time,parameters);
     const modules=product.digital?Array.from({length:moduleCount},(_,module)=>sampleStripLight(product,time,{...parameters,module})):[global];
     current=product.digital?modules[Math.floor(moduleCount/2)]:global;
@@ -138,6 +138,7 @@ export function installStripLighting(model,product){
     if(options.power!==undefined)power=T.MathUtils.clamp(options.power,0,1);
     if(options.variant!==undefined)temperature(options.variant);
     previousVariant=options.previousVariant??variant;variantBlend=T.MathUtils.clamp(options.variantBlend??1,0,1);
+    variantProgress=Number.isFinite(options.variantProgress)?T.MathUtils.clamp(options.variantProgress,0,1):null;
     return refresh();
   };
   const inspect=model.inspect;
@@ -174,9 +175,18 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
   };
   function featureAnchor(model,kind){
     const section=model.sectionFrame(Math.max(0,Math.floor(model.specification.sections/2)-1));
-    const frame=kind==='cut'?section.startFrame:section.frame;
+    let frame=kind==='cut'?section.startFrame:section.frame,edgeOffset=model.specification.width/2;
+    if(kind==='edge'&&model.group.userData.productId==='sshape'){
+      const contour=model.group.userData.sShape?.sectionBounds;
+      if(contour?.length){
+        const middle=section.length/2;
+        const edge=contour.reduce((nearest,p)=>Math.abs(p.d-middle)<Math.abs(nearest.d-middle)?p:nearest);
+        frame=model.frame(section.start+edge.d);edgeOffset=edge.maxX;
+      }
+    }
     const result=new T.Matrix4().makeBasis(frame.x,frame.y,frame.z);
-    result.setPosition(frame.p.clone().addScaledVector(frame.x,kind==='edge'?model.specification.width/2:0));
+    result.setPosition(frame.p.clone().addScaledVector(frame.x,kind==='edge'?edgeOffset:0)
+      .addScaledVector(frame.z,kind==='coating'||kind==='sleeve'?(model.group.userData.coverHeight??.5):0));
     if(kind==='emitter'){
       const leds=model.group.getObjectByName('LED ceramic base'),candidate=new T.Matrix4(),position=new T.Vector3();let closest=Infinity;
       if(leds)for(let i=0;i<leds.count;i++){
@@ -188,7 +198,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
   }
   return {
     update(model,product,camera,shot,width,height,powerMode){
-      const cue=sequence?sampleDetailCue(product,shot,powerMode):null;
+      const cue=sequence?(shot?.detailCue??sampleDetailCue(product,shot,powerMode)):null;
       const opacity=cue?cue.opacity:(shot?.contactLevel??0);
       svg.style.opacity=String(opacity);activeVoltage=null;activeContact=null;measurement=null;
       activeAnchor=null;stages=null;featureLink=null;featurePath.style.visibility='hidden';
@@ -201,6 +211,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       const anchor=measurement?featureAnchor(model,'section'):cue&&cue.anchor!=='contact'?featureAnchor(model,cue.anchor):supplyAnchor(model,contactIndex,sequence?sectionIndex:null);
       if(!anchor){svg.style.opacity='0';return;}
       localMatrix.copy(anchor);
+      if(cue?.anchorLocal)localMatrix.setPosition(new T.Vector3().fromArray(cue.anchorLocal));
       if(measurement)localMatrix.setPosition(measurement.anchorLocal);
       matrix.multiplyMatrices(model.group.matrixWorld,localMatrix);point.setFromMatrixPosition(matrix);
       normal.setFromMatrixColumn(matrix,2).normalize();toward.copy(camera.position).sub(point).normalize();
@@ -230,7 +241,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       const branchProgress=measurement?(cue?.branches??pointerProgress):0;
       const tipProgress=measurement?(cue?.tips??endpointProgress):0;
       const witnessProgress=measurement?(cue?.witnesses??tipProgress):0;
-      stages={typing,featureSource:cue?.featureSource??0,featureSourceOpacity:cue?.featureSourceOpacity??0,featureEmphasis:cue?.featureEmphasis??0,underline:underlineProgress,pointer:pointerProgress,endpoint:endpointProgress,branches:branchProgress,tips:tipProgress,witnesses:witnessProgress,highlight:branchProgress};
+      stages={typing,highlightFacts:cue?.highlightFacts??[],highlightLevel:cue?.highlightLevel??0,featureSource:cue?.featureSource??0,featureSourceOpacity:cue?.featureSourceOpacity??0,featureEmphasis:cue?.featureEmphasis??0,underline:underlineProgress,pointer:pointerProgress,endpoint:endpointProgress,branches:branchProgress,tips:tipProgress,witnesses:witnessProgress,highlight:branchProgress};
       label.textContent=fullLabel;mode.textContent=cue?.subline??(threeInOne?`+${product.voltage} V DC  /  ${activeContact}`:'');
       activeAnnotation={label:fullLabel,anchor:cue?.anchor??'contact',index:cue?.index??0};
       const emphasis=!!measurement;

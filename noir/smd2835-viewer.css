@@ -262,3 +262,18 @@ body[data-theme="day"] .voltage-dot{fill:#ab7932}
   .feature-icon{height:63px}
   .product-feature[data-feature=detail] .feature-icon{height:71px}
 }
+/* Cue emphasis keeps the original glyph metrics and the unit positions. */
+.product-facts>div[data-fact-key]{--fact-emphasis:0;--fact-emphasis-ink:color-mix(in srgb,var(--text) 76%,CanvasText)}
+.product-facts>div[data-fact-key]>dt{
+  color:color-mix(in srgb,var(--text) calc(var(--fact-emphasis)*100%),var(--muted));
+  -webkit-text-stroke:calc(var(--fact-emphasis)*.08px) currentColor;
+  transition:color .18s ease,-webkit-text-stroke-width .18s ease;
+}
+.product-facts>div[data-fact-key]>dd span[data-product]{
+  color:color-mix(in srgb,var(--fact-emphasis-ink) calc(var(--fact-emphasis)*100%),var(--text));
+  -webkit-text-stroke:calc(var(--fact-emphasis)*.3px) currentColor;
+  transition:color .18s ease,-webkit-text-stroke-width .18s ease;
+}
+@media(prefers-reduced-motion:reduce){
+  .product-facts>div[data-fact-key]>dt,.product-facts>div[data-fact-key]>dd span[data-product]{transition:none}
+}

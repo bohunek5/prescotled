@@ -3,9 +3,10 @@ import {createSmd2835Model} from './smd2835-model.mjs?v=detail-3';
 import {createBackingTexture} from './strip-backing.mjs';
 import {filmProducts} from './film-catalog.mjs';
 import {applyPcbFinish} from './pcb-finish.mjs';
-import {installStripLighting} from './strip-lighting.mjs?v=detail-3';
+import {installStripLighting} from './strip-lighting.mjs?v=detail-7';
 import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs';
 import {createDeluxArtwork,sectionFrame} from './delux-pcb-artwork.mjs?v=detail-3';
+import {createCatalogFilmArtwork,supportsCatalogFilmArtwork} from './catalog-film-artwork.mjs?v=detail-7';
 
 // Reuse the supplied vector artwork; no text approximation of the brand or CE.
 let marksPromise;
@@ -17,11 +18,14 @@ function loadMarks(){
 }
 const number=value=>Number(String(value).replace(',','.'));
 
-export function createCatalogStrip(product,{anisotropy=4,backingInk}={}){
+export function createCatalogStrip(product,{anisotropy=4,backingInk,turns=2.25}={}){
   // Alternating inks are a presentation choice, not a verified SKU attribute.
   const appearance=stripAppearance(product);
   const ink=backingInk??appearance.backingInk??(filmProducts.findIndex(p=>p.id===product.id)%2===1?'green':'red');
-  const model=createCatalogGeometry(product,{anisotropy});
+  const model=createCatalogGeometry(product,{anisotropy,turns});
+  // Keep printed catalogue facts independent of rounded package counts and
+  // the longer display segment used for continuously cuttable COB strips.
+  Object.assign(model.group.userData,{catalogueDensity:number(product.density),catalogueCut:number(product.cut)});
   model.sectionFrame=index=>sectionFrame(model.specification,model.frame,index);
   const disposeFinish=applyPcbFinish(model,anisotropy);
   const disposeLighting=installStripLighting(model,product);
@@ -38,7 +42,7 @@ export function createCatalogStrip(product,{anisotropy=4,backingInk}={}){
   return model;
 }
 
-function createCatalogGeometry(product,{anisotropy=4}={}){
+function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
   if(product.id==='3w1'||product.id==='smd'){
     const model=createSmd2835Model({family:product.id,anisotropy,product});
     model.group.userData.productId=product.id;
@@ -54,7 +58,7 @@ function createCatalogGeometry(product,{anisotropy=4}={}){
   // Whole packages and exact density take precedence over rounded cut labels.
   const section=cob?(freeCut?50:catalogCut):count*1000/density;
   const sections=Math.max(1,Math.round(500/section)),length=section*sections;
-  const spec={width,thickness:.28,section,sections,ledsPerSection:count,length,turns:2.25,height:235};
+  const spec={width,thickness:.28,section,sections,ledsPerSection:count,length,turns,height:235};
   // Original WCOB MONO/CCT datasheets specify an 8 × 5 mm section, measured
   // from the flat reverse to the crown of its opaque silicone diffuser.
   const wcobTopHeight=5-spec.thickness;
@@ -282,12 +286,16 @@ function createCatalogGeometry(product,{anisotropy=4}={}){
     ce:{x:width-.5,y:(649-16)/838*section,length:.9,height:.6},
     rohs:{x:width-.45,y:(388-16)/838*section,size:.43},
     legendY:[3.28],legendSize:.4,
-    marks:[],legends:[]
+    marks:[],legends:[],facts:[],data:{density:product.density,width:product.width,copperOz:product.copperOz}
   }:{kind:'catalogue-clearance',marks:[],legends:[],...(digital?{legendY:[2.45,section-padLength*1.5-1]}:{})};
   const ready=refinedDelux?createDeluxArtwork(product,spec,{anisotropy}).then(({texture,layout})=>{
     if(disposed){texture.dispose();return;}keep(texture);printLayout=layout;mask.map=texture;mask.color.set(0xffffff);mask.needsUpdate=true;
   }):loadMarks().then(([brand,ce])=>{
     if(disposed||opaque||sealed)return;
+    if(supportsCatalogFilmArtwork(product)){
+      const {texture,layout}=createCatalogFilmArtwork(product,spec,{brand,ce,contacts,padSpacing,padLength,footprints:componentLayout().footprints,anisotropy});
+      keep(texture);printLayout=layout;mask.map=texture;mask.color.set(0xffffff);mask.needsUpdate=true;return;
+    }
     const c=document.createElement('canvas');c.width=384;c.height=Math.min(2048,Math.max(512,Math.round(384*section/width)));
     const ctx=c.getContext('2d');ctx.scale(c.width/width,c.height/section);ctx.fillStyle=blackPcb?'#171c1c':'#f2f2e9';ctx.fillRect(0,0,width,section);
     ctx.fillStyle=blackPcb?'#e2e7df':'#344044';ctx.strokeStyle=blackPcb?'#69736b':'#aeb5a7';ctx.lineWidth=.035;
@@ -299,7 +307,12 @@ function createCatalogGeometry(product,{anisotropy=4}={}){
       const value=sshape?(i?'−':'+'):digital&&label==='DI'&&end?'DO':label;
       const bounds=text(value,x,y,legendSize,edgePads);if(printLayout)printLayout.legends.push({name:value,...bounds});
     }});
-    if(sshape){const bounds=text('12V DC',.55,(388-16)/838*section,.43,true);printLayout.legends.push({name:'12V DC',...bounds});}
+    if(sshape){
+      const bounds=text('12V DC',.55,(388-16)/838*section,.43,true);printLayout.legends.push({name:'12V DC',...bounds});
+      for(const [name,value,x,d] of [['density',`${product.density} LED/m`,.55,(649-16)/838*section],['pcb-width',`PCB ${product.width} mm`,width-.55,5]]){
+        const bounds=text(value,x,d,.4,true);printLayout.facts.push({name,value,...bounds});
+      }
+    }
     const margin=width<5?.45:.8,brandLength=Math.min(12,section*.28,margin*8.45),brandHeight=brandLength/8.45;
     const ceHeight=Math.min(.8,margin),ceLength=ceHeight*1.5;
     // On the 3 mm COB, the real exposed rail is narrower than the standard
@@ -339,7 +352,7 @@ function createCatalogGeometry(product,{anisotropy=4}={}){
     };
     const resistorParts=footprints.filter(p=>p.name.startsWith('Resistor'));
     const obstacles=footprints.filter(p=>p.name.startsWith('LED')||p.name.startsWith('Copper'));
-    const printBounds=[...(printLayout?.marks??[]),...(printLayout?.legends??[])].map(p=>({name:p.name,minX:p.x-width/2,maxX:p.x+p.width-width/2,start:p.y,end:p.y+p.height}));
+    const printBounds=[...(printLayout?.marks??[]),...(printLayout?.legends??[]),...(printLayout?.facts??[])].map(p=>({name:p.name,minX:p.x-width/2,maxX:p.x+p.width-width/2,start:p.y,end:p.y+p.height}));
     const clearances=resistorParts.flatMap(r=>[...obstacles,...printBounds].map(o=>distance(r,o)));
     return {resistorLane:'center',leds:leds.filter(l=>l.section===0).map(l=>({d:l.d,x:l.x??0,angle:l.angle})),resistors:resistors.filter(r=>r.section===0).map(r=>({d:r.d,x:r.x,between:r.between})),pads:pads.filter(p=>p.d<section).map(p=>({d:p.d,x:p.x,width:padWidth,length:padLength})),controllers:controllerLayout,coating:coatingLayout,footprints,resistorClearanceMm:clearances.length?Math.min(...clearances):null};
   }

@@ -22,8 +22,15 @@ export function frameStripSection(camera,model,shot,aspect){
     const frame=model.frame(start-.85+(spec.section+1.7)*step/24);
     for(const side of [-1,1])points.push(frame.p.clone().addScaledVector(frame.x,side*(spec.width/2+.45)).addScaledVector(frame.z,1.1).applyMatrix4(model.group.matrixWorld));
   }
+  if(shot.detailBounds){
+    const {min,max}=shot.detailBounds;
+    for(const x of [min[0],max[0]])for(const y of [min[1],max[1]])for(const z of [min[2],max[2]])
+      points.push(new T.Vector3(x,y,z).applyMatrix4(model.group.matrixWorld));
+  }
   const tangent=Math.tan(T.MathUtils.degToRad(camera.fov/2));
-  const fit=Math.max(136,48/ratio)/tangent;
+  const radius=model.frame(spec.length/2).p;
+  const horizontalExtent=Math.max(48,Math.hypot(radius.x,radius.z)+spec.width/2+8);
+  const fit=Math.max(136,horizontalExtent/ratio)/tangent;
   let macroDistance=40;
   for(const point of points){
     const dx=point.x-center.x,dy=point.y-center.y,dz=point.z-center.z;

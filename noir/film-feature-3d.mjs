@@ -1,6 +1,7 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs';
-import {sampleStripLight} from './strip-light-program.mjs';
+import {sampleStripLight,temperatureColor} from './strip-light-program.mjs?v=detail-2';
+import {describeStripFeature} from './strip-detail-cues.mjs?v=detail-7';
 
 // Five real miniature models share the film clock. A card can also use its
 // parent's renderer, so an overview with four cards still has one WebGL context.
@@ -37,9 +38,10 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     const silver=mat(0xbfc7cc,{metalness:.85,roughness:.21}),white=mat(0xf9f6e9,{metalness:0,roughness:.32});
     mesh(g,rounded(2.1,2.5,.28),white);
     mesh(g,rounded(1.67,2.02,.035,.12),mat(0xb9a67a,{roughness:.6}),0,0,.29);
-    mesh(g,rounded(1.48,1.8,.08,.12),mat(0xf0c333,{metalness:0,roughness:.48}),0,0,.34);
+    const emitter=mesh(g,rounded(1.48,1.8,.08,.12),mat(0xf0c333,{metalness:0,roughness:.48}),0,0,.34);
     for(const side of [-1,1])mesh(g,rounded(.32,1.5,.2,.06),silver,side*1.12,0,-.025);
     mesh(g,rounded(.07,.34,.018,.02),mat(0x414b4b),.94,-.72,.32);
+    return {group:g,emitter};
   }
   function board(parent,cob=false,digital=false,segment=false,product=null){
     const w=segment?3.35:1.9,h=segment?1.45:3.2;
@@ -71,20 +73,23 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
   }
   function beam(v,degrees){
     const angle=T.MathUtils.clamp(Number.parseFloat(degrees)||120,1,180);
-    const sourceY=.82,height=2.15,rimRadius=T.MathUtils.lerp(1.1,1.58,T.MathUtils.clamp((angle-120)/60,0,1));
-    beamInfo={angle,type:'cone',spread:rimRadius*2};
+    const sourceY=.86,radius=1.78,half=T.MathUtils.degToRad(angle)/2,start=-Math.PI/2-half;
+    const rays=[start,start+half*2].map(a=>[Math.cos(a)*radius,sourceY+Math.sin(a)*radius,.02]);
+    beamInfo={angle,type:'sector',spread:radius*2*Math.sin(half),source:[0,sourceY,.02],rays};
     mesh(v.actor,rounded(.85,.35,.35,.1),mat(0xd8e1e2,{metalness:.7}),0,1.15,0);
     // Light has its own visible colour; a lit PBR surface made the cone look
     // like dark fabric as it turned. Keep this illustration self-illuminated.
     const light=(color,options={})=>keep(new T.MeshBasicMaterial({color,toneMapped:false,...options}));
     mesh(v.actor,rounded(.55,.12,.28,.05),light(0xfff3c9),0,.93,.05);
-    const beamMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,side:T.DoubleSide,toneMapped:false,uniforms:{strength:{value:.8}},vertexShader:'varying vec2 beamUV; void main(){beamUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 beamUV; uniform float strength; void main(){float fade=mix(.42,1.,pow(beamUV.y,.65)); gl_FragColor=vec4(1.,.97,.84,strength*fade);}'}));
-    // A consistent illustrative cone: wider for the 180-degree product,
-    // while the exact catalogue angle remains in the label.
-    const fan=mesh(v.actor,keep(new T.ConeGeometry(rimRadius,height,64)),beamMaterial,0,sourceY-height/2,0);v.moving.push({object:fan,type:'beam'});
+    const beamMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,side:T.DoubleSide,toneMapped:false,uniforms:{strength:{value:.8}},vertexShader:'varying vec2 beamUV; void main(){beamUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 beamUV; uniform float strength; void main(){float r=clamp(length((beamUV-.5)*2.),0.,1.);float fade=.2+.8*pow(1.-r,.65);gl_FragColor=vec4(1.,.97,.84,strength*fade);}'}));
+    // Both boundary rays originate at the emitting point. At 180 degrees
+    // the real sector is a half-disc, rather than a finite-width cone.
+    const fan=mesh(v.actor,keep(new T.CircleGeometry(radius,64,start,half*2)),beamMaterial,0,sourceY,.02);v.moving.push({object:fan,type:'beam'});
+    const boundary=[[0,sourceY,.025],...Array.from({length:65},(_,i)=>{const a=start+half*2*i/64;return [Math.cos(a)*radius,sourceY+Math.sin(a)*radius,.025];}),[0,sourceY,.025]];
+    const outline=keep(new T.BufferGeometry().setFromPoints(boundary.map(p=>new T.Vector3(...p))));
+    v.actor.add(new T.Line(outline,keep(new T.LineBasicMaterial({color:0xffeab1,transparent:true,opacity:.5,toneMapped:false,depthWrite:false}))));
     const haloMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,toneMapped:false,uniforms:{strength:{value:.2}},vertexShader:'varying vec2 glowUV; void main(){glowUV=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.0);}',fragmentShader:'varying vec2 glowUV; uniform float strength; void main(){float r=length((glowUV-.5)*2.); gl_FragColor=vec4(1.,.91,.64,pow(max(0.,1.-r),2.)*strength);}'}));
-    const halo=mesh(v.actor,keep(new T.PlaneGeometry(rimRadius*2+.45,3.5)),haloMaterial,0,.1,-1.8);v.moving.push({object:halo,type:'beamHalo'});
-    const ring=mesh(v.actor,keep(new T.TorusGeometry(rimRadius,.023,8,64)),light(0xffedac,{transparent:true,opacity:.7,depthWrite:false}),0,sourceY-height,0);ring.rotation.x=Math.PI/2;
+    const halo=mesh(v.actor,keep(new T.PlaneGeometry(radius*2+.25,3.5)),haloMaterial,0,.1,-1.8);v.moving.push({object:halo,type:'beamHalo'});
   }
   function sun(v){
     const sphere=mesh(v.actor,keep(new T.SphereGeometry(.7,32,24)),mat(0xffc64b,{emissive:0xffa31f,emissiveIntensity:.15,roughness:.3,metalness:.05}));
@@ -107,11 +112,41 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     for(let i=0;i<42;i++){const x=Math.sin(i*2.4)*1.12,y=Math.cos(i*4.1)*.54,z=.65*Math.sqrt(Math.max(.05,1-(x/1.35)**2-(y/.79)**2));mesh(v.actor,dot,crust,x,y-.12,z);}
     v.actor.rotation.z=-.12;
   }
-  function slim(v){
-    board(v.actor);v.actor.scale.set(.7,.8,.8);
-    const silver=mat(0xafc7cf,{metalness:.8,roughness:.24});
-    mesh(v.actor,rounded(3.25,.12,.12,.04),silver,0,-1.95,.1);
-    for(const side of [-1,1]){mesh(v.actor,rounded(.14,.77,.12,.04),silver,side*1.1,-1.64,.1);const arrow=mesh(v.actor,keep(new T.ConeGeometry(.17,.38,3)),silver,side*.51,-1.95,.12);arrow.rotation.z=side*Math.PI/2;}
+  function slim(v,p){
+    const width=.74,height=3.45;
+    mesh(v.actor,rounded(width,height,.12,.045),mat(0xf1f0e4,{roughness:.52,metalness:0}));
+    mesh(v.actor,rounded(width,height,.025,.04),mat(0xb5a678,{metalness:.55}),0,0,-.035);
+    const gold=mat(0xd6a15b,{metalness:.72,roughness:.25}),black=mat(0x37413c,{roughness:.5});
+    for(const side of [-1,1])for(const x of [-.19,.19])mesh(v.actor,rounded(.22,.29,.025,.035),gold,x,side*1.48,.13);
+    if(p.tech.includes('COB'))mesh(v.actor,rounded(.43,2.54,.12,.045),mat(0xf2c330,{roughness:.55,metalness:0}),0,0,.13);
+    else{
+      for(const y of [-1.01,-.34,.34,1.01])led(v.actor,0,y,.23);
+      for(const y of [-.675,.675])mesh(v.actor,rounded(.25,.10,.075,.015),black,0,y,.14);
+    }
+    distinction={kind:'slim',widthMm:Number(p.width),leds:p.tech.includes('COB')?null:4,strip:true};
+  }
+  function accent(v,p){
+    const {emitter}=led(v.actor,0,0,.76);
+    emitter.material.color.set(0xfff2cf);
+    const haloMaterial=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,toneMapped:false,uniforms:{strength:{value:.12}},vertexShader:'varying vec2 p;void main(){p=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec2 p;uniform float strength;void main(){float a=pow(max(0.,1.-length((p-.5)*2.)),2.)*strength;gl_FragColor=vec4(1.,.83,.52,a);}'}));
+    mesh(v.actor,keep(new T.PlaneGeometry(3.5,3.5)),haloMaterial,0,0,-.12);
+    distinction={kind:'accent',softLight:true,intensity:0};
+    v.animate=(time,reduced)=>{
+      const strength=reduced?.35:.35+.035*Math.sin(time*.9),sample=sampleStripLight(p,time,{variant:featureColor});
+      emitter.material.emissive.copy(sample.color);emitter.material.emissiveIntensity=strength;
+      haloMaterial.uniforms.strength.value=strength*.42;distinction.intensity=strength;
+    };
+  }
+  function enclosure(v,p,opaque){
+    const width=1.1,height=3.05;
+    mesh(v.actor,rounded(width,height,.12,.09),mat(0xeaece1,{roughness:.55,metalness:0}));
+    if(opaque){
+      mesh(v.actor,keep(new T.CylinderGeometry(width/2,width/2,height,48,1,false,-Math.PI/2,Math.PI)),mat(0xf4f3ec,{roughness:.34,metalness:0,clearcoat:.35}),0,0,.13);
+    }else{
+      mesh(v.actor,rounded(.61,height-.25,.13,.09),mat(0xf2c330,{roughness:.52,metalness:0}),0,0,.15);
+      mesh(v.actor,rounded(width+.25,height+.15,.58,.19),mat(0xe4edf0,{roughness:.12,metalness:0,clearcoat:1,transparent:true,opacity:.34,depthWrite:false}),0,0,-.04);
+    }
+    distinction={kind:opaque?'coating':'sleeve',opaque,ip:p.ip,cover:true};
   }
   function precisionCut(v,p){
     const pcb=mat(0xeceee4,{roughness:.56,metalness:0}),gold=mat(0xd99b52,{metalness:.72}),steel=mat(0xc4d2d8,{metalness:.88,roughness:.2});
@@ -192,6 +227,28 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
           material.color.copy(s.color).multiplyScalar(.28+.72*s.intensity);return s;
         });
         distinction.moduleColors=modules.map(m=>`#${m.color.getHexString()}`);distinction.moduleLevels=samples.map(s=>s.intensity);
+      };
+      return;
+    }
+    if(p.control.startsWith('RGB')){
+      const channels=p.control==='RGB'?['R','G','B']:p.control==='RGBW'?['R','G','B','W']:['R','G','B','WW','CW'];
+      const colors=channels.map(channel=>new T.Color(({R:0xf35e59,G:0x5bd58c,B:0x568ff0,WW:0xffd298,CW:0xc8e3ff})[channel]??0xffebcc));
+      const faces=[],segments=[];
+      mesh(v.actor,rounded(1.45,1.45,.22,.16),mat(0xf5f2e9,{roughness:.37,metalness:0}),0,0,.1);
+      for(let i=0;i<channels.length;i++){
+        const angle=i/channels.length*Math.PI*2;
+        const segment=light(colors[i]);mesh(v.actor,keep(new T.RingGeometry(1.02,1.17,32,1,angle+.045,Math.PI*2/channels.length-.09)),segment,0,0,.12);segments.push(segment);
+        const face=light(colors[i]),x=channels.length===4?(i%2-.5)*.55:Math.cos(angle)*.4,y=channels.length===4?(.5-Math.floor(i/2))*.55:Math.sin(angle)*.4;
+        mesh(v.actor,rounded(.43,.43,.09,.07),face,x,y,.34);faces.push(face);
+      }
+      distinction={kind:'channels',control:p.control,channels,colors:[]};
+      v.animate=(time,reduced)=>{
+        channels.forEach((channel,i)=>{
+          if(channel==='W')colors[i].copy(temperatureColor(featureColor));
+          const strength=reduced?1:.86+.14*Math.sin(time*.8+i*.4);
+          faces[i].color.copy(colors[i]).multiplyScalar(strength);segments[i].color.copy(colors[i]);
+        });
+        distinction.colors=faces.map(m=>`#${m.color.getHexString()}`);
       };
       return;
     }
@@ -276,17 +333,18 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     emitterInfo.color=color;
   }
   function update(p){
-    resources.forEach(r=>r.dispose());resources=new Set();palette=null;distinction=null;emitterMaterials=[];featureProduct=p;featureColor=p.color;views=Array.from({length:5},view);revision++;kind=p.featureKind;
+    const feature=describeStripFeature(p);
+    resources.forEach(r=>r.dispose());resources=new Set();palette=null;distinction=null;emitterMaterials=[];featureProduct=p;featureColor=p.color;views=Array.from({length:5},view);revision++;kind=feature.kind;
     const appearance=stripAppearance(p),cob=appearance.kind!=='smd';
     emitterInfo={kind:appearance.kind,color:cob?unlitEmitterColor(p):0xf0c333,opaqueFront:appearance.opaqueFront};
     if(cob)board(views[0].actor,true,false,false,p);else if(p.digital)board(views[0].actor,false,true);else led(views[0].actor);
     board(views[1].actor,cob,false,!cob,p);drop(views[2],p.ipOptions.length===1?p.ip:'variants');beam(views[3],p.beam);
-    if(kind==='brightness')sun(views[4]);else if(kind==='bread')bread(views[4]);else if(kind==='slim')slim(views[4]);else if(kind==='cut')precisionCut(views[4],p);else if(kind==='flex')flexibleBoard(views[4]);else if(kind==='digital'||kind==='cct')lightControl(views[4],p,kind==='digital');else colorFan(views[4],kind==='cri'&&Number(p.quality)>=97);
+    if(kind==='brightness')sun(views[4]);else if(kind==='accent')accent(views[4],p);else if(kind==='bread')bread(views[4]);else if(kind==='slim')slim(views[4],p);else if(kind==='cut')precisionCut(views[4],p);else if(kind==='flex')flexibleBoard(views[4]);else if(kind==='coating'||kind==='sleeve')enclosure(views[4],p,kind==='coating');else if(['digital','cct','channels'].includes(kind))lightControl(views[4],p,kind==='digital');else colorFan(views[4],kind==='cri'&&Number(p.quality)>=97);
     views[4].baseScale=views[4].actor.scale.clone();
     emphasis={amount:0,scale:1,cameraDistance:7,clipAdjusted:false};
     const detail=root.querySelector('[data-product="detail"]'),label=root.querySelector('[data-product="detail-label"]');
-    detail.textContent=kind==='brightness'?'LOW':kind==='bread'?'Do pieczywa':kind==='slim'?`Tylko ${p.width} mm`:kind==='cut'?`Co ${p.cut} mm`:kind==='flex'?'Giętka PCB':kind==='digital'?'Digital':kind==='cct'?'CCT':kind==='channels'?p.control:`CRI ${p.quality}`;
-    label.textContent=kind==='brightness'?'3 poziomy jasności':kind==='bread'?'Złocisty odcień':kind==='slim'?'Wąska taśma':kind==='cut'?'Precyzyjne cięcie':kind==='flex'?'Forma S-Shape':kind==='digital'?`${p.control} · moduły`:kind==='cct'?'Regulacja bieli':kind==='channels'?'Sterowanie barwą':Number(p.quality)>=90?'Wysokie oddawanie barw':'Oddawanie barw';
+    detail.textContent=feature.title;
+    label.textContent=feature.caption;
     root.querySelector('.brightness-steps').hidden=kind!=='brightness';
     const ip=root.querySelector('[data-product="ip"]');ip.replaceChildren();
     for(const value of p.ipOptions){const item=document.createElement('span');item.textContent=value;ip.append(item);}
@@ -365,5 +423,5 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       renderer.setViewport(previousViewport);renderer.setScissor(previousScissor);renderer.setScissorTest(previousScissorTest);
     }
   }
-  return {update,render,setPower,setColor,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,emphasis,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,emitter:emitterInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
+  return {update,render,setPower,setColor,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,emphasis,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,beamSource:beamInfo?.source,beamRays:beamInfo?.rays,emitter:emitterInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
 }
