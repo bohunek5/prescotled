@@ -1,22 +1,17 @@
 // Editorial family groups for option 2. Product facts remain in the source catalogue.
+// DELUX and PREMIUM follow Kinga's A4 catalogue; CRI97 3.2 W is omitted by request.
 export const groups={
  delux:[
   {name:'3w1',detail:'Trzy poziomy jasności',ids:['3w1']},
-  {name:'CRI 97',detail:'Wysokie oddawanie barw',ids:['truecolor','truecolor10']},
-  {name:'SMD',detail:'Klasyczna konstrukcja',ids:['smd']},
+  {name:'CRI 97',detail:'10 W/m · wysokie oddawanie barw',ids:['truecolor10']},
   {name:'Low Brightness',detail:'Subtelne światło',ids:['deluxlow']},
-  {name:'SLIM 4 mm',detail:'Wąska płytka PCB',ids:['slim']},
-  {name:'RGB',detail:'Światło kolorowe',ids:['deluxrgb']},
-  {name:'RGBW',detail:'Kolor i biel',ids:['deluxrgbw']}
+  {name:'SLIM 4 mm',detail:'Wąska płytka PCB',ids:['slim']}
  ],
  premium:[
   {name:'SMD 12 V',detail:'60 / 120 LED/m',ids:['smd12','smd12dense']},
   {name:'SMD 24 V',detail:'70–210 LED/m',ids:['smd2470','smd24','smd24140','smd24210']},
   {name:'SLIM 4 mm',detail:'60 / 120 LED/m',ids:['premiumslim4','premiumslim120']},
-  {name:'SLIM 5 mm',detail:'SMD 2216',ids:['premiumslim']},
-  {name:'RGB',detail:'Światło kolorowe',ids:['rgb']},
-  {name:'RGBW',detail:'12 / 24 V',ids:['rgbw','rgbw24']},
-  {name:'CCT',detail:'Regulowana barwa bieli',ids:['cct']}
+  {name:'RGBW',detail:'12 / 24 V',ids:['rgbw','rgbw24']}
  ],
  cob:[
   {name:'COB 12 / 24 V',detail:'Światło białe',ids:['cob12','cob12528','cob12basic','cob12480','cob24320','cob24384','cob']},

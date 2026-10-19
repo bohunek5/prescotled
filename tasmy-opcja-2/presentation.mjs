@@ -6,7 +6,7 @@ import {createFeatureIcons} from '../noir/film-feature-3d.mjs';
 import {createNumberAnimator} from '../noir/film-numbers.mjs';
 import {createVoltageCue} from '../noir/strip-lighting.mjs?v=detail-3';
 import {sampleMiniShot,frameMiniCamera} from './mini-shot.mjs';
-import {groups} from './assortment.mjs';
+import {groups} from './assortment.mjs?v=7';
 import {additionalProducts} from './five-volt.mjs';
 import {getProductDetails} from './product-details.mjs';
 

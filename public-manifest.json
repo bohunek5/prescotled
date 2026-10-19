@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1136,
-  "bytesExcludingManifest": 307993551,
+  "bytesExcludingManifest": 307993285,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -5706,8 +5706,8 @@
       "source": "targi/targi.css"
     },
     "tasmy-opcja-2/assortment.mjs": {
-      "bytes": 2550,
-      "sha256": "0dffd9d273b6ba3a4ddf80b84a74291ceedee8a9e912f85e41c4358557f0e8c5",
+      "bytes": 2280,
+      "sha256": "748402f7a939a519834bbf2a0db6631409d39bf773aa9c398c31df7eb6c113bd",
       "source": "tasmy-opcja-2/assortment.mjs"
     },
     "tasmy-opcja-2/five-volt.mjs": {
@@ -5717,7 +5717,7 @@
     },
     "tasmy-opcja-2/index.html": {
       "bytes": 1230,
-      "sha256": "628cd36440dac53b2c53a01bdffd3eff59fde05f675bc32b9a5fc93de7ec3614",
+      "sha256": "73f44b894202529eb8b664faf904a54c5aa6fff7da634e3779429f4429832349",
       "source": "tasmy-opcja-2/index.html"
     },
     "tasmy-opcja-2/mini-shot.mjs": {
@@ -5731,8 +5731,8 @@
       "source": "tasmy-opcja-2/presentation.css"
     },
     "tasmy-opcja-2/presentation.mjs": {
-      "bytes": 16378,
-      "sha256": "0034bb1f69b50bf7f37f61330e624033e695f84cfce4d18ed177e8295b4a9ea4",
+      "bytes": 16382,
+      "sha256": "c054748a7f715e9ef7fbc9d3d89912c83b6c137956c91abb5e5eee88851bc8f5",
       "source": "tasmy-opcja-2/presentation.mjs"
     },
     "tasmy-opcja-2/product-details.mjs": {
