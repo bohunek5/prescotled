@@ -31,7 +31,7 @@ export function describeStripFeature(product){
 
 export function sampleDetailCue(product,shot,powerMode=0){
   const local=Math.max(0,Number(shot?.local)||0);
-  const three=product.id==='3w1',wcob=product.id.startsWith('wcob'),feature=describeStripFeature(product);
+  const three=product.id==='3w1',wcob=product.id.startsWith('wcob'),cob=wcob||product.tech.includes('COB'),feature=describeStripFeature(product);
   const starts=three?[2.5,6,9,12,15.5]:wcob?[2.5,30,34]:[2.5,7,10];
   const widthIndex=starts.length-1,sectionIndex=widthIndex-1;
   const copperStart=hasCopperDetail(product)?(shot?.copperStart??(three?19:13)):null;
@@ -42,9 +42,24 @@ export function sampleDetailCue(product,shot,powerMode=0){
   const rawLeds=numeric(product.density)*numeric(product.cut)/1000,leds=Math.round(rawLeds);
   const cutOnly=wcob||product.tech.includes('COB')||Math.abs(rawLeds-leds)>.15;
   const ledWord=leds===1?'dioda':leds%10>=2&&leds%10<=4&&(leds%100<12||leds%100>14)?'diody':'diod';
-  let label=voltage,subline='Zasilanie',anchor='contact',contactIndex=0,measurement=null,highlightFacts=['voltage'];
-  const section=()=>{label=cutOnly?`Cięcie co ${printed(product.cut)} mm`:`${leds} ${ledWord} / sekcja`;subline=cutOnly?`${printed(product.density)} LED/m`:`${printed(product.density)} LED/m · cięcie co ${printed(product.cut)} mm`;anchor='section';measurement='section';highlightFacts=['density'];};
-  const width=()=>{label=product.outerWidth?`Koszulka ${printed(product.outerWidth)} mm`:`PCB ${printed(product.width)} mm`;subline=product.outerWidth?`PCB ${printed(product.width)} mm · wysokość ${printed(product.overallHeight)} mm`:'Szerokość taśmy';anchor='width';measurement='width';highlightFacts=['width'];};
+  let label=voltage,subline='Zasilanie',anchor='contact',contactIndex=0,measurement=null,measurementTarget=null,highlightFacts=['voltage'];
+  const section=()=>{
+    if(cob){
+      label=`${printed(product.density)} LED/m`;
+      // Rounded catalogue pitches must not turn into invented chip counts.
+      const exactCount=leds>0&&Math.abs(rawLeds-leds)<1e-6;
+      subline=`${exactCount?`${leds} ${ledWord} / sekcja · `:''}cięcie co ${printed(product.cut)} mm`;
+    }else{
+      label=cutOnly?`Cięcie co ${printed(product.cut)} mm`:`${leds} ${ledWord} / sekcja`;
+      subline=cutOnly?`${printed(product.density)} LED/m`:`${printed(product.density)} LED/m · cięcie co ${printed(product.cut)} mm`;
+    }
+    anchor='section';measurement='section';highlightFacts=['density'];
+  };
+  const width=()=>{
+    label=cob||!product.outerWidth?`PCB ${printed(product.width)} mm`:`Koszulka ${printed(product.outerWidth)} mm`;
+    subline=product.outerWidth?`${cob?'Koszulka':'PCB'} ${printed(cob?product.outerWidth:product.width)} mm · wysokość ${printed(product.overallHeight)} mm`:cob?'Szerokość płytki PCB':'Szerokość taśmy';
+    anchor='width';measurement='width';measurementTarget=cob?'pcb':null;highlightFacts=['width'];
+  };
 
   if(three&&index<3){
     const mode=clamp(Math.floor(Number(powerMode)||0),0,2);
@@ -91,5 +106,5 @@ export function sampleDetailCue(product,shot,powerMode=0){
   // icon enlarged throughout the explanation. Sun brightness stays separate.
   const featureEmphasis=featureCue?smooth(elapsed/.3)*(1-smooth((elapsed-.85)/.65))*fadeOut:0;
   const opacity=fadeIn*fadeOut,highlightLevel=opacity*typing;
-  return {index,label,subline,anchor,measurement,contactIndex,start,end,referenceTime:start+1.25,typing,featureCue,featureSource,featureSourceOpacity,featureEmphasis,underline,pointer,endpoint,branches,tips,witnesses,draw:pointer,opacity,highlightFacts,highlightLevel};
+  return {index,label,subline,anchor,measurement,measurementTarget,contactIndex,start,end,referenceTime:start+1.25,typing,featureCue,featureSource,featureSourceOpacity,featureEmphasis,underline,pointer,endpoint,branches,tips,witnesses,draw:pointer,opacity,highlightFacts,highlightLevel};
 }

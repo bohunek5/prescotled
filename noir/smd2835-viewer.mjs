@@ -1,19 +1,27 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-6';
-import {mainFilmProducts as products} from './strip-film-selection.mjs?v=detail-3';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-7';
+import {mainFilmProducts,filmProductsForFamily} from './strip-film-selection.mjs?v=detail-4';
 import {resolveFilmVariant} from './strip-product-variants.mjs?v=1';
-import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-6';
+import {createPresentation,sampleVariant} from './strip-presentation.mjs?v=detail-8';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
-import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-7';
-import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-9';
+import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-9';
+import {createNumberAnimator} from './film-numbers.mjs?v=capture-1';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-10';
 import {frameStripSection} from './strip-section-camera.mjs?v=detail-4';
 import {createFactHighlight} from './strip-fact-highlight.mjs';
 import {createWcobSectionDetail} from './wcob-section-detail.mjs?v=end-1';
 import {sampleWcobDetailCue} from './wcob-detail-cues.mjs?v=end-1';
 
 const PLAYBACK_RATE=1.15;
+const parameters=new URLSearchParams(location.search);
+const family=['delux','premium','cob','special'].includes(parameters.get('family'))?parameters.get('family'):null;
+const embedded=parameters.get('embed')==='1';
+const products=family?filmProductsForFamily(family):mainFilmProducts;
+const {samplePresentation,presentationStart}=createPresentation(products,{canonicalMotion:!!family});
+let renderScale=embedded?T.MathUtils.clamp(Number(parameters.get('scale'))||1,.15,1):1;
+document.documentElement.dataset.filmEmbed=String(embedded);
+document.documentElement.dataset.film=String(parameters.get('film')==='1');
 const smdVoltageName=product=>/^(?:SMD|COB)\s+(?:12|24|48)\s*V(?:\s*·|$)/.test(product.name)?`${product.name.split(' · ')[0]} · ${product.density}\u00a0LED/m`:product.tech.includes('COB')?product.name:null;
 const modelOption=(product,sku=product.sku)=>`${product.range} · ${smdVoltageName(product)??product.name} · ${sku}`;
 let colorVariant=null,colorKey='',effectiveProduct=products[0];
@@ -21,6 +29,8 @@ let lightProgram=null;
 const catalogueNumber=value=>{const text=String(value??'').trim().replace(',','.');return /^\d+(?:\.\d+)?$/.test(text)?Number(text):null;};
 const smoothBlend=value=>{const x=T.MathUtils.clamp(value,0,1);return x*x*(3-2*x);};
 const numbers=createNumberAnimator();let seeking=false;
+let capturing=false,captureTime=0,captureRenderTime=0;
+let captureAnimations=new Map();
 function fact(key,value){numbers.set(document.querySelector(`[data-product="${key}"]`),value,!seeking&&!reduced.matches);}
 function energy(value){
   const badge=document.querySelector('.energy-rating');badge.hidden=!value;
@@ -34,11 +44,12 @@ const host=document.querySelector('#stage'),loading=document.querySelector('#loa
 const factHighlight=createFactHighlight(intro);
 let pendingProductReveal=false;
 const featureIcons=createFeatureIcons();
+featureIcons.setRenderScale?.(renderScale);
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
 let renderer;
 try{renderer=new T.WebGLRenderer({antialias:true,alpha:true,powerPreference:'high-performance'});}
 catch(error){loading.textContent='Podgląd 3D wymaga włączonego WebGL w przeglądarce.';throw error;}
-renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=T.SRGBColorSpace;
+renderer.setPixelRatio(Math.min(devicePixelRatio,2)*renderScale);renderer.outputColorSpace=T.SRGBColorSpace;
 renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
 host.append(renderer.domElement);
@@ -70,7 +81,8 @@ function shotModelsReady(candidate){
   const indices=candidate.rebuild?[candidate.rebuild.from,candidate.rebuild.to]:[candidate.model];
   indices.forEach(ensureModel);return indices.every(i=>modelLoaded[i]);
 }
-[0,1,2].forEach(ensureModel);models[0].group.visible=true;
+const initialModels=[0,1,2].filter(index=>index<products.length);
+initialModels.forEach(ensureModel);models[0].group.visible=true;
 let model=models[0],modelIndex=0,powerMode=0;
 
 
@@ -92,10 +104,11 @@ key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-140,rig
 const fill=new T.DirectionalLight(0xdbe8ff,1.3);fill.position.set(140,20,100);scene.add(fill);
 const rim=new T.DirectionalLight(0xffe4c0,2.4);rim.position.set(50,100,-180);scene.add(rim);
 const endFill=new T.DirectionalLight(0xffffff,0);scene.add(endFill,endFill.target);
-models[0].setPower(3/11);
+if(products[0].id==='3w1')models[0].setPower(3/11);
 
 let rotating=!reduced.matches,lit=false,zoom=0,targetZoom=0,rotation=-.22,tilt=-.04,view='full',theme='day',visible=true;
-let touring=!reduced.matches,tourSeconds=0,shot=null,cameraTargetY=0,ready=false;
+let touring=!reduced.matches&&parameters.get('autoplay')!=='0',tourSeconds=0,shot=null,cameraTargetY=0,ready=false;
+rotating=touring;
 const rebuilds=[];let activeRebuild=null;
 let raf=0,last=0,elapsed=0,disposed=false,painted=0,needsPaint=true,width=0,height=0,inRender=false;
 function resize(){
@@ -103,10 +116,11 @@ function resize(){
   width=w;height=h;renderer.setSize(w,h,false);camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix();needsPaint=true;
 }
 function render(now){
-  raf=0;if(disposed||document.hidden||!visible||!ready)return;
+  raf=0;if(disposed||(!capturing&&(document.hidden||!visible))||!ready)return;
   inRender=true;
   // Match the film clock to elapsed time even on slower graphics hardware.
-  const delta=last?Math.max(0,(now-last)/1000):0;last=now;
+  const delta=capturing?Math.max(0,(now-captureRenderTime)/1000):last?Math.max(0,(now-last)/1000):0;last=now;
+  if(capturing)captureRenderTime=now;
   if(rotating){
     elapsed+=delta;
     if(touring){
@@ -148,9 +162,9 @@ function render(now){
     renderer.render(scene,camera);featureIcons.render(shot?.iconTime??0,reduced.matches||!touring,reduced.matches,cueStages?.featureEmphasis??0);painted++;needsPaint=false;
   }
   inRender=false;
-  if(rotating||Math.abs(zoom-targetZoom)>.0001)raf=requestAnimationFrame(render);
+  if(!capturing&&(rotating||Math.abs(zoom-targetZoom)>.0001))raf=requestAnimationFrame(render);
 }
-function schedule(){needsPaint=true;if(!raf&&!inRender&&!document.hidden&&!disposed&&visible&&ready)raf=requestAnimationFrame(render);}
+function schedule(){needsPaint=true;if(!capturing&&!raf&&!inRender&&!document.hidden&&!disposed&&visible&&ready)raf=requestAnimationFrame(render);}
 function clearRebuild(){
   if(activeRebuild){activeRebuild.dispose();rebuilds.fill(null);activeRebuild=null;}
   models.forEach((m,i)=>{if(m)m.group.visible=i===modelIndex;});
@@ -161,8 +175,9 @@ function applyRebuild(from,progress){
   models.forEach(m=>{if(m)m.group.visible=false;});activeRebuild.update(progress);
 }
 function setPowerMode(index){
-  powerMode=index;const mode=powerModes[index];models[0].setPower(Number(mode.power)/11);
+  powerMode=index;const mode=powerModes[index];
   if(products[modelIndex].id==='3w1'){
+    model.setPower(Number(mode.power)/11);
     fact('power',mode.power);
     fact('output',colorVariant?.outputs[index]??mode.output);
     fact('efficacy',colorVariant?.efficacies?.[index]??'—');
@@ -316,6 +331,7 @@ addEventListener('pageshow',()=>{if(!disposed)schedule();});
 let seekRequest=0;
 function seek(seconds,{play=false}={}){
   if(!ready)return false;
+  endCapture();
   const request=++seekRequest,candidate=samplePresentation(Math.max(0,seconds),products.length);
   if(!shotModelsReady(candidate)){
     rotating=touring=false;last=0;
@@ -336,7 +352,72 @@ function seekReady(seconds,{play=false}={}){
   if(shot.rebuild&&!reduced.matches)applyRebuild(shot.rebuild.from,shot.rebuild.progress);
   seeking=false;schedule();return true;
 }
-window.smdViewer={seek,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,modelIndex,productId:products[modelIndex].id,activeVariant:{sourceProductId:effectiveProduct.sourceProductId??effectiveProduct.id,control:effectiveProduct.control,density:effectiveProduct.density,cut:effectiveProduct.cut,power:effectiveProduct.power,output:effectiveProduct.output,efficacy:effectiveProduct.efficacy,energyClass:effectiveProduct.energyClass},modelUuid:model.group.uuid,modelCount:products.length,loadedModelCount:models.filter(Boolean).length,chapterStarts:products.map((_,i)=>presentationStart(i)),models:products.map(p=>p.id),sectionFraming,wcobDetail:wcobDetail?.inspect()??null,featureIcons:featureIcons.inspect(),factHighlight:factHighlight.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
+function setPlaying(value){endCapture();rotating=touring=!!value&&!reduced.matches;last=0;schedule();return touring;}
+function setRenderScale(value=1){
+  renderScale=T.MathUtils.clamp(Number(value)||1,.15,1);
+  renderer.setPixelRatio(Math.min(devicePixelRatio,2)*renderScale);
+  featureIcons.setRenderScale?.(renderScale);schedule();return renderScale;
+}
+function selectProduct(id,{play=touring}={}){
+  const index=products.findIndex(product=>product.id===id);
+  if(index<0)throw new Error(`Brak modelu w tej rodzinie: ${id}`);
+  return seek(presentationStart(index),{play});
+}
+
+function advanceCaptureAnimations(milliseconds,initial=false){
+  // Includes CSS keyframes, pseudo-element outlines, transitions and the
+  // number/reveal WAAPI effects; none may follow wall time during encoding.
+  const animations=document.getAnimations(),active=new Set(animations);
+  for(const animation of captureAnimations.keys())if(!active.has(animation))captureAnimations.delete(animation);
+  for(const animation of animations){
+    if(!captureAnimations.has(animation))captureAnimations.set(animation,initial?0:milliseconds);
+    if(animation.playState!=='paused')animation.pause();
+    animation.currentTime=Math.max(0,milliseconds-captureAnimations.get(animation));
+  }
+}
+function endCapture(){
+  if(!capturing)return;
+  capturing=false;numbers.setTime(null);
+  for(const animation of captureAnimations.keys())if(animation.playState==='paused')animation.play();
+  captureAnimations.clear();last=0;
+}
+
+// Sequential offline capture follows the normal state changes without
+// rebuilding the same model or restarting its feature icons every frame.
+// The caller supplies real movie seconds, including the approved 1.15 speed.
+async function captureFrame(realSeconds){
+  if(!ready||disposed)throw new Error('Film nie jest gotowy do eksportu.');
+  const seconds=Math.max(0,Number(realSeconds)||0),milliseconds=seconds*1000;
+  const initial=!capturing||seconds<captureTime;
+  capturing=true;rotating=false;touring=true;seeking=false;
+  cancelAnimationFrame(raf);raf=0;
+  if(initial){numbers.finish();captureAnimations.clear();captureRenderTime=milliseconds;}
+  captureTime=seconds;numbers.setTime(milliseconds);
+  if(!initial)advanceCaptureAnimations(milliseconds);
+  const candidate=samplePresentation(seconds*PLAYBACK_RATE,products.length);
+  if(!shotModelsReady(candidate)){
+    const indices=candidate.rebuild?[candidate.rebuild.from,candidate.rebuild.to]:[candidate.model];
+    await Promise.all(indices.map(index=>modelPromises[index]));
+  }
+  if(disposed)throw new Error('Film został zamknięty podczas eksportu.');
+  if(initial||(activeRebuild&&(!candidate.rebuild||activeRebuild!==rebuilds[candidate.rebuild.from])))clearRebuild();
+  tourSeconds=seconds*PLAYBACK_RATE;elapsed=seconds;shot=candidate;
+  if(initial||shot.model!==modelIndex)selectModel(shot.model);
+  if(products[modelIndex].id==='3w1'&&!shot.rebuild&&powerMode!==shot.powerMode)setPowerMode(shot.powerMode);
+  updateColorVariant(shot.productTime);updateLighting();
+  targetZoom=shot.zoom;rotation=shot.rotation;tilt=shot.tilt;cameraTargetY=shot.targetY;
+  if(initial)zoom=targetZoom;
+  if(shot.rebuild)applyRebuild(shot.rebuild.from,shot.rebuild.progress);
+  view=shot.zoom>.35?'macro':'full';
+  if(initial&&seconds>0)numbers.finish();else numbers.setTime(milliseconds);
+  needsPaint=true;render(milliseconds);
+  advanceCaptureAnimations(milliseconds,initial);
+  await Promise.all([...document.images].filter(image=>!image.complete).map(image=>image.decode().catch(()=>{})));
+  await new Promise(resolve=>requestAnimationFrame(resolve));
+  advanceCaptureAnimations(milliseconds,initial);
+  return {time:seconds,filmTime:tourSeconds,model:products[modelIndex].id,frame:painted};
+}
+window.smdViewer={seek,captureFrame,setPlaying,setRenderScale,selectProduct,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,family,embedded,capturing,captureTime,filmDuration:presentationStart(products.length),exportDuration:presentationStart(products.length)/PLAYBACK_RATE,renderScale,pixelRatio:renderer.getPixelRatio(),modelIndex,productId:products[modelIndex].id,activeVariant:{sourceProductId:effectiveProduct.sourceProductId??effectiveProduct.id,control:effectiveProduct.control,density:effectiveProduct.density,cut:effectiveProduct.cut,power:effectiveProduct.power,output:effectiveProduct.output,efficacy:effectiveProduct.efficacy,energyClass:effectiveProduct.energyClass},modelUuid:model.group.uuid,modelCount:products.length,loadedModelCount:models.filter(Boolean).length,chapterStarts:products.map((_,i)=>presentationStart(i)),models:products.map(p=>p.id),sectionFraming,wcobDetail:wcobDetail?.inspect()??null,featureIcons:featureIcons.inspect(),factHighlight:factHighlight.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
 const modelSelect=document.querySelector('#model-select');
 products.forEach((p,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=modelOption(p);modelSelect.append(option);});
 function startModel(index){if(!ready)return;seek(presentationStart((index+products.length)%products.length),{play:true});}
@@ -345,7 +426,8 @@ document.querySelector('[data-model-step="-1"]').addEventListener('click',()=>st
 document.querySelector('[data-model-step="1"]').addEventListener('click',()=>startModel(modelIndex+1));
 document.querySelector('[data-model-restart]').addEventListener('click',()=>startModel(modelIndex));
 resize();setTheme('day');
-Promise.all([0,1,2].map(i=>modelPromises[i])).then(()=>{
+Promise.all(initialModels.map(i=>modelPromises[i])).then(()=>{
   if(disposed)return;
   ready=true;loading.hidden=true;document.querySelectorAll('.film-preview-nav button,.film-preview-nav select').forEach(el=>el.disabled=false);selectModel(0);schedule();
+  if(embedded&&parent!==window)parent.postMessage({type:'prescot-film-ready',family,modelCount:products.length},location.origin);
 }).catch(error=>{loading.textContent='Nie udało się wczytać nadruków modelu. Odśwież stronę.';console.error(error);});

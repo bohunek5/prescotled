@@ -2,9 +2,9 @@ import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
 import {sampleStripLight} from './strip-light-program.mjs?v=detail-3';
 import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-5';
-import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-8';
-import {projectStripDimension} from './strip-dimensions.mjs?v=detail-6';
-import {planStripCue} from './strip-cue-layout.mjs?v=detail-7';
+import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-9';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-7';
+import {planStripCue} from './strip-cue-layout.mjs?v=detail-8';
 
 const supplyAnchors=new WeakMap();
 export function supplyAnchor(model,contactIndex=0,sectionIndex=null){
@@ -252,7 +252,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       if(opacity<=0||!model.group.visible){svg.style.opacity='0';drawProgress=0;placement=null;return;}
       const threeInOne=product.id==='3w1',contactIndex=cue?.contactIndex??(threeInOne?powerMode+1:0);
       model.group.updateMatrixWorld(true);camera.updateMatrixWorld(true);
-      measurement=cue?.measurement?projectStripDimension(model,camera,{width,height},cue.measurement):null;
+      measurement=cue?.measurement?projectStripDimension(model,camera,{width,height},cue.measurement,cue.measurementTarget):null;
       const sectionIndex=Math.max(0,Math.floor(model.specification.sections/2)-1);
       const anchor=measurement?featureAnchor(model,'section',camera):cue&&cue.anchor!=='contact'?featureAnchor(model,cue.anchor,camera):supplyAnchor(model,contactIndex,sequence?sectionIndex:null);
       if(!anchor){svg.style.opacity='0';return;}

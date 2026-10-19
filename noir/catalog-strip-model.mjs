@@ -3,7 +3,7 @@ import {createSmd2835Model} from './smd2835-model.mjs?v=detail-4';
 import {createBackingTexture} from './strip-backing.mjs';
 import {filmProducts} from './film-catalog.mjs?v=detail-3';
 import {applyPcbFinish} from './pcb-finish.mjs';
-import {installStripLighting} from './strip-lighting.mjs?v=detail-9';
+import {installStripLighting} from './strip-lighting.mjs?v=detail-10';
 import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
 import {createDeluxArtwork,sectionFrame} from './delux-pcb-artwork.mjs?v=detail-4';
 import {createCatalogFilmArtwork,supportsCatalogFilmArtwork} from './catalog-film-artwork.mjs?v=detail-8';
@@ -374,11 +374,11 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     rohs:{x:width-.45,y:(388-16)/838*section,size:.43},
     legendY:[3.28],legendSize:.4,
     marks:[],legends:[],facts:[],data:{density:product.density,width:product.width,copperOz:product.copperOz}
-  }:{kind:'catalogue-clearance',marks:[],legends:[],...(digital?{legendY:[2.45,section-padLength*1.5-1]}:{})};
+  }:{kind:'catalogue-clearance',marks:[],legends:[],facts:[],...(digital?{legendY:[2.45,section-padLength*1.5-1]}:{})};
   const ready=refinedDelux?createDeluxArtwork(product,spec,{anisotropy}).then(({texture,layout})=>{
     if(disposed){texture.dispose();return;}keep(texture);printLayout=layout;mask.map=texture;mask.color.set(0xffffff);mask.needsUpdate=true;
   }):loadMarks().then(([brand,ce])=>{
-    if(disposed||opaque||sealed)return;
+    if(disposed)return;
     if(supportsCatalogFilmArtwork(product)){
       const {texture,layout}=createCatalogFilmArtwork(product,spec,{brand,ce,contacts,padSpacing,padLength,footprints:componentLayout().footprints,anisotropy});
       keep(texture);printLayout=layout;mask.map=texture;mask.color.set(0xffffff);mask.needsUpdate=true;return;
@@ -386,9 +386,10 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     const c=document.createElement('canvas');c.width=384;c.height=Math.min(2048,Math.max(512,Math.round(384*section/width)));
     const ctx=c.getContext('2d');ctx.scale(c.width/width,c.height/section);ctx.fillStyle=blackPcb?'#171c1c':'#f2f2e9';ctx.fillRect(0,0,width,section);
     ctx.fillStyle=blackPcb?'#e2e7df':'#344044';ctx.strokeStyle=blackPcb?'#69736b':'#aeb5a7';ctx.lineWidth=.035;
+    const text=(value,x,y,size,rotate=false)=>{ctx.save();ctx.translate(x,sshape?section-y:y);if(rotate)ctx.rotate(sshape?-Math.PI/2:Math.PI/2);ctx.font=`600 ${size}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(value,0,0);const advance=ctx.measureText(value).width;ctx.restore();return {x:x-(rotate?size:advance)/2,y:y-(rotate?advance:size)/2,width:rotate?size:advance,height:rotate?advance:size};};
+    if(!opaque&&!sealed){
     for(const x of [.2,width-.2]){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,section);ctx.stroke();}
     ctx.setLineDash([.22,.2]);for(const y of [.02,section-.02]){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();}ctx.setLineDash([]);
-    const text=(value,x,y,size,rotate=false)=>{ctx.save();ctx.translate(x,sshape?section-y:y);if(rotate)ctx.rotate(sshape?-Math.PI/2:Math.PI/2);ctx.font=`600 ${size}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(value,0,0);const advance=ctx.measureText(value).width;ctx.restore();return {x:x-(rotate?size:advance)/2,y:y-(rotate?advance:size)/2,width:rotate?size:advance,height:rotate?advance:size};};
     const legendSize=printLayout?.legendSize??(rgbw784?.48:Math.min(.65,padSpacing*.52));
     contacts.forEach((label,i)=>{const x=width/2+contactX[i];for(const [end,y] of (printLayout?.legendY??[padLength*1.5+1,section-padLength*1.5-1]).entries()){
       const value=sshape?(i?'−':'+'):digital&&label==='DI'&&end?'DO':label;
@@ -417,6 +418,35 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     const rohs=printLayout?.rohs??{x:width-margin*.8,y:section*.69,size:Math.min(.65,margin*.85)};
     const rohsBounds=text('RoHS',rohs.x,rohs.y,rohs.size,true);
     if(printLayout)printLayout.marks.push({name:'rohs',...rohsBounds});
+    }
+    if(cob){
+      // Facts belong to the PCB mask, including WCOB and IP67. Their existing
+      // physical cover may conceal this print; never move it onto silicone.
+      const copperFact=number(product.copperOz)>0?` · ${product.copperOz} oz`:'';
+      const facts=[['density',`${product.density} LED/m`],['pcb-data',`PCB ${product.width} mm${copperFact}`]];
+      const rail=opaque||sealed?.65:Math.max(.18,Math.min(.64,(width-(coatingLayout?.laneWidth??0))/4));
+      const size=width<4?.28:.48;
+      const obstacles=[...componentLayout().footprints.map(p=>({x:p.minX+width/2,y:p.start,width:p.maxX-p.minX,height:p.end-p.start})),...printLayout.marks,...printLayout.legends];
+      const separated=(a,b)=>a.x+a.width+.09<=b.x||b.x+b.width+.09<=a.x||a.y+a.height+.16<=b.y||b.y+b.height+.16<=a.y;
+      for(const [index,[name,value]] of facts.entries()){
+        ctx.font=`600 ${size}px Arial`;const advance=ctx.measureText(value).width;
+        const preferred=index?[width-rail,rail,width/2]:[rail,width-rail,width/2];
+        const fractions=index?[.25,.82,.55,.42,.33,.66]:[.78,.22,.55,.42,.66,.33];
+        let placed=null;
+        for(const x of preferred){
+          for(const fraction of fractions){
+            const y=section*fraction,bounds={x:x-size/2,y:y-advance/2,width:size,height:advance};
+            if(bounds.x<.03||bounds.x+bounds.width>width-.03||bounds.y<.25||bounds.y+bounds.height>section-.25)continue;
+            if(!obstacles.every(obstacle=>separated(bounds,obstacle)))continue;
+            const covered=opaque||sealed||Math.abs(x-width/2)<(coatingLayout?.laneWidth??0)/2+size/2;
+            placed={name,value,...text(value,x,y,size,true),coveredByCoating:covered};break;
+          }
+          if(placed)break;
+        }
+        if(placed){printLayout.facts.push(placed);obstacles.push(placed);}
+      }
+      printLayout.data={density:product.density,width:product.width,copperOz:product.copperOz??null};
+    }
     const printed=document.createElement('canvas');printed.width=c.width;printed.height=c.height;const pc=printed.getContext('2d');pc.translate(c.width,c.height);pc.rotate(Math.PI);pc.drawImage(c,0,0);
     const map=keep(new T.CanvasTexture(printed));map.colorSpace=T.SRGBColorSpace;map.anisotropy=anisotropy;map.wrapT=T.RepeatWrapping;map.repeat.y=sections;mask.map=map;mask.color.set(0xffffff);mask.needsUpdate=true;
   });

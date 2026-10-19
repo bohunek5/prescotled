@@ -1,7 +1,7 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
 import {sampleStripLight,temperatureColor} from './strip-light-program.mjs?v=detail-3';
-import {describeStripFeature} from './strip-detail-cues.mjs?v=detail-8';
+import {describeStripFeature} from './strip-detail-cues.mjs?v=detail-9';
 
 // Five real miniature models share the film clock. A card can also use its
 // parent's renderer, so an overview with four cards still has one WebGL context.
@@ -572,5 +572,9 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       renderer.setViewport(previousViewport);renderer.setScissor(previousScissor);renderer.setScissorTest(previousScissorTest);
     }
   }
-  return {update,render,setPower,setColor,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,emphasis,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,beamSource:beamInfo?.source,beamRays:beamInfo?.rays,emitter:emitterInfo,sectionIcon:sectionInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
+  function setRenderScale(scale=1){
+    if(sharedRenderer)return;
+    renderer.setPixelRatio(Math.min(devicePixelRatio,2)*T.MathUtils.clamp(Number.isFinite(scale)?scale:1,.15,1));
+  }
+  return {update,render,setPower,setColor,setRenderScale,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,emphasis,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,beamSource:beamInfo?.source,beamRays:beamInfo?.rays,emitter:emitterInfo,sectionIcon:sectionInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
 }

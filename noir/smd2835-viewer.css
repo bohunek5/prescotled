@@ -147,6 +147,8 @@ h1 small{padding-left:8px;gap:16px}
 .film-preview-nav select{font:inherit;font-size:12px;max-width:260px;min-width:0;width:260px;background:var(--bg);color:var(--text);border:0;padding:7px 4px;cursor:pointer}
 .film-preview-nav :is(button,select):focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .film-preview-nav :disabled{opacity:.4;cursor:wait}
+/* Recording uses the same composition; only the preview controls disappear. */
+html[data-film=true] :is(.film-preview-nav,.theme-switch){display:none!important}
 @media(min-width:761px){#stage{bottom:88px}}
 @media(max-width:760px){.film-preview-nav{right:4%;left:4%;bottom:12px;max-width:none;gap:4px;padding:7px 5px}.film-preview-nav select{flex:1;width:0;font-size:11px}.preview-caption{padding:0 5px}.film-preview-nav button{flex:0 0 28px}.color-block[data-extreme=true] .color-fact>.color-name{font-size:23px}main{padding-bottom:95px}}
 .product-facts{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:22px}

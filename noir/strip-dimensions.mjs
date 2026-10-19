@@ -42,7 +42,7 @@ function clearWidthOffset(model){
 
 // Dimensions use the same millimetre frame and cut section as the camera.
 // No apparent screen-space distance is used as a physical measurement.
-export function projectStripDimension(model,camera,viewport,kind){
+export function projectStripDimension(model,camera,viewport,kind,target=null){
   const spec=model.specification;
   const section=model.sectionFrame(Math.max(0,Math.floor(spec.sections/2)-1));
   const data=model.group.userData,productId=data.productId;
@@ -56,7 +56,7 @@ export function projectStripDimension(model,camera,viewport,kind){
   // integral package count. Do not call its 57.14 mm model segment 50 mm.
   if(kind==='section'&&cutMismatch&&data.construction!=='cob')return null;
   const span=kind==='section'&&freeCut?{...section,start:section.center-catalogueCut/2,end:section.center+catalogueCut/2,length:catalogueCut}:section;
-  const measuredWidth=data.sleeveLayout?.outerWidth??spec.width,half=measuredWidth/2;
+  const measuredWidth=target==='pcb'?spec.width:data.sleeveLayout?.outerWidth??spec.width,half=measuredWidth/2;
   const at=(distance,side=0,lift=.25)=>{
     const frame=model.frame(distance);
     return frame.p.clone().addScaledVector(frame.x,side).addScaledVector(frame.z,lift);
@@ -65,7 +65,7 @@ export function projectStripDimension(model,camera,viewport,kind){
     const world=local.clone().applyMatrix4(model.group.matrixWorld),ndc=world.clone().project(camera);
     return {x:(ndc.x*.5+.5)*viewport.width,y:(-.5*ndc.y+.5)*viewport.height,local:local.toArray(),world:world.toArray()};
   };
-  const measurement={kind,sectionIndex:section.index,start:span.start,end:span.end,length:span.length,width:measuredWidth,pcbWidth:spec.width,
+  const measurement={kind,target,sectionIndex:section.index,start:span.start,end:span.end,length:span.length,width:measuredWidth,pcbWidth:spec.width,
     leds,density,catalogueCut,modelSectionLength:spec.section,modelLeds:spec.ledsPerSection,catalogueCutMismatch:cutMismatch};
   if(kind==='width'){
     // Measure directly between the real PCB edges over exposed solder mask.
@@ -103,23 +103,24 @@ export function projectStripDimension(model,camera,viewport,kind){
       branches,witnessBranches,witnessHalfPaths,witnessRails,witnessHalfLength,arrowBranches,
       outline:'',dimension:polyline(ends),witness:witnessBranches.join(' '),arrows:arrowBranches.join(' ')};
   }
-  const cuts=[span.start,span.end].map(distance=>[-half-.55,half+.55].map(side=>project(at(distance,side,.2))));
+  const lift=data.opaqueFront?Math.max(5,(data.coverHeight??0)+.16):data.construction==='cob'?Math.max(.2,(data.coverHeight??0)+.16):.2;
+  const cuts=[span.start,span.end].map(distance=>[-half-.55,half+.55].map(side=>project(at(distance,side,lift))));
   // One bracket spans the exact cut boundaries. Its short arms grip the
   // upper edge; the rail stays clear of all LEDs. The leader joins its centre
   // directly, without a decorative notch or a separate highlight shape.
-  const midSides=[-half,half].map(side=>at(span.center,side,.2));
+  const midSides=[-half,half].map(side=>at(span.center,side,lift));
   const side=project(midSides[0]).y<project(midSides[1]).y?-1:1;
-  const grips=[span.start,span.end].map(distance=>project(at(distance,side*(half+.2),.2)));
+  const grips=[span.start,span.end].map(distance=>project(at(distance,side*(half+.2),lift)));
   const rail=Array.from({length:41},(_,i)=>{
     const t=i/40;
-    return project(at(span.start+span.length*t,side*(half+1.35),.2));
+    return project(at(span.start+span.length*t,side*(half+1.35),lift));
   });
-  const anchorLocal=at(span.center,side*(half+1.35),.2);
+  const anchorLocal=at(span.center,side*(half+1.35),lift);
   // The leader arrives at the centre first. Each half then grows from that
   // shared centre towards its own cut boundary, finishing with the short grip.
   const middle=(rail.length-1)/2;
   const branches=[polyline([...rail.slice(0,middle+1).reverse(),grips[0]]),polyline([...rail.slice(middle),grips[1]])];
-  return {...measurement,edges:cuts.flat(),cuts,grips,bracket:true,anchorLocal,anchor:project(anchorLocal),
+  return {...measurement,lift,edges:cuts.flat(),cuts,grips,bracket:true,anchorLocal,anchor:project(anchorLocal),
     branches,witnessBranches:['',''],arrowBranches:['',''],
     outline:'',dimension:polyline([grips[0],...rail,grips[1]]),witness:'',arrows:''};
 }
