@@ -191,7 +191,7 @@ body[data-theme="day"] .voltage-dot{fill:#ab7932}
 
 /* Three film blocks share the viewport: product, catalogue facts, miniatures. */
 @media(min-width:761px){
-  .intro{left:4.2%;top:30px;transform:none;width:34.5%;max-width:620px;height:calc(100svh - 60px);display:flex;flex-direction:column}
+  .intro{left:4.2%;top:30px;transform:none;width:37%;max-width:710px;height:calc(100svh - 60px);display:flex;flex-direction:column}
   .intro>*{flex-shrink:0}
   .product-assurance{font-size:20px;font-weight:500;gap:15px;margin-bottom:18px;letter-spacing:-.015em}
   .product-assurance>[data-product=warranty]{font-weight:600}
@@ -213,10 +213,17 @@ body[data-theme="day"] .voltage-dot{fill:#ab7932}
   .product-facts>div{display:flex;flex-direction:column;justify-content:center;padding:16px 0}
   .power-modes{margin:10px 0 0}
   .product-bottom{margin-top:auto;padding:30px 0 8px;gap:11px;grid-template-columns:repeat(4,minmax(0,1fr)) minmax(0,1.08fr)}
-  .feature-icon{height:84px}
-  .product-feature[data-feature=detail] .feature-icon{height:94px;margin-top:-5px;margin-bottom:-5px}
-  .product-feature strong{font-size:14px}
-  .product-feature small{font-size:10px}
+  .feature-icon{height:132px}
+  .product-feature[data-feature=detail] .feature-icon{height:148px;margin-top:-8px;margin-bottom:-8px}
+  .product-feature strong{font-size:16px}
+  .product-feature small{font-size:12px}
+  .product-facts dt{font-size:12px}
+  .product-facts dd{font-size:38px;line-height:42px}
+  .product-facts small{font-size:14px}
+  .energy-fact dd{height:42px}
+  .energy-rating img{height:38px}
+  [data-product=section]{white-space:nowrap}
+  [data-product=ip]>span{font-size:12px}
 }
 @media(min-width:761px) and (max-height:850px){
   .intro{top:24px;height:calc(100svh - 48px)}

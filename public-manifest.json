@@ -59,8 +59,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 1142,
-  "bytesExcludingManifest": 308146132,
+  "fileCountExcludingManifest": 1144,
+  "bytesExcludingManifest": 308155492,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4842,13 +4842,13 @@
     },
     "model-smd-2835/index.html": {
       "source": "model-smd-2835/index.html",
-      "bytes": 5302,
-      "sha256": "56edf160b490b7004540ff6e6b19220620d40579e8347456414694de9646851f"
+      "bytes": 5358,
+      "sha256": "146147bc89bb00ebb18b3cc061fb595ba236efe831fe010ac6fef692881aa42c"
     },
     "noir/catalog-strip-model.mjs": {
       "source": "noir/catalog-strip-model.mjs",
-      "bytes": 39063,
-      "sha256": "f766530f44ee898d3c5ccf43b73ca63764cd327e7ebd80855127cdb3720872a5"
+      "bytes": 40478,
+      "sha256": "108b230aef9b033885a45d281bd21bd34ab765177260bf640e12893b97c01024"
     },
     "noir/delux-pcb-artwork.mjs": {
       "bytes": 5827,
@@ -4856,14 +4856,14 @@
       "source": "noir/delux-pcb-artwork.mjs"
     },
     "noir/film-catalog.mjs": {
-      "bytes": 119798,
-      "sha256": "4401f5a0755d0b8ad95f4a823520d7989a7753d37304d76fb649cd3fb3e9210b",
-      "source": "noir/film-catalog.mjs"
+      "source": "noir/film-catalog.mjs",
+      "bytes": 125162,
+      "sha256": "828e7dafb61db5ba6b945423ad49e44b783858b5d2efab46d9fda954d0b5183d"
     },
     "noir/film-feature-3d.mjs": {
       "source": "noir/film-feature-3d.mjs",
-      "bytes": 44068,
-      "sha256": "b35fa5fc6a40a7c28f030126d66d460fe261a46d6a24c51481b9599334ca3ba4"
+      "bytes": 43731,
+      "sha256": "d65d47ba179aa6a26da43b1a8b0ee8336b7caed0aea34b00564ccb1ac6b36b5e"
     },
     "noir/film-numbers.mjs": {
       "source": "noir/film-numbers.mjs",
@@ -5617,13 +5617,13 @@
     },
     "noir/smd2835-viewer.css": {
       "source": "noir/smd2835-viewer.css",
-      "bytes": 26876,
-      "sha256": "54056b79f761befc0c3f898385824f7b7ce44859b7e6564d29a83df3263071f7"
+      "bytes": 27456,
+      "sha256": "ac38b0c333ebded6ae91c46c5ce05133f19e1876cd71aa33d2b0f47c577691fe"
     },
     "noir/smd2835-viewer.mjs": {
       "source": "noir/smd2835-viewer.mjs",
-      "bytes": 32922,
-      "sha256": "923480727c996b4f972a22076d6e29e10fac192feb83352de29cc14c7a0efc9d"
+      "bytes": 33461,
+      "sha256": "d20e9868199cc88b83a17ce0628d20c7c95b5da3e6a7c1b83d886670f9426cb0"
     },
     "noir/strip-appearance.mjs": {
       "bytes": 1057,
@@ -5717,8 +5717,8 @@
     },
     "tasmy-opcja-2/index.html": {
       "source": "tasmy-opcja-2/index.html",
-      "bytes": 1231,
-      "sha256": "ba44b873d8c073560f2ed9b0e61d7985e433268f557efc509b7a02ba63806d3f"
+      "bytes": 1252,
+      "sha256": "3f82b7ed34fa3400c72bb7a24504ede72cfca829214dae8a36978abefa47681f"
     },
     "tasmy-opcja-2/mini-shot.mjs": {
       "bytes": 4904,
@@ -5727,13 +5727,13 @@
     },
     "tasmy-opcja-2/presentation.css": {
       "source": "tasmy-opcja-2/presentation.css",
-      "bytes": 1925,
-      "sha256": "2357a774e214bb2edfb4e316059d7725ba449bd86d99a63fd5ff7c958025da6f"
+      "bytes": 1938,
+      "sha256": "6fefd09733577c0ceb7310725c66bcef597ea1f3be8633b33e0a9edc52d57d0a"
     },
     "tasmy-opcja-2/presentation.mjs": {
       "source": "tasmy-opcja-2/presentation.mjs",
-      "bytes": 4632,
-      "sha256": "7e98b3859788f114793089376c6602aa4f73af74a0f04caacf0b6169acc2b38f"
+      "bytes": 5448,
+      "sha256": "da162bdfdd39385c4c956740c3b36453ce34e9d1ca13dab8f9e04a3f9cfc37c5"
     },
     "tasmy-opcja-2/product-details.mjs": {
       "bytes": 4553,
@@ -5779,6 +5779,16 @@
       "source": "noir/strip-product-variants.mjs",
       "bytes": 2114,
       "sha256": "5c16cf76fd0d730838d76c2360c4bfda8206335316a5beafabe084bef118cbe5"
+    },
+    "noir/strip-display-sku.mjs": {
+      "source": "noir/strip-display-sku.mjs",
+      "bytes": 614,
+      "sha256": "d83a9f6153185b58ccb1bfe8d3a51249488732390af2ebed8a9752a7d3b514fa"
+    },
+    "tasmy-opcja-2/master-frame.css": {
+      "source": "tasmy-opcja-2/master-frame.css",
+      "bytes": 279,
+      "sha256": "9b6e7455e9f43dc13581f8645d5bfb6aa23cdde16b559de64f4958df2ccbfbac"
     }
   }
 }

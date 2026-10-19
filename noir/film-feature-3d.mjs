@@ -430,7 +430,8 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       mesh(fan,keep(new T.SphereGeometry(.1,16,12)),mat(0xd5dde2,{metalness:.8}),0,-.93,.49);
       const halo=keep(new T.ShaderMaterial({transparent:true,depthWrite:false,toneMapped:false,uniforms:{strength:{value:0}},vertexShader:'varying vec2 p;void main(){p=uv;gl_Position=projectionMatrix*modelViewMatrix*vec4(position,1.);}',fragmentShader:'varying vec2 p;uniform float strength;void main(){float a=pow(max(0.,1.-length((p-.5)*2.)),2.)*strength;vec3 c=.55+.45*cos(6.283*(p.x+vec3(0.,.33,.67)));gl_FragColor=vec4(c,a);}'}));
       mesh(fan,keep(new T.PlaneGeometry(4.1,3.4)),halo,0,.15,-.45);
-      palette={enhanced:true,cards,fan,halo,visible:5,intensity:0};
+      palette={enhanced:true,cards,fan,halo,visible:count,intensity:.86};
+      animatePalette(0,false);
       return;
     }
     const colors=[0xd75c52,0xe7a353,0xf2cd61,0x89ba76,0x56a6aa,0x5988c5,0x9b72b8];
@@ -443,27 +444,20 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
   }
   function animatePalette(time,reducedMotion){
     if(!palette)return;
-    const phase=((time%28)+28)%28%12;
-    const smooth=x=>{const t=T.MathUtils.clamp(x,0,1);return t*t*(3-2*t);};
-    const close=reducedMotion?0:smooth((phase-10.6)/1.1);
-    const intensity=reducedMotion?1:smooth((phase-2.5)/1.45)*(1-close);
-    let visible=0;
+    // CRI 97 starts as a complete, vivid fan. Its gentle breathing keeps all
+    // fifteen samples open (128–136 degrees), wider than CRI 80's 93 degrees.
+    const pulse=reducedMotion?1:(1-Math.cos(time*Math.PI/3))*.5;
+    const spread=.16+.01*pulse,intensity=.86+.14*pulse;
     palette.cards.forEach(({pivot,ink,vivid,quiet,index:i})=>{
-      // Five initial samples become fifteen, fanning out in a quick stagger.
-      const rank=Math.abs(i-7),extra=rank>2;
-      const open=reducedMotion?1:smooth((phase-2.1-Math.max(0,rank-2)*.075)/.65)*(1-close);
-      const reveal=extra?open:1;
-      pivot.visible=reveal>.015;if(pivot.visible)visible++;
-      const overshoot=open<1?Math.sin(open*Math.PI)*.055:0;
-      pivot.rotation.z=(i-7)*(.075+(.17-.075)*open+overshoot);
-      pivot.rotation.y=Math.sin(open*Math.PI)*.25*(i<7?-1:1);
-      pivot.scale.setScalar(extra?.35+.65*reveal:1);
-      pivot.position.y=-.93+.07*Math.sin(open*Math.PI);
+      pivot.visible=true;
+      pivot.rotation.z=(i-7)*spread;
+      pivot.rotation.y=reducedMotion?0:Math.sin(time*Math.PI/3)*.025*(i<7?-1:1);
+      pivot.scale.setScalar(1);pivot.position.y=-.93;
       ink.color.copy(quiet).lerp(vivid,intensity);
     });
     palette.fan.scale.setScalar(.9+.08*intensity);
     palette.halo.uniforms.strength.value=intensity*(theme==='night'?.3:.1);
-    palette.visible=visible;palette.intensity=intensity;
+    palette.visible=palette.cards.length;palette.intensity=intensity;
   }
   function setPower(index){
     power=index;if(kind!=='brightness')return;

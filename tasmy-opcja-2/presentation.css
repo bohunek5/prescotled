@@ -1,12 +1,12 @@
 :root{font-family:Inter,Arial,sans-serif;--bg:#e8e9e2;--ink:#24352e;--muted:#56665b;--line:#344e3929;color:var(--ink);background:var(--bg);color-scheme:light}
 *{box-sizing:border-box}body{margin:0;background:var(--bg);overflow:hidden}
 button{font:inherit;color:inherit;cursor:pointer}button:focus-visible{outline:2px solid #886039;outline-offset:4px}
-.overview{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--overview-scale,1));transform-origin:center;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:100px 20px;padding:12px 18px;isolation:isolate}
+.overview{position:absolute;left:50%;top:50%;width:1920px;height:1080px;transform:translate(-50%,-50%) scale(var(--overview-scale,1));transform-origin:center;display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:0;padding:0;isolation:isolate}
 .family{position:relative;min-width:0;min-height:0;overflow:hidden;z-index:1}
 .master-frame{position:absolute;left:50%;top:50%;width:1920px;height:1080px;border:0;display:block;transform:translate(-50%,-50%) scale(var(--film-scale,.44));transform-origin:center;background:var(--bg)}
-.brand-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:380px;padding:12px 24px;text-align:center;background:var(--bg);border:1px solid #68786c8c;z-index:3}
+.brand-core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) scale(.7);width:380px;padding:12px 24px;text-align:center;background:var(--bg);border:1px solid #68786c8c;z-index:3}
 .brand-core img{display:block;width:100%;height:auto}.brand-core h1{font-size:16px;line-height:1.25;letter-spacing:-.02em;font-weight:400;margin:8px 0 0}
-.rule{position:absolute;background:var(--line);z-index:0}.rule-horizontal{height:1px;left:18px;right:18px;top:50%}.rule-vertical{width:1px;left:50%;top:12px;bottom:12px}
+.rule{position:absolute;background:var(--line);z-index:2;pointer-events:none}.rule-horizontal{height:1px;left:0;right:0;top:50%}.rule-vertical{width:1px;left:50%;top:0;bottom:0}
 .theme-switch{position:fixed;right:18px;top:10px;display:flex;padding:3px;border:1px solid var(--line);border-radius:30px;z-index:6;background:var(--bg)}.theme-switch button{padding:5px 11px;border:0;border-radius:24px;background:none;font-size:11px;color:var(--muted)}.theme-switch [aria-pressed=true]{background:#79543112}
 .frame-error{position:absolute;inset:40% 10%;margin:0;font-size:25px;text-align:center;background:var(--bg);color:var(--muted)}
 html[data-film=true] .theme-switch{display:none}

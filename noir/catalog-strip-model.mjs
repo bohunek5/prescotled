@@ -9,8 +9,20 @@ import {createDeluxArtwork,sectionFrame} from './delux-pcb-artwork.mjs?v=detail-
 import {createCatalogFilmArtwork,supportsCatalogFilmArtwork} from './catalog-film-artwork.mjs?v=detail-8';
 
 // Reuse the supplied vector artwork; no text approximation of the brand or CE.
-let marksPromise;
-function loadMarks(){
+let marksPromise,blackMarksPromise;
+function loadMarks(blackPcb=false){
+  if(blackPcb)return blackMarksPromise??=Promise.all([
+    fetch(new URL('./media/strip-brand-mark.svg',import.meta.url)).then(async response=>{
+      if(!response.ok)throw new Error('Nie udało się wczytać nadruku PRESCOT LED.');
+      // Preserve every original vector path and the orange LED artwork.
+      const svg=(await response.text()).replaceAll('fill="#17324d"','fill="#ffffff"');
+      return new Promise((resolve,reject)=>{
+        const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;
+        image.src=`data:image/svg+xml;charset=utf-8,${encodeURIComponent(svg)}`;
+      });
+    }),
+    loadMarks().then(([,ce])=>ce)
+  ]);
   return marksPromise??=Promise.all(['strip-brand-mark','strip-ce-mark'].map(name=>new Promise((resolve,reject)=>{
     const image=new Image();image.onload=()=>resolve(image);image.onerror=reject;
     image.src=new URL(`./media/${name}.svg`,import.meta.url).href;
@@ -377,7 +389,7 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     marks:[],legends:[]
   }:sshape?{
     kind:'s-shape-island-clearance',
-    brand:{x:.65,y:5,length:2.8,height:2.8/8.45},
+    brand:{x:.73,y:5.35,length:3.7,height:3.7/8.45},
     ce:{x:width-.5,y:(649-16)/838*section,length:.9,height:.6},
     rohs:{x:width-.45,y:(388-16)/838*section,size:.43},
     legendY:[3.28],legendSize:.4,
@@ -385,13 +397,13 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
   }:{kind:'catalogue-clearance',marks:[],legends:[],facts:[],...(digital?{legendY:[2.45,section-padLength*1.5-1]}:{})};
   const ready=refinedDelux?createDeluxArtwork(product,spec,{anisotropy}).then(({texture,layout})=>{
     if(disposed){texture.dispose();return;}keep(texture);printLayout=layout;mask.map=texture;mask.color.set(0xffffff);mask.needsUpdate=true;
-  }):loadMarks().then(([brand,ce])=>{
+  }):loadMarks(blackPcb).then(([brand,ce])=>{
     if(disposed)return;
     if(supportsCatalogFilmArtwork(product)){
       const {texture,layout}=createCatalogFilmArtwork(product,spec,{brand,ce,contacts,padSpacing,padLength,footprints:componentLayout().footprints,anisotropy});
       keep(texture);printLayout=layout;mask.map=texture;mask.color.set(0xffffff);mask.needsUpdate=true;return;
     }
-    const c=document.createElement('canvas');c.width=384;c.height=Math.min(2048,Math.max(512,Math.round(384*section/width)));
+    const c=document.createElement('canvas');c.width=sshape?768:384;c.height=Math.min(sshape?4096:2048,Math.max(512,Math.round(c.width*section/width)));
     const ctx=c.getContext('2d');ctx.scale(c.width/width,c.height/section);ctx.fillStyle=blackPcb?'#171c1c':'#f2f2e9';ctx.fillRect(0,0,width,section);
     ctx.fillStyle=blackPcb?'#e2e7df':'#344044';ctx.strokeStyle=blackPcb?'#69736b':'#aeb5a7';ctx.lineWidth=.035;
     const text=(value,x,y,size,rotate=false)=>{ctx.save();ctx.translate(x,sshape?section-y:y);if(rotate)ctx.rotate(sshape?-Math.PI/2:Math.PI/2);ctx.font=`600 ${size}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(value,0,0);const advance=ctx.measureText(value).width;ctx.restore();return {x:x-(rotate?size:advance)/2,y:y-(rotate?advance:size)/2,width:rotate?size:advance,height:rotate?advance:size};};
@@ -415,7 +427,9 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     // CE artwork. Keep the complete, proportional mark on the solder mask.
     const ceRail=cob&&width<4&&coatingLayout?(width-coatingLayout.totalBand)/2+.05:null;
     const ceScale=ceRail?Math.min(1.18,(ceRail-.06)/ceHeight):1.18;
-    const brandPlacement=printLayout?.brand??{x:margin*.8,y:section*.38,length:brandLength,height:brandHeight};
+    // The short 5 V module needs its logo between the two voltage legends.
+    const fiveVolt=product.id==='smd5white'||product.id==='smd5black';
+    const brandPlacement=printLayout?.brand??{x:margin*.8,y:section*(fiveVolt?.5:.38),length:brandLength,height:brandHeight};
     const cePlacement=printLayout?.ce??{x:ceRail?width-.03-ceHeight*ceScale/2:width<5&&!cob?width-.3:width-margin*.8,y:section*.5,length:ceLength,height:ceHeight};
     for(const [name,artwork,placement] of [['brand',brand,brandPlacement],['ce',ce,cePlacement]]){
       const {x,y}=placement,scale=name==='ce'?ceScale:1;

@@ -3,7 +3,8 @@
 const BASE={width:1920,height:1080};
 const overview=document.querySelector('.overview'),playback=document.querySelector('#playback');
 const reduced=matchMedia('(prefers-reduced-motion: reduce)');
-const film=new URLSearchParams(location.search).get('controls')!=='1';
+const parameters=new URLSearchParams(location.search);
+const film=parameters.get('film')==='1'||parameters.get('controls')==='0';
 document.documentElement.dataset.film=String(film);
 const names={delux:'DELUX',premium:'PREMIUM',cob:'COB i WCOB',special:'SPECIAL'};
 let playing=!reduced.matches,ready=false,disposed=false;
@@ -41,8 +42,18 @@ async function load(card){
   const url=new URL('../model-smd-2835/',location.href);
   url.searchParams.set('family',card.group);url.searchParams.set('embed','1');url.searchParams.set('autoplay','0');
   if(film)url.searchParams.set('film','1');
-  url.searchParams.set('scale',String(card.scale));url.searchParams.set('v','quad-master-2');
+  url.searchParams.set('scale',String(card.scale));url.searchParams.set('v','quad-master-3');
   card.frame.src=url.href;
+ });
+ // Apply the approved quadrant spacing only inside these embedded master frames.
+ const frameDocument=card.frame.contentDocument;
+ frameDocument.documentElement.dataset.overviewFamily=card.group;
+ frameDocument.documentElement.dataset.overviewRow=['cob','special'].includes(card.group)?'lower':'upper';
+ await new Promise((resolve,reject)=>{
+  const stylesheet=frameDocument.createElement('link');stylesheet.rel='stylesheet';
+  stylesheet.href=new URL('./master-frame.css?v=3',location.href).href;
+  stylesheet.onload=resolve;stylesheet.onerror=()=>reject(Error('Nie udało się wczytać układu podglądu.'));
+  frameDocument.head.append(stylesheet);
  });
  const started=performance.now();
  while(!disposed){

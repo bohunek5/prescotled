@@ -3988,7 +3988,8 @@ export const filmProducts = [
     ],
     "energyClass": "E",
     "digital": false,
-    "copperOz": null,
+    "copperOz": "2",
+    "copperEvidence": "User confirmation, 2026-10-20: WCOB family PCB copper is 2 oz, including the CCT variant.",
     "efficacy": "140",
     "assortmentSource": "Downloads/prescot-katalog-2026-2027-a4.pdf#page=14",
     "ipOptions": [
@@ -4039,7 +4040,8 @@ export const filmProducts = [
     ],
     "energyClass": "G",
     "digital": false,
-    "copperOz": null,
+    "copperOz": "2",
+    "copperEvidence": "User confirmation, 2026-10-20: WCOB family PCB copper is 2 oz, including the CCT variant.",
     "efficacy": "76",
     "assortmentSource": "Downloads/prescot-katalog-2026-2027-a4.pdf#page=14",
     "ipOptions": [

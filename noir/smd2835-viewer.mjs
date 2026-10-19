@@ -1,17 +1,18 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-8';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-9';
 import {mainFilmProducts,filmProductsForFamily} from './strip-film-selection.mjs?v=detail-4';
 import {resolveFilmVariant} from './strip-product-variants.mjs?v=1';
 import {createPresentation,sampleVariant} from './strip-presentation.mjs?v=detail-8';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
-import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-10';
+import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-11';
 import {createNumberAnimator} from './film-numbers.mjs?v=capture-1';
 import {createVoltageCue} from './strip-lighting.mjs?v=detail-10';
 import {frameStripSection} from './strip-section-camera.mjs?v=detail-4';
 import {createFactHighlight} from './strip-fact-highlight.mjs';
 import {createWcobSectionDetail} from './wcob-section-detail.mjs?v=end-1';
 import {sampleWcobDetailCue} from './wcob-detail-cues.mjs?v=end-1';
+import {formatStripSku} from './strip-display-sku.mjs';
 
 const PLAYBACK_RATE=1.15;
 const parameters=new URLSearchParams(location.search);
@@ -23,7 +24,7 @@ let renderScale=embedded?T.MathUtils.clamp(Number(parameters.get('scale'))||1,.1
 document.documentElement.dataset.filmEmbed=String(embedded);
 document.documentElement.dataset.film=String(parameters.get('film')==='1');
 const smdVoltageName=product=>/^(?:SMD|COB)\s+(?:12|24|48)\s*V(?:\s*·|$)/.test(product.name)?`${product.name.split(' · ')[0]} · ${product.density}\u00a0LED/m`:product.tech.includes('COB')?product.name:null;
-const modelOption=(product,sku=product.sku)=>`${product.range} · ${smdVoltageName(product)??product.name} · ${sku}`;
+const modelOption=(product,sku=product.sku)=>`${product.range} · ${smdVoltageName(product)??product.name} · ${formatStripSku(sku)}`;
 let colorVariant=null,colorKey='',effectiveProduct=products[0];
 let lightProgram=null;
 const catalogueNumber=value=>{const text=String(value??'').trim().replace(',','.');return /^\d+(?:\.\d+)?$/.test(text)?Number(text):null;};
@@ -239,7 +240,7 @@ function selectModel(index){
   fact('efficacy',p.efficacy??'—');fact('copper',p.copperOz??'—');
   document.querySelector('[data-product="copper-unit"]').textContent=p.copperOz?'oz':'';
   const heading=document.querySelector('#product-title');heading.replaceChildren();const range=document.createElement('small');const series=document.createElement('b');series.className='series-caption';series.textContent='SERIA';const seriesName=document.createElement('span');seriesName.className='series-name';seriesName.textContent=p.range;range.append(series,seriesName);const name=document.createElement('span');const mainName=(smdVoltageName(p)??p.name.split(' \u00b7 ')[0]).replace(/(\d+(?:[,.]\d+)?)\s+mm\b/g,'$1\u00a0mm');name.textContent=mainName;
-  const reference=document.createElement('em');reference.className='model-variant';reference.dataset.product='sku';reference.setAttribute('aria-label','Symbol katalogowy');reference.textContent=p.sku;
+  const reference=document.createElement('em');reference.className='model-variant';reference.dataset.product='sku';reference.setAttribute('aria-label','Symbol katalogowy');reference.textContent=formatStripSku(p.sku);
   heading.append(range,name,reference);heading.dataset.long=String(mainName.length>12);
   document.querySelector('[data-product="warranty"]').textContent=`${p.warrantyYears} ${p.warrantyYears===3?'lata':'lat'} gwarancji`;
   document.querySelector('.polish-flag').hidden=!p.madeInPoland;document.querySelector('.assurance-origin').hidden=!p.madeInPoland;
@@ -278,7 +279,7 @@ function updateColorVariant(local=0){
   model.setTemperature(v.kelvin);featureIcons.setColor(v.kelvin);
   model.group.userData.catalogueDensity=Number(effectiveProduct.density);
   model.group.userData.catalogueCut=Number(effectiveProduct.cut);
-  const reference=document.querySelector('[data-product="sku"]');reference.textContent=v.sku;
+  const reference=document.querySelector('[data-product="sku"]');reference.textContent=formatStripSku(v.sku);
   document.querySelector('#model-select').options[modelIndex].textContent=modelOption(p,v.sku);
   if(!seeking&&!reduced.matches){reference.getAnimations().forEach(animation=>animation.cancel());reference.animate([{opacity:.3,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],{duration:550,easing:'ease-out'});}
   fact('kelvin',effectiveProduct.control==='RGBW'?'RGBW':v.kelvin);
