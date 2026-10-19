@@ -1,0 +1,1044 @@
+{
+  "pds-4-plus": {
+    "products": {
+      "silver": {
+        "file": "pds-4-plus-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1263-PDS-4-PLUS/3557/image-thumb__3557__1200x1200/C1263PH.png",
+        "box": [
+          0,
+          371,
+          896,
+          501
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "pds-4-plus-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1263-PDS-4-PLUS/7830/image-thumb__7830__1200x1200/C1263K7PH.png",
+        "box": [
+          0,
+          371,
+          896,
+          501
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "pds-4-plus-white.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1263-PDS-4-PLUS/7831/image-thumb__7831__1200x1200/C1263L9010ODPH.png",
+        "box": [
+          0,
+          371,
+          896,
+          501
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "pds-4-plus-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/102209/image-thumb__102209__1920x1200contain/A01263UH_002.png"
+      },
+      {
+        "file": "pds-4-plus-scene-1.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/102210/image-thumb__102210__1920x1200contain/A01263UH_003.png"
+      },
+      {
+        "file": "pds-4-plus-scene-2.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/102211/image-thumb__102211__1920x1200contain/A01263UH_004.png"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-pds-4-plus-2227",
+    "drawing": {
+      "file": "pds-4-plus-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2711/image-thumb__2711__1920x1200contain/C1263T.png",
+      "box": [
+        527,
+        262,
+        709,
+        630
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "siler": {
+    "products": {
+      "silver": {
+        "file": "siler-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/3529/image-thumb__3529__1200x1200/B9325PH.png",
+        "box": [
+          0,
+          395,
+          917,
+          449
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "siler-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/3528/image-thumb__3528__1200x1200/B9325K7PH.png",
+        "box": [
+          0,
+          395,
+          918,
+          449
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "siler-white.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/5965/image-thumb__5965__1200x1200/B9325L9010OD.png",
+        "box": [
+          0,
+          395,
+          917,
+          449
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "siler-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/101069/image-thumb__101069__1920x1200contain/MICRO-NK-SILER-OGOLNE.png"
+      },
+      {
+        "file": "siler-scene-1.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4014/image-thumb__4014__1920x1200contain/B9325UH.png"
+      },
+      {
+        "file": "siler-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/6200/image-thumb__6200__1920x1200contain/B9325UP-002.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-siler-2238",
+    "drawing": {
+      "file": "siler-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2699/image-thumb__2699__1920x1200contain/B9325T.png",
+      "box": [
+        474,
+        115,
+        896,
+        705
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "45-16": {
+    "products": {
+      "silver": {
+        "file": "45-16-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B8504-45-16/3519/image-thumb__3519__1200x1200/B8504PH.png",
+        "box": [
+          0,
+          331,
+          900,
+          506
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "45-16-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4007/image-thumb__4007__1920x1200contain/B8504UH.png"
+      },
+      {
+        "file": "45-16-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/5953/image-thumb__5953__1920x1200contain/B8504UH-003.jpg"
+      },
+      {
+        "file": "45-16-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/5951/image-thumb__5951__1920x1200contain/B8504UH-001.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-45-16-2350",
+    "drawing": {
+      "file": "45-16-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2695/image-thumb__2695__1920x1200contain/B8504T.png",
+      "box": [
+        388,
+        193,
+        1058,
+        847
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "45-plus": {
+    "products": {
+      "silver": {
+        "file": "45-plus-silver.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/104631/image-thumb__104631__1200x1200/A00005APH.jpg",
+        "box": [
+          0,
+          353,
+          844,
+          671
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "45-plus-black.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/104641/image-thumb__104641__1200x1200/A00005A07PH_1.jpg",
+        "box": [
+          0,
+          353,
+          844,
+          672
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "45-plus-white.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/104632/image-thumb__104632__1200x1200/A00005L10ODPH.jpg",
+        "box": [
+          0,
+          352,
+          844,
+          673
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "45-plus-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/107084/image-thumb__107084__1920x1200contain/45-PLUS_1.jpg"
+      },
+      {
+        "file": "45-plus-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/107085/image-thumb__107085__1920x1200contain/45-PLUS_2.jpg"
+      },
+      {
+        "file": "45-plus-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/107086/image-thumb__107086__1920x1200contain/45-PLUS_3.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-45-plus-62559",
+    "drawing": {
+      "file": "45-plus-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/104601/image-thumb__104601__1920x1200contain/A00005T.png",
+      "box": [
+        360,
+        178,
+        1099,
+        986
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "piko": {
+    "products": {
+      "silver": {
+        "file": "piko-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B8288-PIKO/3505/image-thumb__3505__1200x1200/B8288PH.png",
+        "box": [
+          0,
+          401,
+          918,
+          441
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "piko-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B8288-PIKO/3504/image-thumb__3504__1200x1200/B8288K7PH.png",
+        "box": [
+          0,
+          401,
+          918,
+          441
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "piko-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/42500/image-thumb__42500__1920x1200contain/B8288UH_001.jpg"
+      },
+      {
+        "file": "piko-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/42499/image-thumb__42499__1920x1200contain/B8288UH_002.jpg"
+      },
+      {
+        "file": "piko-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/42502/image-thumb__42502__1920x1200contain/B8288UH_004.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-piko-2232",
+    "drawing": {
+      "file": "piko-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2689/image-thumb__2689__1920x1200contain/B8288T.png",
+      "box": [
+        549,
+        314,
+        779,
+        558
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "jaz": {
+    "products": {
+      "silver": {
+        "file": "jaz-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B8547-JAZ/3524/image-thumb__3524__1200x1200/B8547PH.png",
+        "box": [
+          0,
+          367,
+          875,
+          343
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "jaz-scene-2.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4009/image-thumb__4009__1920x1200contain/B8547UH-001.png"
+      },
+      {
+        "file": "jaz-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/5936/image-thumb__5936__1920x1200contain/B8547-05.jpg"
+      },
+      {
+        "file": "jaz-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/5934/image-thumb__5934__1920x1200contain/B8547-04.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-jaz-2402",
+    "drawing": {
+      "file": "jaz-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2697/image-thumb__2697__1920x1200contain/B8547T.png",
+      "box": [
+        342,
+        192,
+        1086,
+        824
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "hr-max": {
+    "products": {
+      "silver": {
+        "file": "hr-max-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1829-C1829/3574/image-thumb__3574__1200x1200/C1829PH.png",
+        "box": [
+          0,
+          207,
+          918,
+          654
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "hr-max-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/42492/image-thumb__42492__1920x1200contain/A01829UH_002.jpg"
+      },
+      {
+        "file": "hr-max-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/42489/image-thumb__42489__1920x1200contain/A01829UH_001.jpg"
+      },
+      {
+        "file": "hr-max-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/42490/image-thumb__42490__1920x1200contain/A01829UH_004.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-hr-max-2364",
+    "drawing": {
+      "file": "hr-max-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/4631/image-thumb__4631__1920x1200contain/C1829T.png",
+      "box": [
+        29,
+        37,
+        1347,
+        1007
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "hr-opti": {
+    "products": {
+      "silver": {
+        "file": "hr-opti-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1844-HR-OPTI/3575/image-thumb__3575__1200x1200/C1844PH.png",
+        "box": [
+          0,
+          179,
+          892,
+          639
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "hr-opti-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/103362/image-thumb__103362__1920x1200contain/A01844UH-006.png"
+      },
+      {
+        "file": "hr-opti-scene-1.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/103361/image-thumb__103361__1920x1200contain/A01844UH-005.png"
+      },
+      {
+        "file": "hr-opti-scene-2.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4050/image-thumb__4050__1920x1200contain/C1844UH-001.png"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-hr-opti-2397",
+    "drawing": {
+      "file": "hr-opti-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/4899/image-thumb__4899__1920x1200contain/C1844T.png",
+      "box": [
+        404,
+        54,
+        979,
+        924
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "hr-slim": {
+    "products": {
+      "silver": {
+        "file": "hr-slim-silver.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/121744/image-thumb__121744__1200x1200/A00015APH.jpg",
+        "box": [
+          0,
+          368,
+          891,
+          459
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "raw": {
+        "file": "hr-slim-raw.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/121745/image-thumb__121745__1200x1200/A00015NPH.jpg",
+        "box": [
+          0,
+          368,
+          891,
+          459
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "hr-slim-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/121774/image-thumb__121774__1920x1200contain/HR-SLIM_SCENE_EXTERIOR.jpg"
+      },
+      {
+        "file": "hr-slim-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/121775/image-thumb__121775__1920x1200contain/HR-SLIM_SCENE_EXTERIOR_2.jpg"
+      },
+      {
+        "file": "hr-slim-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/121776/image-thumb__121776__1920x1200contain/HR-SLIM_2000X2000_2.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-hr-slim-81158",
+    "drawing": {
+      "file": "hr-slim-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/121746/image-thumb__121746__1920x1200contain/A00015T.png",
+      "box": [
+        141,
+        143,
+        1151,
+        954
+      ],
+      "size": [
+        1628,
+        1200
+      ]
+    }
+  },
+  "hr-slim-koz": {
+    "products": {
+      "raw": {
+        "file": "hr-slim-koz-raw.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/132637/image-thumb__132637__1200x1200/A00037PH.jpg",
+        "box": [
+          0,
+          370,
+          878,
+          429
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "hr-slim-koz-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/133233/image-thumb__133233__1920x1200contain/HR-SLIM-KOZ_1_web.jpg"
+      },
+      {
+        "file": "hr-slim-koz-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/133234/image-thumb__133234__1920x1200contain/HR-SLIM-KOZ_2_web.jpg"
+      },
+      {
+        "file": "hr-slim-koz-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/133235/image-thumb__133235__1920x1200contain/HR-SLIM-KOZ_3_web.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-hr-slim-koz-111030",
+    "drawing": {
+      "file": "hr-slim-koz-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/132639/image-thumb__132639__1920x1200contain/A00037T.png",
+      "box": [
+        75,
+        136,
+        1608,
+        914
+      ],
+      "size": [
+        1857,
+        1200
+      ]
+    }
+  },
+  "hr-slim-koz-bd": {
+    "products": {
+      "raw": {
+        "file": "hr-slim-koz-bd-raw.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/132840/image-thumb__132840__1200x1200/A18082NPH.jpg",
+        "box": [
+          0,
+          386,
+          844,
+          388
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "hr-slim-koz-bd-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/132642/image-thumb__132642__1920x1200contain/HR-SLIM_2000_x_2000_03.jpg"
+      },
+      {
+        "file": "hr-slim-koz-bd-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/132643/image-thumb__132643__1920x1200contain/HR-SLIM_2000_x_2000_04.jpg"
+      },
+      {
+        "file": "hr-slim-koz-bd-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/132644/image-thumb__132644__1920x1200contain/HR-SLIM_2000_x_2000_05.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-hr-slim-koz-bd-119630",
+    "drawing": {
+      "file": "hr-slim-koz-bd-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/132639/image-thumb__132639__1920x1200contain/A00037T.png",
+      "box": [
+        75,
+        136,
+        1608,
+        914
+      ],
+      "size": [
+        1857,
+        1200
+      ]
+    }
+  },
+  "kozus": {
+    "products": {
+      "raw": {
+        "file": "kozus-raw.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B7823-KOZUS/3497/image-thumb__3497__1200x1200/B7823PH.png",
+        "box": [
+          0,
+          361,
+          919,
+          482
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "kozus-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3994/image-thumb__3994__1920x1200contain/B7823UH.png"
+      },
+      {
+        "file": "kozus-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/35052/image-thumb__35052__1920x1200contain/B7823UH_1.jpg"
+      },
+      {
+        "file": "kozus-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/35053/image-thumb__35053__1920x1200contain/B7823UH_2.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-kozus-2409",
+    "drawing": {
+      "file": "kozus-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2685/image-thumb__2685__1920x1200contain/B7823T.png",
+      "box": [
+        38,
+        29,
+        1707,
+        1009
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "kozel": {
+    "products": {
+      "raw": {
+        "file": "kozel-raw.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B6454-KOZEL/3476/image-thumb__3476__1200x1200/B6454PH.png",
+        "box": [
+          0,
+          311,
+          916,
+          632
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "kozel-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/101075/image-thumb__101075__1920x1200contain/kozel.jpg"
+      },
+      {
+        "file": "kozel-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3970/image-thumb__3970__1920x1200contain/B6454UH-002.jpg"
+      },
+      {
+        "file": "kozel-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/35033/image-thumb__35033__1920x1200contain/B6454UH_5.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-kozel-2405",
+    "drawing": {
+      "file": "kozel-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2675/image-thumb__2675__1920x1200contain/B6454T.png",
+      "box": [
+        31,
+        110,
+        1550,
+        1001
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "lipod": {
+    "products": {
+      "silver": {
+        "file": "lipod-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/3465/image-thumb__3465__1200x1200/B5554PH.png",
+        "box": [
+          0,
+          340,
+          916,
+          594
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "lipod-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/3464/image-thumb__3464__1200x1200/B5554K7PH.png",
+        "box": [
+          0,
+          340,
+          916,
+          594
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "lipod-white.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/6163/image-thumb__6163__1200x1200/B5554L9010ODPH.png",
+        "box": [
+          0,
+          340,
+          915,
+          594
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "lipod-scene-3.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3963/image-thumb__3963__1920x1200contain/B5554UH-003.png"
+      },
+      {
+        "file": "lipod-scene-4.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3961/image-thumb__3961__1920x1200contain/B5554UH-002.jpg"
+      },
+      {
+        "file": "lipod-scene-5.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3964/image-thumb__3964__1920x1200contain/B5554XB3579UH.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-lipod-2424",
+    "drawing": {
+      "file": "lipod-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2670/image-thumb__2670__1920x1200contain/B5554T.png",
+      "box": [
+        390,
+        136,
+        785,
+        875
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "giza": {
+    "products": {
+      "silver": {
+        "file": "giza-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B5556-GIZA/3467/image-thumb__3467__1200x1200/B5556PH.png",
+        "box": [
+          0,
+          331,
+          913,
+          480
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "giza-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B5556-GIZA/44785/image-thumb__44785__1200x1200/B5556K7PH.png",
+        "box": [
+          0,
+          330,
+          913,
+          481
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "giza-white.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B5556-GIZA/49434/image-thumb__49434__1200x1200/B55569010PH.png",
+        "box": [
+          0,
+          331,
+          912,
+          480
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "giza-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3965/image-thumb__3965__1920x1200contain/B5556UH.jpg"
+      },
+      {
+        "file": "giza-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/35014/image-thumb__35014__1920x1200contain/B5556U_1.jpg"
+      },
+      {
+        "file": "giza-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/107094/image-thumb__107094__1920x1200contain/zastosowania_Clinica_Dental_square.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-giza-2356",
+    "drawing": {
+      "file": "giza-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2671/image-thumb__2671__1920x1200contain/B5556T.png",
+      "box": [
+        406,
+        104,
+        1053,
+        866
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "giza-ll": {
+    "products": {
+      "silver": {
+        "file": "giza-ll-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C0758-GIZA-LL/3546/image-thumb__3546__1200x1200/C0758PH.png",
+        "box": [
+          0,
+          327,
+          915,
+          521
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "giza-ll-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C0758-GIZA-LL/3545/image-thumb__3545__1200x1200/C0758K7PH.png",
+        "box": [
+          0,
+          327,
+          915,
+          521
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "giza-ll-white.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C0758-GIZA-LL/7842/image-thumb__7842__1200x1200/C0758L9010ODPH.png",
+        "box": [
+          0,
+          327,
+          915,
+          521
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "giza-ll-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/117908/image-thumb__117908__1920x1200contain/giza-duo-ll-giza-ll.jpg"
+      },
+      {
+        "file": "giza-ll-scene-1.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/101710/image-thumb__101710__1920x1200contain/A00758UH-002.png"
+      },
+      {
+        "file": "giza-ll-scene-2.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/101709/image-thumb__101709__1920x1200contain/A00758UH-001.png"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-giza-ll-2357",
+    "drawing": {
+      "file": "giza-ll-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2706/image-thumb__2706__1920x1200contain/C0758T.png",
+      "box": [
+        411,
+        123,
+        955,
+        791
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "nisa-ni": {
+    "products": {
+      "raw": {
+        "file": "nisa-ni-raw.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/18029-NISA-NI/2931/image-thumb__2931__1200x1200/18029PH.png",
+        "box": [
+          0,
+          300,
+          917,
+          654
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "nisa-ni-scene-2.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3766/image-thumb__3766__1920x1200contain/18029UH-002.png"
+      },
+      {
+        "file": "nisa-ni-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3765/image-thumb__3765__1920x1200contain/18029UH-001.png"
+      },
+      {
+        "file": "nisa-ni-scene-1.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3767/image-thumb__3767__1920x1200contain/18029UH-003.png"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-nisa-ni-2225",
+    "drawing": {
+      "file": "nisa-ni-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2627/image-thumb__2627__1920x1200contain/18029T.png",
+      "box": [
+        154,
+        162,
+        1530,
+        997
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "por": {
+    "products": {
+      "silver": {
+        "file": "por-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/B6144-POR/3469/image-thumb__3469__1200x1200/B6144PH.png",
+        "box": [
+          0,
+          376,
+          917,
+          595
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "por-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/5134/image-thumb__5134__1920x1200contain/B6144UH-001.jpg"
+      },
+      {
+        "file": "por-scene-1.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3966/image-thumb__3966__1920x1200contain/B6144UH.png"
+      },
+      {
+        "file": "por-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/35026/image-thumb__35026__1920x1200contain/B6144UH_1.jpg"
+      }
+    ],
+    "sourceURL": "https://klusdesign.pl/produkt/profil-por-2235",
+    "drawing": {
+      "file": "por-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2672/image-thumb__2672__1920x1200contain/B6144T.png",
+      "box": [
+        325,
+        28,
+        972,
+        1163
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  }
+}

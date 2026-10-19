@@ -2,7 +2,7 @@
   "generator": "prescot-pages-package-v1",
   "basePath": "/prescotled/",
   "siteUrl": "https://bohunek5.github.io/prescotled/",
-  "routeCount": 47,
+  "routeCount": 51,
   "routes": [
     "/prescotled/",
     "/prescotled/akcesoria/",
@@ -16,10 +16,13 @@
     "/prescotled/delux-3w1/",
     "/prescotled/katalog/",
     "/prescotled/koszulki/",
+    "/prescotled/model-profile-micro/",
+    "/prescotled/model-smd-2835/",
     "/prescotled/oferta/",
     "/prescotled/oprawy/",
     "/prescotled/profile-led/",
     "/prescotled/sterowniki-led/",
+    "/prescotled/targi/",
     "/prescotled/tasmy-led/",
     "/prescotled/tasmy-led/3w1/",
     "/prescotled/tasmy-led/bread/",
@@ -50,13 +53,14 @@
     "/prescotled/tasmy-led/s-shape/",
     "/prescotled/tasmy-led/true-color/",
     "/prescotled/tasmy-led/wcob/",
+    "/prescotled/tasmy-opcja-2/",
     "/prescotled/zasilacze-led/"
   ],
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 953,
-  "bytesExcludingManifest": 275236663,
+  "fileCountExcludingManifest": 1134,
+  "bytesExcludingManifest": 307967572,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4822,14 +4826,919 @@
       "source": "noir/offer-series.mjs"
     },
     "noir/offer-series-models.mjs": {
-      "bytes": 22002,
-      "sha256": "6eee9dd58aba4af55cff5fa525367fba6ff4fd2dd20b4c7fdc6d29423e912df0",
+      "bytes": 22009,
+      "sha256": "6a8393e0dd1c4a32c74d1c4fd423ed92079a50543832fb0af34c8eba0b99976e",
       "source": "noir/offer-series-models.mjs"
     },
     "noir/offer-series-scene.mjs": {
       "bytes": 34021,
       "sha256": "bf2ae41c60bdf9c6803b2a747da8cac7f780b067d92ade400e068c633e6b201e",
       "source": "noir/offer-series-scene.mjs"
+    },
+    "model-profile-micro/index.html": {
+      "bytes": 3863,
+      "sha256": "36eb7fd35eb8652e4291ce8ca9663647222f1be4a88b8269443282269625c6ab",
+      "source": "model-profile-micro/index.html"
+    },
+    "model-smd-2835/index.html": {
+      "bytes": 5297,
+      "sha256": "b745f07bba19354a513980817face9c190403418781e1456fb77460040fff856",
+      "source": "model-smd-2835/index.html"
+    },
+    "noir/catalog-strip-model.mjs": {
+      "bytes": 20864,
+      "sha256": "63f6a5ef087a9b65f6c00719672a988253594ab7e82504e6c340c0f3cd974b92",
+      "source": "noir/catalog-strip-model.mjs"
+    },
+    "noir/delux-pcb-artwork.mjs": {
+      "bytes": 5755,
+      "sha256": "4b4bb590b80957ce9c78ce8a2947c80f3dff91a1e760bf2f10a1b09584abe9af",
+      "source": "noir/delux-pcb-artwork.mjs"
+    },
+    "noir/film-catalog.mjs": {
+      "bytes": 114520,
+      "sha256": "db307440031aed7ce8029c8a7bebf798c786d04ce819675193939f5e14c1997a",
+      "source": "noir/film-catalog.mjs"
+    },
+    "noir/film-feature-3d.mjs": {
+      "bytes": 26030,
+      "sha256": "62ecd536aa1c1109b89020e6293ad8fa3e857f29ca47e978ed5d1b146ca1eac2",
+      "source": "noir/film-feature-3d.mjs"
+    },
+    "noir/film-numbers.mjs": {
+      "bytes": 1233,
+      "sha256": "22e3b719d137003d1739b88639f311ef573996f3175f21fb50e8c7b648a2de56",
+      "source": "noir/film-numbers.mjs"
+    },
+    "noir/klus-film-catalog.mjs": {
+      "bytes": 17582,
+      "sha256": "343e18fe2f2089e16d626614c421ad884bda382d9c9004d9712aa7f4e1fcfdbd",
+      "source": "noir/klus-film-catalog.mjs"
+    },
+    "noir/klus-film-scenes.mjs": {
+      "bytes": 6717,
+      "sha256": "2faf63319d87a5d700a5d7b38c9bc110b5e22423d358e837c9f2e6dce49d204d",
+      "source": "noir/klus-film-scenes.mjs"
+    },
+    "noir/media/3m-original.jpg": {
+      "bytes": 751607,
+      "sha256": "f7df97d337bde4cf4b3df88d5546097e41675d1e6f40e5db2c7cda7c6b68a724",
+      "source": "noir/media/3m-original.jpg"
+    },
+    "noir/media/energy/class-d.png": {
+      "bytes": 12970,
+      "sha256": "442739c7dd6a304e183b0a9b1cb0092aed5e855d1f85713d77e627267f8766d0",
+      "source": "noir/media/energy/class-d.png"
+    },
+    "noir/media/energy/class-e.png": {
+      "bytes": 10069,
+      "sha256": "8b4bd62556c0761fba05a8befed2209213fcb000939cb0ffc6dffb05fd70a220",
+      "source": "noir/media/energy/class-e.png"
+    },
+    "noir/media/energy/class-f.png": {
+      "bytes": 9995,
+      "sha256": "8757e6927ba151609678c70a63020fc736b5fafe2c3a6732fddea36440ec8426",
+      "source": "noir/media/energy/class-f.png"
+    },
+    "noir/media/energy/class-g.png": {
+      "bytes": 14113,
+      "sha256": "31a1a6bf7982b9397842a8be223cb4358e137f9dde035622715cc806fa47a06d",
+      "source": "noir/media/energy/class-g.png"
+    },
+    "noir/media/klus-film/photos/45-16-drawing.png": {
+      "bytes": 138263,
+      "sha256": "3ea800f2f8bbcaadb8f8dbe52068e9018402e9a7f604cd75719a60030dd37654",
+      "source": "noir/media/klus-film/photos/45-16-drawing.png"
+    },
+    "noir/media/klus-film/photos/45-16-scene-0.png": {
+      "bytes": 203183,
+      "sha256": "549ff93e73488ca084df94ee4cf6a36e93f83ce19bf57154934fbccf5f58675c",
+      "source": "noir/media/klus-film/photos/45-16-scene-0.png"
+    },
+    "noir/media/klus-film/photos/45-16-scene-1.jpg": {
+      "bytes": 134852,
+      "sha256": "e1413b55c7aac83459920ca4e6f1418ff84e86b4ef9a5c7bb3dc6b92bf67fa7f",
+      "source": "noir/media/klus-film/photos/45-16-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/45-16-scene-2.jpg": {
+      "bytes": 104678,
+      "sha256": "3d855e2bf890da89fc1988b413394aeaaf5bf9fb2a220f0170e8d0dfd318fbd8",
+      "source": "noir/media/klus-film/photos/45-16-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/45-16-silver.png": {
+      "bytes": 218725,
+      "sha256": "543fa48a13c48df301eb105d0b5979fbb2017254c2f5f509125e82bdbdcfe469",
+      "source": "noir/media/klus-film/photos/45-16-silver.png"
+    },
+    "noir/media/klus-film/photos/45-plus-black.jpg": {
+      "bytes": 38542,
+      "sha256": "b94b6a191a077e368aef2267fe5fca565f4ec4eeb1bda91e641995fd2cde6092",
+      "source": "noir/media/klus-film/photos/45-plus-black.jpg"
+    },
+    "noir/media/klus-film/photos/45-plus-drawing.png": {
+      "bytes": 132346,
+      "sha256": "17e0e2c98acdf48fc908c689993d54152a38fe3ae32e96fe1e23de33d63f7ec6",
+      "source": "noir/media/klus-film/photos/45-plus-drawing.png"
+    },
+    "noir/media/klus-film/photos/45-plus-scene-0.jpg": {
+      "bytes": 95803,
+      "sha256": "ad55a9b649d5cc14674ff22c52e2495231a75a03fc34e56bb41c1379fdf45570",
+      "source": "noir/media/klus-film/photos/45-plus-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/45-plus-scene-1.jpg": {
+      "bytes": 57395,
+      "sha256": "21f410552259ea70a3f24a1c12597cfacfe44bc96e0006157a4dfb62402da348",
+      "source": "noir/media/klus-film/photos/45-plus-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/45-plus-scene-2.jpg": {
+      "bytes": 62533,
+      "sha256": "a89e2564a9f868a784715bbe80c1d08598c71b0cf8982f0062fe6d096bf1e965",
+      "source": "noir/media/klus-film/photos/45-plus-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/45-plus-silver.jpg": {
+      "bytes": 35130,
+      "sha256": "cd108c673f56c461b8b8c86416ee6edfd86e51d41668a7ff6fc21f410370a712",
+      "source": "noir/media/klus-film/photos/45-plus-silver.jpg"
+    },
+    "noir/media/klus-film/photos/45-plus-white.jpg": {
+      "bytes": 23438,
+      "sha256": "443ea8daed28e08eb73ded926281dbe4bd007fd2e4442aac1cfbd22cdf6f5114",
+      "source": "noir/media/klus-film/photos/45-plus-white.jpg"
+    },
+    "noir/media/klus-film/photos/giza-black.png": {
+      "bytes": 120026,
+      "sha256": "555bd1db62f76a7542529d2defdfd11323162efb23b27ec72ddaa3485d5b466c",
+      "source": "noir/media/klus-film/photos/giza-black.png"
+    },
+    "noir/media/klus-film/photos/giza-drawing.png": {
+      "bytes": 141939,
+      "sha256": "5b367db1caed4af1b45dcea4f73d691888d790cd111fc0b2efc5354eee513db1",
+      "source": "noir/media/klus-film/photos/giza-drawing.png"
+    },
+    "noir/media/klus-film/photos/giza-ll-black.png": {
+      "bytes": 210791,
+      "sha256": "2dd15e0d06af4a833e158c690e9bd87eb3caa41e4d0028dc88bf9cacc5c0052d",
+      "source": "noir/media/klus-film/photos/giza-ll-black.png"
+    },
+    "noir/media/klus-film/photos/giza-ll-drawing.png": {
+      "bytes": 96246,
+      "sha256": "9a9d4bc47c86154b154706c727101be44945b51223228f36eafeb62f32b04018",
+      "source": "noir/media/klus-film/photos/giza-ll-drawing.png"
+    },
+    "noir/media/klus-film/photos/giza-ll-scene-0.jpg": {
+      "bytes": 616001,
+      "sha256": "e46cd92da5cb31dfd973eb8db76f87c4c98b86cb6c8696e4970fffa67554c123",
+      "source": "noir/media/klus-film/photos/giza-ll-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/giza-ll-scene-1.png": {
+      "bytes": 231747,
+      "sha256": "34fa3fec5da85542505cee80e129df474f56dacaa8507089198ac0112f4045bc",
+      "source": "noir/media/klus-film/photos/giza-ll-scene-1.png"
+    },
+    "noir/media/klus-film/photos/giza-ll-scene-2.png": {
+      "bytes": 322837,
+      "sha256": "1b8185211831385b1987cbb333c097075e9eba0ec77c4bd7899cdbbf4a41599e",
+      "source": "noir/media/klus-film/photos/giza-ll-scene-2.png"
+    },
+    "noir/media/klus-film/photos/giza-ll-silver.png": {
+      "bytes": 27011,
+      "sha256": "ff81ff453bca14d891e7ca716841c8c8f5e327b91ade6a862c1a77b152f21d75",
+      "source": "noir/media/klus-film/photos/giza-ll-silver.png"
+    },
+    "noir/media/klus-film/photos/giza-ll-white.png": {
+      "bytes": 183111,
+      "sha256": "cbebf7898351163ac65b43605818a7590d8e923a4fe22c96e38943f8cdc28aac",
+      "source": "noir/media/klus-film/photos/giza-ll-white.png"
+    },
+    "noir/media/klus-film/photos/giza-scene-0.jpg": {
+      "bytes": 532225,
+      "sha256": "0aedcfae3d7a77cfcde8504cc273fd5d4cafacf3e1397ad0adcae183eea1ebd8",
+      "source": "noir/media/klus-film/photos/giza-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/giza-scene-1.jpg": {
+      "bytes": 153811,
+      "sha256": "b46f97f2c44423d100890580c4751d75f4f9211d5affaa9886dd4ad5d3a4dc91",
+      "source": "noir/media/klus-film/photos/giza-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/giza-scene-2.jpg": {
+      "bytes": 181867,
+      "sha256": "6ee2d33f4e9a8b9f275ef811fdeea5722193d48fd0932013e4803824f06aba65",
+      "source": "noir/media/klus-film/photos/giza-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/giza-silver.png": {
+      "bytes": 189739,
+      "sha256": "8006f3d31dd1dbdc8118b1ecd81c3788865817e4ee2b0c7b8cb78e1bae5173a7",
+      "source": "noir/media/klus-film/photos/giza-silver.png"
+    },
+    "noir/media/klus-film/photos/giza-white.png": {
+      "bytes": 123893,
+      "sha256": "09c2c17a61c4aeed504a3476a5f372dfbbf9421ca141be5295055a65c0552c9b",
+      "source": "noir/media/klus-film/photos/giza-white.png"
+    },
+    "noir/media/klus-film/photos/hr-max-drawing.png": {
+      "bytes": 113025,
+      "sha256": "c0326591ec324d10ad527fe54612406378492915bf55f23dfa0833372c75dc14",
+      "source": "noir/media/klus-film/photos/hr-max-drawing.png"
+    },
+    "noir/media/klus-film/photos/hr-max-scene-0.jpg": {
+      "bytes": 324241,
+      "sha256": "0965ba3aa6d488be4815b31181221261e364ae928dc4120686c35e3c19dcb8b5",
+      "source": "noir/media/klus-film/photos/hr-max-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/hr-max-scene-1.jpg": {
+      "bytes": 226463,
+      "sha256": "b20165f4f5c6b3fd11db85977bbffd8a3ef0df5238cb9abe6c9f795a0b0a5346",
+      "source": "noir/media/klus-film/photos/hr-max-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/hr-max-scene-2.jpg": {
+      "bytes": 166497,
+      "sha256": "fe619f52e439033b24e2ac32df810d746c549293f4e79f7b454b4dea6bca0a3a",
+      "source": "noir/media/klus-film/photos/hr-max-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/hr-max-silver.png": {
+      "bytes": 43425,
+      "sha256": "eb055dcc45c6a19f0e37683d09fd617acdbcbcbf3fcb79ca75e48abe57ee52c9",
+      "source": "noir/media/klus-film/photos/hr-max-silver.png"
+    },
+    "noir/media/klus-film/photos/hr-opti-drawing.png": {
+      "bytes": 90987,
+      "sha256": "92b8884f81a82b4b1b872a5f22218b9218ceaef69833905ef04b7c680289e4c5",
+      "source": "noir/media/klus-film/photos/hr-opti-drawing.png"
+    },
+    "noir/media/klus-film/photos/hr-opti-scene-0.png": {
+      "bytes": 263779,
+      "sha256": "d8ef4d598b77f845b8bc37818c4bd9d2a22df2b50aca135703d3ab2ff5dc8d03",
+      "source": "noir/media/klus-film/photos/hr-opti-scene-0.png"
+    },
+    "noir/media/klus-film/photos/hr-opti-scene-1.png": {
+      "bytes": 205619,
+      "sha256": "08f18ff9fc5dcd74407ca335bb9d0bc5bbbcf1a99f3d05ac1b1d73d03b7f6943",
+      "source": "noir/media/klus-film/photos/hr-opti-scene-1.png"
+    },
+    "noir/media/klus-film/photos/hr-opti-scene-2.png": {
+      "bytes": 2183792,
+      "sha256": "a2666a174af1f330121581bb4f39607c88728dd9bd089400fa47fc088034d84f",
+      "source": "noir/media/klus-film/photos/hr-opti-scene-2.png"
+    },
+    "noir/media/klus-film/photos/hr-opti-silver.png": {
+      "bytes": 35410,
+      "sha256": "e71d065d60c98ec34f387e50305f4f4371c69acefdeae95f5b1a30f913ffa55a",
+      "source": "noir/media/klus-film/photos/hr-opti-silver.png"
+    },
+    "noir/media/klus-film/photos/hr-slim-drawing.png": {
+      "bytes": 92048,
+      "sha256": "130f9420c6b57bc829dccea71a2ac2413bfa540ba496ce2b4e801a6624e218b2",
+      "source": "noir/media/klus-film/photos/hr-slim-drawing.png"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-bd-drawing.png": {
+      "bytes": 80035,
+      "sha256": "03196fa991fc5b805dd494afe26491e44454bd43203ffdabd01ec95461b16c0f",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-bd-drawing.png"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-bd-raw.jpg": {
+      "bytes": 26214,
+      "sha256": "981689eb2bbe929e5ff3add293ac811baebd360edf1542c49f429dad44a51904",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-bd-raw.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-bd-scene-0.jpg": {
+      "bytes": 213485,
+      "sha256": "d09baf5879aba688acb01052991c52f83eb0ed63847a83707d41aff946e97469",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-bd-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-bd-scene-1.jpg": {
+      "bytes": 305065,
+      "sha256": "768c64b1c5a5f92a33f09025a2a5937b739944f4458ca540f2866d75bf759c81",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-bd-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-bd-scene-2.jpg": {
+      "bytes": 278753,
+      "sha256": "45ae9e4527fe4a25aa3635d7a0462b86f5e4efb392ee19b6a832d3898671a572",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-bd-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-drawing.png": {
+      "bytes": 80035,
+      "sha256": "03196fa991fc5b805dd494afe26491e44454bd43203ffdabd01ec95461b16c0f",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-drawing.png"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-raw.jpg": {
+      "bytes": 27466,
+      "sha256": "df77fa5551661d2fd945d43a9bb631742547568446f83a9c3ec9d86c29ddf152",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-raw.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-scene-0.jpg": {
+      "bytes": 99105,
+      "sha256": "a65f8a9c7ff489e6bcdc0c7e74c6642ca81a8bcaa6c008996a86c2ad890b8753",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-scene-1.jpg": {
+      "bytes": 173068,
+      "sha256": "18bb8da93fee46d2eb32a3e60053cc183db1947389e12298f0e24c9365d74b49",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-koz-scene-2.jpg": {
+      "bytes": 98790,
+      "sha256": "747493fc8f60525922ccf9185b16d2c910a74ca4d9f75fbaf24bed5f9155f4d9",
+      "source": "noir/media/klus-film/photos/hr-slim-koz-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-raw.jpg": {
+      "bytes": 31763,
+      "sha256": "01bcb25848e9d3087309860775c4819b56d0aad0e6a4469343efee2f8ab5d1b6",
+      "source": "noir/media/klus-film/photos/hr-slim-raw.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-scene-0.jpg": {
+      "bytes": 361984,
+      "sha256": "c524deeb1370a92ce33bad656041a25e9fed8f2c0b1510ca6a98f2166245e97d",
+      "source": "noir/media/klus-film/photos/hr-slim-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-scene-1.jpg": {
+      "bytes": 331145,
+      "sha256": "32db3b511bc3054f9216378a0f1d790f935c7a3cac6bb6ec139edff1f5aa4a61",
+      "source": "noir/media/klus-film/photos/hr-slim-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-scene-2.jpg": {
+      "bytes": 268676,
+      "sha256": "33c5ff812093dce66d32a11cbe5df152da4389e44e916378eb4432039ff47cdd",
+      "source": "noir/media/klus-film/photos/hr-slim-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/hr-slim-silver.jpg": {
+      "bytes": 28885,
+      "sha256": "a759e78aba6181f969ffb30a2312c991925f99e077dfa57a3beed2aa423b892f",
+      "source": "noir/media/klus-film/photos/hr-slim-silver.jpg"
+    },
+    "noir/media/klus-film/photos/jaz-drawing.png": {
+      "bytes": 141693,
+      "sha256": "1ebc9318c567c10b2574fa5e433ae55603bf9ad218c18c0b9b0640ae922f36ec",
+      "source": "noir/media/klus-film/photos/jaz-drawing.png"
+    },
+    "noir/media/klus-film/photos/jaz-scene-0.jpg": {
+      "bytes": 224487,
+      "sha256": "16a9f589427e81eb8587494014f39a03f38f65bc44aba8d097269083d64e304b",
+      "source": "noir/media/klus-film/photos/jaz-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/jaz-scene-1.jpg": {
+      "bytes": 285146,
+      "sha256": "f329b3e1155344faf0de104fa544ed9db049b15e696ea3ad080835891892e1bb",
+      "source": "noir/media/klus-film/photos/jaz-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/jaz-scene-2.png": {
+      "bytes": 53896,
+      "sha256": "341181a5b5819671dae88debfd27ed36566854d562e58d77438d6fd60e68acfd",
+      "source": "noir/media/klus-film/photos/jaz-scene-2.png"
+    },
+    "noir/media/klus-film/photos/jaz-silver.png": {
+      "bytes": 20981,
+      "sha256": "833f2fd18125c3618816cae0a4f87aa014d8ecb82a0059d10470973e333713d9",
+      "source": "noir/media/klus-film/photos/jaz-silver.png"
+    },
+    "noir/media/klus-film/photos/kozel-drawing.png": {
+      "bytes": 132172,
+      "sha256": "e3f54ba9f21189d698abb638d4f87f8102883a83c1646381a7f8f5af077e9c61",
+      "source": "noir/media/klus-film/photos/kozel-drawing.png"
+    },
+    "noir/media/klus-film/photos/kozel-raw.png": {
+      "bytes": 52649,
+      "sha256": "55a92d2c9e593e600689b9969a429e515838e5d109516340586a66df6053612a",
+      "source": "noir/media/klus-film/photos/kozel-raw.png"
+    },
+    "noir/media/klus-film/photos/kozel-scene-0.jpg": {
+      "bytes": 164885,
+      "sha256": "4f7ac3e94fa0410935dfaac41a40282f67199b7d3aa06b692f2483dda4087b1c",
+      "source": "noir/media/klus-film/photos/kozel-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/kozel-scene-1.jpg": {
+      "bytes": 349788,
+      "sha256": "4d79001842bb66c63565b63d28dab2167ed98f6032dfdf392131890919b305c4",
+      "source": "noir/media/klus-film/photos/kozel-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/kozel-scene-2.jpg": {
+      "bytes": 337492,
+      "sha256": "0f816f4a92d33e6edcbd565db0ec77e0fd466a9a43b6d37495a1c98c4c2b98af",
+      "source": "noir/media/klus-film/photos/kozel-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/kozus-drawing.png": {
+      "bytes": 124848,
+      "sha256": "1eca489be4cd2a7623f082f53e459112fa7a583d97e906a4f2979cfe48dd7263",
+      "source": "noir/media/klus-film/photos/kozus-drawing.png"
+    },
+    "noir/media/klus-film/photos/kozus-raw.png": {
+      "bytes": 42408,
+      "sha256": "e3857ade2757bda281becc6a9a77cfdc6dffefe99d925b187c9e87ac2068a954",
+      "source": "noir/media/klus-film/photos/kozus-raw.png"
+    },
+    "noir/media/klus-film/photos/kozus-scene-0.png": {
+      "bytes": 230032,
+      "sha256": "49f17930419fecb51083eb4d38b376045ff4d886f118210168d6949fa4759c87",
+      "source": "noir/media/klus-film/photos/kozus-scene-0.png"
+    },
+    "noir/media/klus-film/photos/kozus-scene-1.jpg": {
+      "bytes": 97518,
+      "sha256": "74841a5343bb1780807c350970e8ada58a7cf186f8e74955c4ca445c4bb246aa",
+      "source": "noir/media/klus-film/photos/kozus-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/kozus-scene-2.jpg": {
+      "bytes": 125378,
+      "sha256": "34acf08d476e8dcc112ce42c5d1130e75f809f6753a713cab113bdcd5a7bd10a",
+      "source": "noir/media/klus-film/photos/kozus-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/lipod-black.png": {
+      "bytes": 271801,
+      "sha256": "97fd5e6530173eaaefd7a17904610df87408dbed0b568043a7a617cfab15de5a",
+      "source": "noir/media/klus-film/photos/lipod-black.png"
+    },
+    "noir/media/klus-film/photos/lipod-drawing.png": {
+      "bytes": 101733,
+      "sha256": "5af0c8d79bf1276addb5df1a583e74847886a347ce799e609c72574b6c85c302",
+      "source": "noir/media/klus-film/photos/lipod-drawing.png"
+    },
+    "noir/media/klus-film/photos/lipod-scene-3.png": {
+      "bytes": 286827,
+      "sha256": "f79c5656ee907a8e2d8137dc42e342b5b7203ae45378627d37a51370e10d865f",
+      "source": "noir/media/klus-film/photos/lipod-scene-3.png"
+    },
+    "noir/media/klus-film/photos/lipod-scene-4.jpg": {
+      "bytes": 250149,
+      "sha256": "871010d79ccbac980a2c350c4ed741ad824385e0d74a1794979a112e9d7e6fdd",
+      "source": "noir/media/klus-film/photos/lipod-scene-4.jpg"
+    },
+    "noir/media/klus-film/photos/lipod-scene-5.jpg": {
+      "bytes": 438154,
+      "sha256": "f5c5453d87b6090281013e035492e0c765c2b4d052c3e83fe67305ad88239992",
+      "source": "noir/media/klus-film/photos/lipod-scene-5.jpg"
+    },
+    "noir/media/klus-film/photos/lipod-silver.png": {
+      "bytes": 278194,
+      "sha256": "cead368e2f3011837d0699778bcd2a1f0288940d7644701eb57d20bc6d5d5c03",
+      "source": "noir/media/klus-film/photos/lipod-silver.png"
+    },
+    "noir/media/klus-film/photos/lipod-white.png": {
+      "bytes": 245940,
+      "sha256": "b4783b6a537995fe1dfc6344337cecb27544c5eb816c1657309b495b40971d73",
+      "source": "noir/media/klus-film/photos/lipod-white.png"
+    },
+    "noir/media/klus-film/photos/manifest.json": {
+      "bytes": 28952,
+      "sha256": "4c87b6f0636894eb3c5749862c1a0528caffc0499784ff62bcd4f5a93e4aabe5",
+      "source": "noir/media/klus-film/photos/manifest.json"
+    },
+    "noir/media/klus-film/photos/nisa-ni-drawing.png": {
+      "bytes": 94979,
+      "sha256": "adc4fedcf867bcb18289e38dbc888d3795658301aff3292bdc531af1b524251e",
+      "source": "noir/media/klus-film/photos/nisa-ni-drawing.png"
+    },
+    "noir/media/klus-film/photos/nisa-ni-raw.png": {
+      "bytes": 51607,
+      "sha256": "0f9ae9e2d59a6e2989a471dee87c55ecffccffd14afc1eb8dea233a6c1cad1da",
+      "source": "noir/media/klus-film/photos/nisa-ni-raw.png"
+    },
+    "noir/media/klus-film/photos/nisa-ni-scene-0.png": {
+      "bytes": 46876,
+      "sha256": "930b111df6025745c4deba33c630d65e3badb69388ff186d25cfc6dc0efafc01",
+      "source": "noir/media/klus-film/photos/nisa-ni-scene-0.png"
+    },
+    "noir/media/klus-film/photos/nisa-ni-scene-1.png": {
+      "bytes": 47539,
+      "sha256": "e97574d1a953e77bc183737fb267ebbbc8d30179f268a3ed00ee2b0490824a54",
+      "source": "noir/media/klus-film/photos/nisa-ni-scene-1.png"
+    },
+    "noir/media/klus-film/photos/nisa-ni-scene-2.png": {
+      "bytes": 37367,
+      "sha256": "56f916bf08ee8db47253ec50d57f1fb47a77ac6cbf52209f59897497b6cdca82",
+      "source": "noir/media/klus-film/photos/nisa-ni-scene-2.png"
+    },
+    "noir/media/klus-film/photos/pds-4-plus-black.png": {
+      "bytes": 196013,
+      "sha256": "8576d80385c146abfc8f52f205714c4e313d3f0802493a15ea4d17e695da78c4",
+      "source": "noir/media/klus-film/photos/pds-4-plus-black.png"
+    },
+    "noir/media/klus-film/photos/pds-4-plus-drawing.png": {
+      "bytes": 73680,
+      "sha256": "366c52d9e121f485e672bc49e84ca44d7b0ba01e2597900aec074be11abafad2",
+      "source": "noir/media/klus-film/photos/pds-4-plus-drawing.png"
+    },
+    "noir/media/klus-film/photos/pds-4-plus-scene-0.png": {
+      "bytes": 2715071,
+      "sha256": "7f343a5e0de792cf1c631e992a8efaea10f813a09ddbc3226865a4daca3e4352",
+      "source": "noir/media/klus-film/photos/pds-4-plus-scene-0.png"
+    },
+    "noir/media/klus-film/photos/pds-4-plus-scene-1.png": {
+      "bytes": 2752005,
+      "sha256": "dde01ae36659f96bd680a579865c2ef202305cc6d7ca4e4b3fb87b53727d2711",
+      "source": "noir/media/klus-film/photos/pds-4-plus-scene-1.png"
+    },
+    "noir/media/klus-film/photos/pds-4-plus-scene-2.png": {
+      "bytes": 2838999,
+      "sha256": "153470e78b514f887fc8f6bed1bdc7c8ab1b4fce4e3af5faf3ea7cd2bf3d5061",
+      "source": "noir/media/klus-film/photos/pds-4-plus-scene-2.png"
+    },
+    "noir/media/klus-film/photos/pds-4-plus-silver.png": {
+      "bytes": 211569,
+      "sha256": "b61d92905c573b3411c146366e5af7a7a7e714381f2fa592ca5b932f1c03eced",
+      "source": "noir/media/klus-film/photos/pds-4-plus-silver.png"
+    },
+    "noir/media/klus-film/photos/pds-4-plus-white.png": {
+      "bytes": 177629,
+      "sha256": "20837466723fa53153e24d8e721bf65ccb9a4592046f22893864fa40b7742a16",
+      "source": "noir/media/klus-film/photos/pds-4-plus-white.png"
+    },
+    "noir/media/klus-film/photos/piko-black.png": {
+      "bytes": 133525,
+      "sha256": "ae6ecacb20b0d9e7b1efe4fe7707468595b61acb1b8e7db43eb30a170ee13344",
+      "source": "noir/media/klus-film/photos/piko-black.png"
+    },
+    "noir/media/klus-film/photos/piko-drawing.png": {
+      "bytes": 81249,
+      "sha256": "0bf3fb7b161d7d361aff7dfd0f96a6b5dfdee998fec73c45ef8b5bb7c1f9c8ab",
+      "source": "noir/media/klus-film/photos/piko-drawing.png"
+    },
+    "noir/media/klus-film/photos/piko-scene-0.jpg": {
+      "bytes": 215002,
+      "sha256": "cfd417692d56bc8e0ca8b08c27a4f39d4b428e5734b6f85f7206185da5b14a5f",
+      "source": "noir/media/klus-film/photos/piko-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/piko-scene-1.jpg": {
+      "bytes": 142353,
+      "sha256": "a8a213e4f50bbadf8433c2acb12e0581957bc86cfc19daf76644ddacb57abd99",
+      "source": "noir/media/klus-film/photos/piko-scene-1.jpg"
+    },
+    "noir/media/klus-film/photos/piko-scene-2.jpg": {
+      "bytes": 133364,
+      "sha256": "c28af1588cd262bea8b1545b1a15d968b4e597dd966600e87f7374d086595a8d",
+      "source": "noir/media/klus-film/photos/piko-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/piko-silver.png": {
+      "bytes": 150772,
+      "sha256": "3065ead67e6126dcc904bc62d59e0d002aa612d9b025347b5291e6b423eab92f",
+      "source": "noir/media/klus-film/photos/piko-silver.png"
+    },
+    "noir/media/klus-film/photos/por-drawing.png": {
+      "bytes": 145336,
+      "sha256": "6d54fe67aa6e293780624b63dcacf6128de3f80dddcac34c64a5b7ffda77b769",
+      "source": "noir/media/klus-film/photos/por-drawing.png"
+    },
+    "noir/media/klus-film/photos/por-scene-0.jpg": {
+      "bytes": 134049,
+      "sha256": "ce29ba776141c8dd9caf8665e61b9bb3a3125564538cf49caca3407b24f99e08",
+      "source": "noir/media/klus-film/photos/por-scene-0.jpg"
+    },
+    "noir/media/klus-film/photos/por-scene-1.png": {
+      "bytes": 421496,
+      "sha256": "dba360f512257820d8214b3f9be893d9cb5eeb27c95e4827e9a495caf9f00b69",
+      "source": "noir/media/klus-film/photos/por-scene-1.png"
+    },
+    "noir/media/klus-film/photos/por-scene-2.jpg": {
+      "bytes": 163074,
+      "sha256": "0896e89b961e83da694a7bd6ab957691434c9497d1c8fb3bae2667a866d57d94",
+      "source": "noir/media/klus-film/photos/por-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/por-silver.png": {
+      "bytes": 35328,
+      "sha256": "e6cc2f5ec82d71f0216de6018d82ee8a4e60474bf15a70e35d757b0213f05a9a",
+      "source": "noir/media/klus-film/photos/por-silver.png"
+    },
+    "noir/media/klus-film/photos/siler-black.png": {
+      "bytes": 138316,
+      "sha256": "39cbafc4140212185312d02b160d2f5f82548b0d9fa68818ae12358b4b8a4892",
+      "source": "noir/media/klus-film/photos/siler-black.png"
+    },
+    "noir/media/klus-film/photos/siler-drawing.png": {
+      "bytes": 78903,
+      "sha256": "b9bdbf3f38348c401ed6b415cf0443fdcb88c03801b5be25e29218a8c6c489e0",
+      "source": "noir/media/klus-film/photos/siler-drawing.png"
+    },
+    "noir/media/klus-film/photos/siler-scene-0.png": {
+      "bytes": 173431,
+      "sha256": "edc6bbf88ec20ba1a42dd55a9f9b435de5a8b7b2e546466b75ca7d3d1961b0df",
+      "source": "noir/media/klus-film/photos/siler-scene-0.png"
+    },
+    "noir/media/klus-film/photos/siler-scene-1.png": {
+      "bytes": 116733,
+      "sha256": "de1be570e379d3a7d51fd9cf9904e58ab37bd998b2cb64138d51487296c48cf1",
+      "source": "noir/media/klus-film/photos/siler-scene-1.png"
+    },
+    "noir/media/klus-film/photos/siler-scene-2.jpg": {
+      "bytes": 148061,
+      "sha256": "102e42b4ff118daf551d83e9a6d287cbfb3b28c21157b7a777ec1d348163eed9",
+      "source": "noir/media/klus-film/photos/siler-scene-2.jpg"
+    },
+    "noir/media/klus-film/photos/siler-silver.png": {
+      "bytes": 155917,
+      "sha256": "6c7dc7ba8ab631c3502d54589c4005e1c3d2dd00df5e6068286873ba699c35b7",
+      "source": "noir/media/klus-film/photos/siler-silver.png"
+    },
+    "noir/media/klus-film/photos/siler-white.png": {
+      "bytes": 125093,
+      "sha256": "2d4d6a943fa2c60730f3b84aa6fe21f9896be6f58f5ee8a874a3e88090a41a61",
+      "source": "noir/media/klus-film/photos/siler-white.png"
+    },
+    "noir/media/micro/photos/manifest.json": {
+      "bytes": 8070,
+      "sha256": "189d680efe77e313a27baa4a1707a814dd3477c176d4bd4987c6894691f57dbe",
+      "source": "noir/media/micro/photos/manifest.json"
+    },
+    "noir/media/micro/photos/micro-30deg-koz-drawing.png": {
+      "bytes": 64149,
+      "sha256": "2936e09e68de4a50a2bdc170a650edd699da1497e4123b167dcc0a1d6aef9303",
+      "source": "noir/media/micro/photos/micro-30deg-koz-drawing.png"
+    },
+    "noir/media/micro/photos/micro-30deg-koz-raw.jpg": {
+      "bytes": 27388,
+      "sha256": "c9f1d29ee563c79770ac911c0938b9df7fbcbd4de1d71b6ff9dc2a48bc4288a8",
+      "source": "noir/media/micro/photos/micro-30deg-koz-raw.jpg"
+    },
+    "noir/media/micro/photos/micro-30deg-koz-scene-0.jpg": {
+      "bytes": 158481,
+      "sha256": "9fd646ccfba695d3f652671153fca5a0b52d25356088d6409484698c3b8a4c48",
+      "source": "noir/media/micro/photos/micro-30deg-koz-scene-0.jpg"
+    },
+    "noir/media/micro/photos/micro-h-drawing.png": {
+      "bytes": 73030,
+      "sha256": "513a959da24223833084622489bf5e67ff55ffb9d451066220a5ffe2c782e957",
+      "source": "noir/media/micro/photos/micro-h-drawing.png"
+    },
+    "noir/media/micro/photos/micro-h-scene-0.png": {
+      "bytes": 203614,
+      "sha256": "72c5abeb07d6319803ab8199152baa6dbcf58809e304ea82b30c96ce8df7ea08",
+      "source": "noir/media/micro/photos/micro-h-scene-0.png"
+    },
+    "noir/media/micro/photos/micro-h-scene-1.jpg": {
+      "bytes": 81411,
+      "sha256": "a99263fb3447fa8df789fb5dbb4bdf5e913d609bf9505029540f8338fbecfd1f",
+      "source": "noir/media/micro/photos/micro-h-scene-1.jpg"
+    },
+    "noir/media/micro/photos/micro-h-scene-2.png": {
+      "bytes": 114322,
+      "sha256": "4ad33d6054964934034f1b1c2e67b14366da786fb7d33487d72f4ede8eab08cb",
+      "source": "noir/media/micro/photos/micro-h-scene-2.png"
+    },
+    "noir/media/micro/photos/micro-h-silver.png": {
+      "bytes": 137482,
+      "sha256": "00d35e3767579698802c774750c2573de97bcf4a56221000b0ed6f89cf7c8ae5",
+      "source": "noir/media/micro/photos/micro-h-silver.png"
+    },
+    "noir/media/micro/photos/micro-hg-black.png": {
+      "bytes": 173127,
+      "sha256": "30cc7a4555a49169b4899f2950d8da315c423ab8c0f296b76853879636d2992f",
+      "source": "noir/media/micro/photos/micro-hg-black.png"
+    },
+    "noir/media/micro/photos/micro-hg-drawing.png": {
+      "bytes": 72341,
+      "sha256": "65ee3927381800e88b8483f43c0219e6b5ec7475bf1eaf100b09fdbf573b72b7",
+      "source": "noir/media/micro/photos/micro-hg-drawing.png"
+    },
+    "noir/media/micro/photos/micro-hg-scene-0.png": {
+      "bytes": 114322,
+      "sha256": "4ad33d6054964934034f1b1c2e67b14366da786fb7d33487d72f4ede8eab08cb",
+      "source": "noir/media/micro/photos/micro-hg-scene-0.png"
+    },
+    "noir/media/micro/photos/micro-hg-scene-1.jpg": {
+      "bytes": 214297,
+      "sha256": "a14630e4ff0ca1613193ece050b3ac9f8393ca90953c93cf053ffbefc0e22810",
+      "source": "noir/media/micro/photos/micro-hg-scene-1.jpg"
+    },
+    "noir/media/micro/photos/micro-hg-scene-2.jpg": {
+      "bytes": 89872,
+      "sha256": "c441c84ecb6a23b37f5e0e2ebe4c5897f88ea68b488febb01fadd4af33b49a97",
+      "source": "noir/media/micro/photos/micro-hg-scene-2.jpg"
+    },
+    "noir/media/micro/photos/micro-hg-silver.png": {
+      "bytes": 185969,
+      "sha256": "6826b9952c02bc1ced73755fbb2395c16b4a695e68fa45f690a0bb8af52de41a",
+      "source": "noir/media/micro/photos/micro-hg-silver.png"
+    },
+    "noir/media/micro/photos/micro-nk-black.png": {
+      "bytes": 126269,
+      "sha256": "9be19fd953c16d2e27f49a49d46721c74649b013da779ade1bb8cf2ea3f7f32e",
+      "source": "noir/media/micro/photos/micro-nk-black.png"
+    },
+    "noir/media/micro/photos/micro-nk-drawing.png": {
+      "bytes": 98582,
+      "sha256": "916702b926a002e88a1eabba03ed405265ab5263fa98e72b18441079cec568bc",
+      "source": "noir/media/micro/photos/micro-nk-drawing.png"
+    },
+    "noir/media/micro/photos/micro-nk-scene-0.png": {
+      "bytes": 173431,
+      "sha256": "edc6bbf88ec20ba1a42dd55a9f9b435de5a8b7b2e546466b75ca7d3d1961b0df",
+      "source": "noir/media/micro/photos/micro-nk-scene-0.png"
+    },
+    "noir/media/micro/photos/micro-nk-scene-1.png": {
+      "bytes": 231423,
+      "sha256": "19d824ba7ddd2e590fd7ae67f691080294f49912fac71d07efec505102985c71",
+      "source": "noir/media/micro/photos/micro-nk-scene-1.png"
+    },
+    "noir/media/micro/photos/micro-nk-scene-2.png": {
+      "bytes": 260649,
+      "sha256": "0b8a8476c716f7a5870ac8c30dbaeaea6b82ada746ea4bfbf0550ea80ec4e547",
+      "source": "noir/media/micro/photos/micro-nk-scene-2.png"
+    },
+    "noir/media/micro/photos/micro-nk-silver.png": {
+      "bytes": 127699,
+      "sha256": "5360d4c2ea9b2fe95e493c338e127c3bbff421ea718b6d33d6bdf1a6b7af9c9e",
+      "source": "noir/media/micro/photos/micro-nk-silver.png"
+    },
+    "noir/media/micro/photos/micro-nk-white.png": {
+      "bytes": 118476,
+      "sha256": "0c3b88f4a9ea2686382649ec18e5ff0f979dc04966cf7c571ef0c4fc575fbd5f",
+      "source": "noir/media/micro/photos/micro-nk-white.png"
+    },
+    "noir/media/micro/photos/micro-plus-black.png": {
+      "bytes": 114681,
+      "sha256": "6fcf5ffe34bd34ad13b8a95f00a7aea19d7f5b3a1506e612b697526d38aa3e91",
+      "source": "noir/media/micro/photos/micro-plus-black.png"
+    },
+    "noir/media/micro/photos/micro-plus-drawing.png": {
+      "bytes": 59815,
+      "sha256": "13f90178bc6ac77e555cb000c336c965774de77061202d4ad279d17b9d87b314",
+      "source": "noir/media/micro/photos/micro-plus-drawing.png"
+    },
+    "noir/media/micro/photos/micro-plus-scene-0.jpg": {
+      "bytes": 316096,
+      "sha256": "007e719cd796fb764329e4c03bb988e21692960cbf6ed0f7864cffe51a145e35",
+      "source": "noir/media/micro/photos/micro-plus-scene-0.jpg"
+    },
+    "noir/media/micro/photos/micro-plus-scene-1.jpg": {
+      "bytes": 250627,
+      "sha256": "16b9dd47242b1afdbe7ffd31506a41c280224d06faf974312664f116a6695429",
+      "source": "noir/media/micro/photos/micro-plus-scene-1.jpg"
+    },
+    "noir/media/micro/photos/micro-plus-scene-2.jpg": {
+      "bytes": 336333,
+      "sha256": "c7f098a9b4239af125c6e20f107050d60c61948ce5cd4ab12898270186231920",
+      "source": "noir/media/micro/photos/micro-plus-scene-2.jpg"
+    },
+    "noir/media/micro/photos/micro-plus-silver.png": {
+      "bytes": 384169,
+      "sha256": "9ffb412f10e8ebfaec31cf806e6799062bbad66df6a3fc3018988db79666016f",
+      "source": "noir/media/micro/photos/micro-plus-silver.png"
+    },
+    "noir/media/micro/photos/micro-plus-white.png": {
+      "bytes": 80368,
+      "sha256": "fcce53f00f8ee8ef8f951484021cc1f195d35515e4c0009137f4bfb8374f5047",
+      "source": "noir/media/micro/photos/micro-plus-white.png"
+    },
+    "noir/media/strip-brand-mark.svg": {
+      "bytes": 2122,
+      "sha256": "c7fabb03af976b60853e2062fba93bae7446a53bc1233a1f8a5331b967a78847",
+      "source": "noir/media/strip-brand-mark.svg"
+    },
+    "noir/media/strip-ce-mark.svg": {
+      "bytes": 283,
+      "sha256": "be6507a9abfea1a60ca70e4bc48d30ad02fa2181cf9c2c4d0335e4e32bbce78d",
+      "source": "noir/media/strip-ce-mark.svg"
+    },
+    "noir/micro-catalog.mjs": {
+      "bytes": 3248,
+      "sha256": "7d577725ceba1511d4010d2d3699c8d5126b798f6110650fb40b64dc7c87b738",
+      "source": "noir/micro-catalog.mjs"
+    },
+    "noir/micro-slide-scenes.mjs": {
+      "bytes": 3123,
+      "sha256": "0f3c888a538fd9b6f9ba0f6fc8e1e91af60f5c4b42964c463c30b68a3641c93c",
+      "source": "noir/micro-slide-scenes.mjs"
+    },
+    "noir/micro-slide.css": {
+      "bytes": 11307,
+      "sha256": "35a41a98ae2b6b197b368166ccda1c532e5f66c6cacf8b57ebf42b929c4d5306",
+      "source": "noir/micro-slide.css"
+    },
+    "noir/micro-slide.mjs": {
+      "bytes": 15465,
+      "sha256": "e3c004941966a48eb1956577ae8c835a417fe7ef82fceb7c9c146dac8d8447cf",
+      "source": "noir/micro-slide.mjs"
+    },
+    "noir/pcb-finish.mjs": {
+      "bytes": 1534,
+      "sha256": "4ce1f09d01c1129f7ba08444d09643eb9ebf5c620ae9750be1f123e6b2f20bd9",
+      "source": "noir/pcb-finish.mjs"
+    },
+    "noir/smd2835-model.mjs": {
+      "bytes": 14958,
+      "sha256": "90f1244baf941f084f55f0fa3a542f871b90489a5ce30d4c38acb2ec892bf561",
+      "source": "noir/smd2835-model.mjs"
+    },
+    "noir/smd2835-viewer.css": {
+      "bytes": 24848,
+      "sha256": "1e41c8ca7a792009f9a2f520a2bf4207d1630e1503979a41aba8a6e1a596a672",
+      "source": "noir/smd2835-viewer.css"
+    },
+    "noir/smd2835-viewer.mjs": {
+      "bytes": 22462,
+      "sha256": "53c1014a5b79936e043be665f1746d59ceff8a14ff0c8bc7081017c4428f3099",
+      "source": "noir/smd2835-viewer.mjs"
+    },
+    "noir/strip-appearance.mjs": {
+      "bytes": 935,
+      "sha256": "64d9f1fca8d0a230f97ebf8075b8de9b156bf8d7dd87a3e2362184c34d0fc7e2",
+      "source": "noir/strip-appearance.mjs"
+    },
+    "noir/strip-backing.mjs": {
+      "bytes": 2146,
+      "sha256": "fd3e144d4b64f4bf88ee36c199e1631d9e650fc5eedb2ed71f1a6da5f7f288ae",
+      "source": "noir/strip-backing.mjs"
+    },
+    "noir/strip-cue-layout.mjs": {
+      "bytes": 1591,
+      "sha256": "628dbef3aea578497a1e51b957ace131daeffecfdcc30f0792948a50a85ac86c",
+      "source": "noir/strip-cue-layout.mjs"
+    },
+    "noir/strip-detail-cues.mjs": {
+      "bytes": 2668,
+      "sha256": "8971f65e4d350dcf71d9b0002a1fa9218e3f1792e23ffba0c0e85590eae736b2",
+      "source": "noir/strip-detail-cues.mjs"
+    },
+    "noir/strip-dimensions.mjs": {
+      "bytes": 3305,
+      "sha256": "f4a3ca1d3e671518c87ffbe4705ee602fcf6b4062b9a8de877dc835529cb689f",
+      "source": "noir/strip-dimensions.mjs"
+    },
+    "noir/strip-light-program.mjs": {
+      "bytes": 3402,
+      "sha256": "72ca25e28dadbbe0e7cb51a0748f591d7f04b5fa1a7c10136ad328cfae112944",
+      "source": "noir/strip-light-program.mjs"
+    },
+    "noir/strip-lighting.mjs": {
+      "bytes": 19631,
+      "sha256": "e9c87d7de65d47723b6be7b8d1d857d52409e2119c27e9235ca68d1f2448a1be",
+      "source": "noir/strip-lighting.mjs"
+    },
+    "noir/strip-presentation.mjs": {
+      "bytes": 2738,
+      "sha256": "3c12a8249d611233711c3041e8bf2a543818d1a4aa0d6d2a287441999e8b8eca",
+      "source": "noir/strip-presentation.mjs"
+    },
+    "noir/strip-rebuild.mjs": {
+      "bytes": 8348,
+      "sha256": "f1d8341208cc2f1f7d59b92a3ca314ebcad4dbefaffc54212a8260e1d876a68c",
+      "source": "noir/strip-rebuild.mjs"
+    },
+    "noir/strip-section-camera.mjs": {
+      "bytes": 2749,
+      "sha256": "38f13eba20df4cf2dd1683e332b63bdaf06cf1a8edf5c3a25b322c8c6765fbc6",
+      "source": "noir/strip-section-camera.mjs"
+    },
+    "noir/voltage-placement.mjs": {
+      "bytes": 2388,
+      "sha256": "b01123d91be4246f925bc5a071aab4ae55dcb37f2c71e73d3a06bb7dbad53cb2",
+      "source": "noir/voltage-placement.mjs"
+    },
+    "targi/index.html": {
+      "bytes": 2930,
+      "sha256": "a514ed01b641bbeee7ae518d31450b745cc0edb659988b3b9a2e27d1d15aa443",
+      "source": "targi/index.html"
+    },
+    "targi/media/profile-klus.jpg": {
+      "bytes": 160173,
+      "sha256": "5a82601de454c30f0009f00b6b4e2b1d8cf5b66551bc17c9932c8f172285b51c",
+      "source": "targi/media/profile-klus.jpg"
+    },
+    "targi/media/tasmy-cztery.jpg": {
+      "bytes": 139351,
+      "sha256": "b6a69afd0e90842c05c433f78917bdedfce31a01404b97f2b3c48d2f0a266a56",
+      "source": "targi/media/tasmy-cztery.jpg"
+    },
+    "targi/media/tasmy-final.jpg": {
+      "bytes": 86418,
+      "sha256": "cf8650f695cb1ac6faca0b030d1bb39a6f5f1caeeac57d94484cea8256b82493",
+      "source": "targi/media/tasmy-final.jpg"
+    },
+    "targi/targi.css": {
+      "bytes": 3075,
+      "sha256": "0a17914de49099e13963bbfb57593aac134154a6c98b265f03b8e23016389799",
+      "source": "targi/targi.css"
+    },
+    "tasmy-opcja-2/assortment.mjs": {
+      "bytes": 2550,
+      "sha256": "0dffd9d273b6ba3a4ddf80b84a74291ceedee8a9e912f85e41c4358557f0e8c5",
+      "source": "tasmy-opcja-2/assortment.mjs"
+    },
+    "tasmy-opcja-2/five-volt.mjs": {
+      "bytes": 3280,
+      "sha256": "2c65768232471e8106afec8081a637842d8cda44d1e1a1fa50c661f9305ce7a7",
+      "source": "tasmy-opcja-2/five-volt.mjs"
+    },
+    "tasmy-opcja-2/index.html": {
+      "bytes": 1230,
+      "sha256": "243e471ae270b8fd024dbc1c865fd29bdfaf3c460cdd55428362ee6dcdfd6330",
+      "source": "tasmy-opcja-2/index.html"
+    },
+    "tasmy-opcja-2/mini-shot.mjs": {
+      "bytes": 4893,
+      "sha256": "2e1a38f0852c032854917b47b142c0118b3cd1987b1bb8b8039882dad1ca1778",
+      "source": "tasmy-opcja-2/mini-shot.mjs"
+    },
+    "tasmy-opcja-2/presentation.css": {
+      "bytes": 13167,
+      "sha256": "7a705c588b49f6f3b0341c8dfa2cfc4c6909d190bd2042972917182b94fb7649",
+      "source": "tasmy-opcja-2/presentation.css"
+    },
+    "tasmy-opcja-2/presentation.mjs": {
+      "bytes": 16356,
+      "sha256": "ae2ebbc4895e28c4f4e221853b9f74a91de8c5d1b092d8835c8f7b3b01f6bbdc",
+      "source": "tasmy-opcja-2/presentation.mjs"
+    },
+    "tasmy-opcja-2/product-details.mjs": {
+      "bytes": 4774,
+      "sha256": "2f5d0d7e035590b944a028b775b060d2027f52c3b20b4fa45def442bbb7ca7f6",
+      "source": "tasmy-opcja-2/product-details.mjs"
     }
   }
 }

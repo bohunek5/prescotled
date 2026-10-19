@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#f0f0e9"><title>KLUŚ · Profile — światło w przestrzeni</title>
+<link rel="icon" href="data:,"><link rel="stylesheet" href="../noir/micro-slide.css?v=film-1">
+</head>
+<body data-theme="day">
+<header class="masthead">
+<div class="collection">KLUŚ <span>/</span> ŚWIATŁO W PRZESTRZENI</div>
+<div class="film-controls" aria-label="Sterowanie prezentacją">
+<span id="model-count" aria-label="Numer profilu">01 / 23</span>
+<button id="previous-model" class="icon-button" type="button" aria-label="Poprzedni profil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m14 6-6 6 6 6"/></svg></button>
+<select id="model-select" aria-label="Wybierz profil"><option value="micro-plus">MICRO-PLUS</option></select>
+<button id="next-model" class="icon-button" type="button" aria-label="Następny profil"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m10 6 6 6-6 6"/></svg></button>
+<button id="play-toggle" class="icon-button" type="button" aria-label="Wstrzymaj prezentację" aria-pressed="false"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="pause-mark" d="M9 6v12M15 6v12"/><path class="play-mark" d="m9 6 9 6-9 6Z"/></svg></button>
+<button id="restart-film" class="icon-button" type="button" aria-label="Odtwórz prezentację od początku"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8a8 8 0 1 1-1 7M5 3v5h5"/></svg></button>
+</div>
+<nav id="application-nav" aria-label="Profile według zastosowania"></nav>
+</header>
+<main>
+<section class="intro" aria-labelledby="product-title">
+<div class="product-heading"><div class="title-line"><span id="product-mount">PROFIL NAWIERZCHNIOWY</span><span id="finish-ref" aria-label="Symbol katalogowy">A02966L9010OD</span></div>
+<h1 id="product-title">MICRO-PLUS</h1><p class="product-line">Mała wysokość. Wiele możliwości.</p></div>
+<figure class="product-photo"><div id="product-image"></div><figcaption>Aluminium <span id="finish-name">Biały lakierowany</span></figcaption></figure>
+<section class="finishes" aria-label="Wykończenie profilu"><div class="eyebrow" id="finish-heading">WYKOŃCZENIA</div><div id="finish-options" role="group" aria-label="Wybierz kolor profilu"></div></section>
+<dl class="facts"><div><dt>Szerokość × wysokość</dt><dd><span id="profile-size">15,6 × 6</span> <small>mm</small></dd></div><div><dt>Szerokość klejenia LED</dt><dd><span id="profile-channel">11,2</span> <small>mm</small></dd></div><div><dt>Możliwe IP oprawy</dt><dd id="profile-ip">20 / 67</dd></div></dl>
+<div class="lengths"><span class="eyebrow">DŁUGOŚCI KATALOGOWE</span><div id="profile-lengths">1000 <i>/</i> 2005 <i>/</i> 3010 <small>mm</small></div></div>
+</section>
+<section class="visual" aria-label="Zastosowanie MICRO-PLUS">
+<div class="visual-heading"><span>ZASTOSOWANIA</span><div id="scene-options" role="group" aria-label="Wybierz zastosowanie profilu"></div></div>
+<div class="visual-card"><div class="scene"><img id="scene-image" class="scene-layer active" src="../noir/media/micro/photos/micro-plus-scene-0.jpg" alt="Profil MICRO-PLUS — podświetlone półki z okularami, fotografia zastosowania KLUŚ"><span class="photo-credit">Fotografia zastosowania · KLUŚ</span></div>
+<div class="visual-band"><div class="scene-copy"><span class="eyebrow">ŚWIATŁO W DETALU</span><h2 id="scene-title">Światło dla ekspozycji.</h2><p id="scene-description">Podświetlone krawędzie półek eksponują oprawki okularów.</p></div>
+<figure class="section-drawing"><div id="drawing-image"></div><figcaption>RYSUNEK TECHNICZNY</figcaption></figure></div></div>
+</section>
+</main>
+<p id="loading" role="status" hidden></p>
+<script type="module" src="../noir/micro-slide.mjs?v=film-1"></script>
+</body></html>

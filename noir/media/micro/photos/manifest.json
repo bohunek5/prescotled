@@ -1,0 +1,299 @@
+{
+  "micro-30deg-koz": {
+    "products": {
+      "raw": {
+        "file": "micro-30deg-koz-raw.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/123859/image-thumb__123859__1200x1200/A00021NPH.jpg",
+        "box": [
+          0,
+          378,
+          870,
+          420
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "micro-30deg-koz-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/123860/image-thumb__123860__1920x1200contain/MICRO-30-KOZ_01.jpg"
+      }
+    ],
+    "source": "noir\\media\\micro\\micro-30deg-koz-source.html",
+    "drawing": {
+      "file": "micro-30deg-koz-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/123959/image-thumb__123959__1920x1200contain/A00021T.png",
+      "box": [
+        67,
+        156,
+        1364,
+        880
+      ],
+      "size": [
+        1650,
+        1200
+      ]
+    }
+  },
+  "micro-h": {
+    "products": {
+      "silver": {
+        "file": "micro-h-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C0599-MICRO-H/3536/image-thumb__3536__1200x1200/C0599PH.png",
+        "box": [
+          0,
+          385,
+          919,
+          441
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "micro-h-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4017/image-thumb__4017__1920x1200contain/C0599UH-001.png"
+      },
+      {
+        "file": "micro-h-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/35008/image-thumb__35008__1920x1200contain/B5392U_1.jpg"
+      },
+      {
+        "file": "micro-h-scene-2.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4041/image-thumb__4041__1920x1200contain/C1419UH.png"
+      }
+    ],
+    "source": "noir\\media\\micro\\micro-h-source.html",
+    "drawing": {
+      "file": "micro-h-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2702/image-thumb__2702__1920x1200contain/C0599T.png",
+      "box": [
+        515,
+        237,
+        717,
+        605
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "micro-hg": {
+    "products": {
+      "silver": {
+        "file": "micro-hg-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1419-MICRO-HG/3563/image-thumb__3563__1200x1200/C1419PH.png",
+        "box": [
+          0,
+          380,
+          923,
+          495
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "micro-hg-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1419-MICRO-HG/7838/image-thumb__7838__1200x1200/C1419K7PH.png",
+        "box": [
+          0,
+          380,
+          923,
+          496
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "micro-hg-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4041/image-thumb__4041__1920x1200contain/C1419UH.png"
+      },
+      {
+        "file": "micro-hg-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/9085/image-thumb__9085__1920x1200contain/C1419-003.jpg"
+      },
+      {
+        "file": "micro-hg-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/9083/image-thumb__9083__1920x1200contain/C1419-001.jpg"
+      }
+    ],
+    "source": "noir\\media\\micro\\micro-hg-source.html",
+    "drawing": {
+      "file": "micro-hg-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2714/image-thumb__2714__1920x1200contain/C1419T.png",
+      "box": [
+        495,
+        232,
+        738,
+        679
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "micro-nk": {
+    "products": {
+      "silver": {
+        "file": "micro-nk-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1587-MICRO-NK/3568/image-thumb__3568__1200x1200/C1587PH.png",
+        "box": [
+          0,
+          398,
+          912,
+          422
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "micro-nk-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1587-MICRO-NK/3567/image-thumb__3567__1200x1200/C1587K7PH.png",
+        "box": [
+          0,
+          396,
+          913,
+          423
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "micro-nk-white.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/C1587-MICRO-NK/5946/image-thumb__5946__1200x1200/C1587L9010ODPH.png",
+        "box": [
+          0,
+          396,
+          912,
+          423
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "micro-nk-scene-0.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/101069/image-thumb__101069__1920x1200contain/MICRO-NK-SILER-OGOLNE.png"
+      },
+      {
+        "file": "micro-nk-scene-1.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/4046/image-thumb__4046__1920x1200contain/C1587UH.png"
+      },
+      {
+        "file": "micro-nk-scene-2.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/3950/image-thumb__3950__1920x1200contain/B5392UH-002.png"
+      }
+    ],
+    "source": "noir\\media\\micro\\micro-nk-source.html",
+    "drawing": {
+      "file": "micro-nk-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2717/image-thumb__2717__1920x1200contain/C1587T.png",
+      "box": [
+        378,
+        256,
+        1019,
+        611
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  },
+  "micro-plus": {
+    "products": {
+      "silver": {
+        "file": "micro-plus-silver.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/3599/image-thumb__3599__1200x1200/C2966PH.png",
+        "box": [
+          0,
+          388,
+          915,
+          423
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "black": {
+        "file": "micro-plus-black.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/3597/image-thumb__3597__1200x1200/C2966K7PH.png",
+        "box": [
+          0,
+          387,
+          917,
+          425
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      },
+      "white": {
+        "file": "micro-plus-white.png",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieProduktowe/47426/image-thumb__47426__1200x1200/C2966L9010PH.png",
+        "box": [
+          0,
+          388,
+          914,
+          423
+        ],
+        "size": [
+          1200,
+          1200
+        ]
+      }
+    },
+    "scenes": [
+      {
+        "file": "micro-plus-scene-0.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/101070/image-thumb__101070__1920x1200contain/micro-plus.jpg"
+      },
+      {
+        "file": "micro-plus-scene-1.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/124131/image-thumb__124131__1920x1200contain/Chic-Chic-PROMENADA_KLUŚ_9.jpg"
+      },
+      {
+        "file": "micro-plus-scene-2.jpg",
+        "url": "https://klusdesign.pl/storage/pimcore/ZdjecieZastosowan/36065/image-thumb__36065__1920x1200contain/B1888_U.jpg"
+      }
+    ],
+    "source": "noir\\media\\micro\\micro-plus-source.html",
+    "drawing": {
+      "file": "micro-plus-drawing.png",
+      "url": "https://klusdesign.pl/storage/pimcore/RysTechniczny/2731/image-thumb__2731__1920x1200contain/C2966T.png",
+      "box": [
+        490,
+        274,
+        574,
+        541
+      ],
+      "size": [
+        1778,
+        1200
+      ]
+    }
+  }
+}

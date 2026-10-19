@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pl">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#e8e9e2"><title>Taśmy LED — prezentacja</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="../noir/smd2835-viewer.css?v=section-6">
+  <link rel="preload" as="image" href="../noir/media/energy/class-d.png">
+  <link rel="preload" as="image" href="../noir/media/energy/class-e.png">
+  <link rel="preload" as="image" href="../noir/media/energy/class-f.png">
+  <link rel="preload" as="image" href="../noir/media/energy/class-g.png">
+</head>
+<body data-theme="day">
+  <main>
+    <div id="stage" role="img" aria-label="Automatyczna prezentacja przestrzennego modelu taśmy LED."><p id="loading">Przygotowywanie modelu…</p></div>
+    <section class="intro" aria-labelledby="product-title">
+      <div class="product-assurance" data-reveal>
+        <span class="polish-flag" role="img" aria-label="Polska"></span>
+        <span data-product="warranty">7 lat gwarancji</span><span class="assurance-origin"><span aria-hidden="true">|</span> Produkowana w Polsce</span>
+      </div>
+      <h1 id="product-title" data-reveal><small>DELUX</small><span>3w1</span></h1>
+      <div class="color-block" data-reveal>
+        <div class="color-fact"><strong><span data-product="kelvin">3000</span><small data-product="color-unit">K</small></strong><span class="color-name"><i class="color-swatch" aria-hidden="true"></i><span data-product="color">Ciepła biel</span></span></div>
+        <div class="color-availability"><span class="availability-label">Dostępne barwy</span><div id="color-variants" aria-label="Dostępne barwy tej wersji"></div></div>
+      </div>
+      <dl class="product-facts">
+        <div data-reveal><dt>Zasilanie</dt><dd><span data-product="voltage">24</span> <small>V DC</small></dd></div>
+        <div data-reveal><dt>Moc</dt><dd><span data-product="power">3</span> <small>W/m</small></dd></div>
+        <div data-reveal><dt data-product="output-label">Strumień światła</dt><dd><span data-product="output">460</span> <small data-product="output-unit">lm/m</small></dd></div>
+        <div data-reveal><dt>Skuteczność</dt><dd><span data-product="efficacy">153</span> <small>lm/W</small></dd></div>
+        <div data-reveal><dt>Gęstość diod</dt><dd><span data-product="density">160</span> <small>LED/m</small></dd></div>
+        <div data-reveal><dt data-product="quality-label">Oddawanie barw</dt><dd><span data-product="quality">80</span> <small data-product="quality-unit">Ra</small></dd></div>
+        <div data-reveal><dt>Szerokość PCB</dt><dd><span data-product="width">10</span> <small>mm</small></dd></div>
+        <div data-reveal><dt>Miedź PCB</dt><dd><span data-product="copper">4</span> <small data-product="copper-unit">oz</small></dd></div>
+        <div data-reveal class="energy-fact"><dt>Klasa energetyczna</dt><dd><span class="energy-rating" hidden><span data-product="energy" hidden>D</span><img src="../noir/media/energy/class-d.png" alt="Klasa energetyczna D, skala A–G"></span><span class="energy-missing">—</span></dd></div>
+      </dl>
+      <div class="power-modes" aria-label="Moc DELUX 3w1" hidden><div data-power="0" data-active="true"><span>LOW</span><strong>3 <small>W/m</small></strong></div><div data-power="1" data-active="false"><span>MEDIUM</span><strong>6 <small>W/m</small></strong></div><div data-power="2" data-active="false"><span>HIGH</span><strong>11 <small>W/m</small></strong></div></div>
+      <div class="product-bottom" data-reveal>
+        <div class="product-feature" data-feature="tech"><span class="feature-icon"></span><strong data-product="tech">SMD 2835</strong><small>Dioda</small></div>
+        <div class="product-feature" data-feature="section"><span class="feature-icon"></span><strong data-product="section">8 LED / sekcja</strong><small>Podział taśmy</small></div>
+        <div class="product-feature" data-feature="ip"><span class="feature-icon"></span><strong data-product="ip">IP20</strong><small>Stopień ochrony</small></div>
+        <div class="product-feature" data-feature="beam"><span class="feature-icon"></span><strong><span data-product="beam">120</span>&deg;</strong><small>Kąt światła</small></div>
+        <div class="product-feature" data-feature="detail"><span class="feature-icon"></span><strong data-product="detail"></strong><small data-product="detail-label"></small><span class="brightness-steps" hidden><i>LOW</i><i>MEDIUM</i><i>HIGH</i></span></div>
+      </div>
+    </section>
+  </main>
+  <div class="film-preview-nav" role="group" aria-label="Roboczy wybór modelu">
+    <span class="preview-caption">Modele <strong id="model-count">01 / 3</strong></span>
+    <button type="button" data-model-step="-1" aria-label="Poprzedni model" disabled>‹</button>
+    <select id="model-select" aria-label="Wybierz model i rozpocznij animację" disabled></select>
+    <button type="button" data-model-step="1" aria-label="Następny model" disabled>›</button>
+    <button type="button" data-model-restart aria-label="Odtwórz model od początku" title="Odtwórz od początku" disabled>↻</button>
+  </div>
+  <script type="module" src="../noir/smd2835-viewer.mjs?v=section-6"></script>
+</body>
+</html>
