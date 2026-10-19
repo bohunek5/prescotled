@@ -22,7 +22,10 @@ export function projectStripDimension(model,camera,viewport,kind){
   if(kind==='width'){
     // Measure directly between the real PCB edges in the clear interval
     // between the contacts and first LED. Both arrows grow from this midpoint.
-    const distance=section.start+Math.min(2.8,spec.section*.056);
+    // CRI 97 starts its first LED at 3.125 mm; its clear mask interval is
+    // after that package and before the resistor, not in the contact margin.
+    const clearInterval=model.group.userData.productId==='truecolor10'?5.2:2.8;
+    const distance=section.start+Math.min(clearInterval,spec.section*.12);
     const edges=[-half,half].map(side=>project(at(distance,side,.16)));
     const ends=edges;
     const [a,b]=ends,length=Math.hypot(b.x-a.x,b.y-a.y),ux=(b.x-a.x)/length,uy=(b.y-a.y)/length;
@@ -41,16 +44,17 @@ export function projectStripDimension(model,camera,viewport,kind){
   }
   const cuts=[section.start,section.end].map(distance=>[-half-.55,half+.55].map(side=>project(at(distance,side,.2))));
   // One bracket spans the exact cut boundaries. Its short arms grip the
-  // upper edge; the lifted rail and central notch stay clear of all LEDs.
+  // upper edge; the rail stays clear of all LEDs. The leader joins its centre
+  // directly, without a decorative notch or a separate highlight shape.
   const midSides=[-half,half].map(side=>at((section.start+section.end)/2,side,.2));
   const side=project(midSides[0]).y<project(midSides[1]).y?-1:1;
   const grips=[section.start,section.end].map(distance=>project(at(distance,side*(half+.2),.2)));
   const rail=Array.from({length:41},(_,i)=>{
-    const t=i/40,notch=.7*Math.max(0,1-Math.abs(t-.5)/.075);
-    return project(at(section.start+section.length*t,side*(half+1.35+notch),.2));
+    const t=i/40;
+    return project(at(section.start+section.length*t,side*(half+1.35),.2));
   });
-  const anchorLocal=at(section.center,side*(half+2.05),.2);
-  // The leader arrives at the notch first. Each half then grows from that
+  const anchorLocal=at(section.center,side*(half+1.35),.2);
+  // The leader arrives at the centre first. Each half then grows from that
   // shared centre towards its own cut boundary, finishing with the short grip.
   const middle=(rail.length-1)/2;
   const branches=[polyline([...rail.slice(0,middle+1).reverse(),grips[0]]),polyline([...rail.slice(middle),grips[1]])];

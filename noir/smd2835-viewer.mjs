@@ -1,12 +1,12 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-2';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-3';
 import {filmProducts} from './film-catalog.mjs';
-import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs';
+import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-3';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
 import {createFeatureIcons} from './film-feature-3d.mjs';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-2';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-3';
 import {frameStripSection} from './strip-section-camera.mjs';
 
 // Review these three constructions before extending the film to the catalogue.
@@ -93,7 +93,7 @@ function render(now){
     }
     needsPaint=true;
   }
-  if(pendingProductReveal&&!activeRebuild){pendingProductReveal=false;intro.style.opacity='1';revealFacts();}
+  if(pendingProductReveal&&!activeRebuild){pendingProductReveal=false;intro.dataset.rebuilding='false';revealFacts('details');}
   if(Math.abs(zoom-targetZoom)>.0001){zoom=reduced.matches?targetZoom:T.MathUtils.lerp(zoom,targetZoom,1-Math.exp(-delta*8));needsPaint=true;}
   if(needsPaint){
     resize();
@@ -182,8 +182,8 @@ function selectModel(index){
   if(p.id==='3w1')setPowerMode(0);
   model.setLight(lit);
   pendingProductReveal=!!shot?.rebuild&&!reduced.matches;
-  intro.style.opacity=pendingProductReveal?'0':'1';
-  if(!pendingProductReveal)revealFacts();
+  intro.style.opacity='1';intro.dataset.rebuilding=String(pendingProductReveal);
+  revealFacts(pendingProductReveal?'heading':'all');
   schedule();
 }
 function swatch(k){return {czerwona:'#ed6957',niebieska:'#729ce8',różowa:'#e790ba',zielona:'#8fc497',żółta:'#f3d563'}[k]??(Number(k)<=2700?'#ffd393':Number(k)<3500?'#ffe0a4':Number(k)<=4500?'#fff3d6':Number(k)>6500?'#c0dbff':'#e0edff');}
@@ -235,10 +235,10 @@ function setTheme(next){
   try{localStorage.setItem('prescot-smd-scene',theme);}catch{}
   schedule();
 }
-function revealFacts(){
-  document.querySelectorAll('[data-reveal]').forEach((el,i)=>{
+function revealFacts(part='all'){
+  [...document.querySelectorAll('[data-reveal]')].filter(el=>part==='all'||el.matches('.product-assurance,#product-title')===(part==='heading')).forEach((el,i)=>{
     el.getAnimations().forEach(a=>a.cancel());
-    if(!reduced.matches)el.animate([{opacity:0,transform:'translateX(-16px)'},{opacity:1,transform:'translateX(0)'}],{duration:380,delay:50+i*20,easing:'cubic-bezier(.22,.61,.36,1)',fill:'backwards'});
+    if(!reduced.matches&&!seeking)el.animate([{opacity:0,transform:'translateX(-16px)'},{opacity:1,transform:'translateX(0)'}],{duration:380,delay:50+i*20,easing:'cubic-bezier(.22,.61,.36,1)',fill:'backwards'});
   });
 }
 const observer=new ResizeObserver(()=>{resize();schedule();});observer.observe(host);

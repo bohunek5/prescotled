@@ -1,7 +1,7 @@
 // Deterministic camera choreography: full product, approach, macro drift,
 // rebuild during the pullback, then hold the finished next model in rotation.
 export const SHOT_SECONDS=18;
-export const THREE_IN_ONE_SECONDS=18;
+export const THREE_IN_ONE_SECONDS=24;
 export const REBUILD_START=14.2,REBUILD_END=18;
 export const presentationStart=index=>index===0?0:THREE_IN_ONE_SECONDS+(index-1)*SHOT_SECONDS;
 const clamp=v=>Math.max(0,Math.min(1,v));
@@ -11,7 +11,7 @@ export function samplePresentation(seconds,modelCount=2){
   const cycleTime=elapsed%cycle,from=cycleTime<THREE_IN_ONE_SECONDS?0:1+Math.floor((cycleTime-THREE_IN_ONE_SECONDS)/SHOT_SECONDS);
   const t=cycleTime-presentationStart(from),threeInOne=from===0;
   const duration=threeInOne?THREE_IN_ONE_SECONDS:SHOT_SECONDS;
-  const detailEnd=13,pullbackSeconds=5;
+  const detailEnd=threeInOne?19:13,pullbackSeconds=5;
   const rebuildStart=detailEnd+1.2,rebuildEnd=detailEnd+pullbackSeconds,to=(from+1)%modelCount;
   const approach=smooth((t-1)/3);
   const depart=smooth((t-detailEnd)/pullbackSeconds),zoom=.97*approach*(1-depart);
@@ -27,7 +27,7 @@ export function samplePresentation(seconds,modelCount=2){
   const contactLevel=smooth((cueTime-6.2)/.8)*fadeOut;
   // Global time keeps the gentle turn moving through macro and chapter changes.
   // Independent axes avoid a stationary hold at the end of a shot.
-  const mediumStart=7,highStart=10;
+  const mediumStart=6,highStart=9;
   const powerMode=incoming?0:t<mediumStart?0:t<highStart?1:2;
   const powerBlend=powerMode===0?1:smooth((t-(powerMode===1?mediumStart:highStart))/.65);
   return {model:incoming?to:from,local:t,duration,detailEnd,cueTime,productTime,iconTime:incoming?0:t,zoom,lightLevel,contactLevel,powerMode,powerBlend,rotation:-.2+.42*Math.sin(elapsed*.105-.9),tilt:-.02+.035*Math.sin(elapsed*.17),

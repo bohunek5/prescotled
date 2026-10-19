@@ -59,8 +59,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 1134,
-  "bytesExcludingManifest": 307973738,
+  "fileCountExcludingManifest": 1136,
+  "bytesExcludingManifest": 307986723,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4842,17 +4842,17 @@
     },
     "model-smd-2835/index.html": {
       "bytes": 5297,
-      "sha256": "0a5834f7b28259e54c2fc15ed517c5f5ad007f09ea1e8c9af9f1d4ed016b64cf",
+      "sha256": "7c53495c4f4d08118c913e0aa6e2372397d9ed6ae9592c25ff40ab292883b2d4",
       "source": "model-smd-2835/index.html"
     },
     "noir/catalog-strip-model.mjs": {
-      "bytes": 24462,
-      "sha256": "81bf53eef0e9f8920b239d7c353fbcabd023e1f72a5d42eb066160a3d591c675",
+      "bytes": 27620,
+      "sha256": "14f360c7bb99346652eb94c706bbac9d1d576a24142917a8994589ab3e13029a",
       "source": "noir/catalog-strip-model.mjs"
     },
     "noir/delux-pcb-artwork.mjs": {
-      "bytes": 5755,
-      "sha256": "4b4bb590b80957ce9c78ce8a2947c80f3dff91a1e760bf2f10a1b09584abe9af",
+      "bytes": 5803,
+      "sha256": "df843e218cef4e74c97eb91fd01496f095a4e5bed9045cbbd1c32f51e312b483",
       "source": "noir/delux-pcb-artwork.mjs"
     },
     "noir/film-catalog.mjs": {
@@ -5611,18 +5611,18 @@
       "source": "noir/pcb-finish.mjs"
     },
     "noir/smd2835-model.mjs": {
-      "bytes": 14958,
-      "sha256": "90f1244baf941f084f55f0fa3a542f871b90489a5ce30d4c38acb2ec892bf561",
+      "bytes": 14969,
+      "sha256": "06c9d8fc8abb36efbdd167ae88d248f96e6b42f1d7ede605a6dcf75ad0b5d911",
       "source": "noir/smd2835-model.mjs"
     },
     "noir/smd2835-viewer.css": {
-      "bytes": 24848,
-      "sha256": "1e41c8ca7a792009f9a2f520a2bf4207d1630e1503979a41aba8a6e1a596a672",
+      "bytes": 25008,
+      "sha256": "2aa53c2ed18015bbee23fd10bb064a599c305c11c63992038c664651731b2e3d",
       "source": "noir/smd2835-viewer.css"
     },
     "noir/smd2835-viewer.mjs": {
-      "bytes": 22484,
-      "sha256": "b7f27252bf44d5180babe5325c619e179411436fa70e983dad80b10805f6efa7",
+      "bytes": 22673,
+      "sha256": "2b3d8736b06a983a1d32d71276975551fe31123ac321d1dc40082fafd4df21c6",
       "source": "noir/smd2835-viewer.mjs"
     },
     "noir/strip-appearance.mjs": {
@@ -5636,18 +5636,18 @@
       "source": "noir/strip-backing.mjs"
     },
     "noir/strip-cue-layout.mjs": {
-      "bytes": 1769,
-      "sha256": "d996a72ecef78c6c812c32833c7570c873c604966139372bfe605bd65dae7f7e",
+      "bytes": 1825,
+      "sha256": "ac675e763afb99604a4928c0acc0d883e5b9441b41f2712014f49d9513b9dab1",
       "source": "noir/strip-cue-layout.mjs"
     },
     "noir/strip-detail-cues.mjs": {
-      "bytes": 2949,
-      "sha256": "7482140dc15c88ac1257b9ad0ff497c5fb2f3be34e182c9f467bd9a82b431d7a",
+      "bytes": 3042,
+      "sha256": "b2f5aeb7e91da5dc01925e974127d48d449daabd529d93d892bfe5c877457f50",
       "source": "noir/strip-detail-cues.mjs"
     },
     "noir/strip-dimensions.mjs": {
-      "bytes": 3735,
-      "sha256": "3902f9d1d679ed18029fed62979705760d9541c3404e63aef48a8b67cbe782a9",
+      "bytes": 4006,
+      "sha256": "ebc9621741c19bd0ee5211e31d7e5f1d058bbf1eed242bfaf629f9980dc2d8a7",
       "source": "noir/strip-dimensions.mjs"
     },
     "noir/strip-light-program.mjs": {
@@ -5657,12 +5657,12 @@
     },
     "noir/strip-lighting.mjs": {
       "bytes": 20348,
-      "sha256": "333370070250fa11054d26b320ae9743cc645100024e3e85442cefeb29e2ee22",
+      "sha256": "a11bc227ef5fd170bd968197da7f2a98c11b4923c1e067479168c6c4d1191187",
       "source": "noir/strip-lighting.mjs"
     },
     "noir/strip-presentation.mjs": {
-      "bytes": 2738,
-      "sha256": "3c12a8249d611233711c3041e8bf2a543818d1a4aa0d6d2a287441999e8b8eca",
+      "bytes": 2751,
+      "sha256": "b938588c0dac8a6838f83a9a6d3a34ac4e45f41227595fdb4d78d09b2581be8c",
       "source": "noir/strip-presentation.mjs"
     },
     "noir/strip-rebuild.mjs": {
@@ -5717,7 +5717,7 @@
     },
     "tasmy-opcja-2/index.html": {
       "bytes": 1230,
-      "sha256": "17b11fd7f469b28c9b7f521fc9351f540c363b1b1f7af353e4a2e4385210e9b5",
+      "sha256": "628cd36440dac53b2c53a01bdffd3eff59fde05f675bc32b9a5fc93de7ec3614",
       "source": "tasmy-opcja-2/index.html"
     },
     "tasmy-opcja-2/mini-shot.mjs": {
@@ -5732,13 +5732,23 @@
     },
     "tasmy-opcja-2/presentation.mjs": {
       "bytes": 16378,
-      "sha256": "18d2621e00e17c0e74a0fc8ce9b3f5df38c59f8022888a9648b1d1064ce6fddc",
+      "sha256": "0034bb1f69b50bf7f37f61330e624033e695f84cfce4d18ed177e8295b4a9ea4",
       "source": "tasmy-opcja-2/presentation.mjs"
     },
     "tasmy-opcja-2/product-details.mjs": {
       "bytes": 4774,
       "sha256": "2f5d0d7e035590b944a028b775b060d2027f52c3b20b4fa45def442bbb7ca7f6",
       "source": "tasmy-opcja-2/product-details.mjs"
+    },
+    "noir/media/delux-3w1-pcb-print.svg": {
+      "bytes": 4318,
+      "sha256": "398ab53dd5c16541b101aee24e6f5dc28cea2b1b20108ed7283cd764455463b8",
+      "source": "noir/media/delux-3w1-pcb-print.svg"
+    },
+    "noir/media/smd2835-pcb-print.svg": {
+      "bytes": 4668,
+      "sha256": "6a84af57c97b3ca1b290a14cae9303998271be4d9786f841eabde4cd07743f50",
+      "source": "noir/media/smd2835-pcb-print.svg"
     }
   }
 }

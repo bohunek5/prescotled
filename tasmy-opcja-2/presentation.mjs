@@ -1,10 +1,10 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {filmProducts} from '../noir/film-catalog.mjs';
-import {createCatalogStrip} from '../noir/catalog-strip-model.mjs?v=detail-2';
+import {createCatalogStrip} from '../noir/catalog-strip-model.mjs?v=detail-3';
 import {createStripRebuild} from '../noir/strip-rebuild.mjs';
 import {createFeatureIcons} from '../noir/film-feature-3d.mjs';
 import {createNumberAnimator} from '../noir/film-numbers.mjs';
-import {createVoltageCue} from '../noir/strip-lighting.mjs?v=detail-2';
+import {createVoltageCue} from '../noir/strip-lighting.mjs?v=detail-3';
 import {sampleMiniShot,frameMiniCamera} from './mini-shot.mjs';
 import {groups} from './assortment.mjs';
 import {additionalProducts} from './five-volt.mjs';

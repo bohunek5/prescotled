@@ -173,12 +173,12 @@ body[data-theme="day"] .voltage-cue{color:#30443d}
 body[data-theme="day"] .voltage-value{stroke:#e8e9e2}
 body[data-theme="day"] .voltage-ring{stroke:#a87b36}
 body[data-theme="day"] .voltage-dot{fill:#ab7932}
-.strip-dimension{fill:none;stroke:#f0cc88;stroke-linecap:round;stroke-linejoin:round;pointer-events:none}
-.dimension-outline{stroke-width:1.6;opacity:.68}
-.dimension-line,.dimension-arrows{stroke-width:1.7}
-.dimension-witness{stroke-width:1;opacity:.5}
-body[data-theme="day"] .strip-dimension{stroke:#946831}
+.strip-dimension{fill:none;stroke:currentColor;stroke-width:1;opacity:.55;pointer-events:none}
+.voltage-cue.measuring .voltage-leader,.strip-dimension{stroke-linecap:round;stroke-linejoin:round}
 .voltage-cue.measuring .voltage-mode{font-weight:500}
+.intro[data-rebuilding=true]>.color-block,.intro[data-rebuilding=true]>.product-facts,.intro[data-rebuilding=true]>.power-modes,.intro[data-rebuilding=true]>.product-bottom{visibility:hidden}
+.product-facts{border-bottom:1px solid var(--line)}
+.product-bottom{border-top:0}
 
 /* Three film blocks share the viewport: product, catalogue facts, miniatures. */
 @media(min-width:761px){

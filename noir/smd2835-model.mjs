@@ -1,5 +1,5 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createDeluxArtwork} from './delux-pcb-artwork.mjs';
+import {createDeluxArtwork} from './delux-pcb-artwork.mjs?v=detail-3';
 
 // Millimetres. Visual reconstruction, with explicit dimensions rather than
 // spacing LEDs by an approximate density along a changing helix.

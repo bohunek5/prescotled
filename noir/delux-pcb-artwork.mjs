@@ -28,6 +28,7 @@ export async function createDeluxArtwork(product,spec,{anisotropy=4}={}){
   // longitudinal coordinate. Expose bounds in physical d, not canvas rows.
   const bounds=(x,y,length,height,rotate)=>({x:x-(rotate?height:length)/2,y:h-y-(rotate?length:height)/2,width:rotate?height:length,height:rotate?length:height});
   const artwork=(name,image,x,y,length,height,rotate=true)=>{
+    if(name==='ce'){length*=1.18;height*=1.18;}
     ctx.save();ctx.translate(x,y);if(rotate)ctx.rotate(Math.PI/2);ctx.drawImage(image,-length/2,-height/2,length,height);ctx.restore();
     layout.marks.push({name,...bounds(x,y,length,height,rotate)});
   };

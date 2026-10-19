@@ -1,8 +1,8 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {frameStripSection} from './strip-section-camera.mjs';
-import {samplePresentation,presentationStart} from './strip-presentation.mjs';
-import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-2';
-import {projectStripDimension} from './strip-dimensions.mjs?v=detail-2';
+import {samplePresentation,presentationStart} from './strip-presentation.mjs?v=detail-3';
+import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-3';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-3';
 
 // Resolve a caption against one deterministic pose, before its first letter.
 // The real ribbon may move beneath it; the caption never follows or hops
@@ -11,6 +11,7 @@ export function planStripCue(model,product,camera,cue,anchor,{width,height,label
   const index=Math.max(0,['3w1','slim','truecolor10'].indexOf(product.id));
   const shot=samplePresentation(presentationStart(index)+cue.referenceTime,3);
   const proxy={...model,group:new T.Group()},referenceCamera=camera.clone();
+  proxy.group.userData=model.group.userData;
   frameStripSection(referenceCamera,proxy,shot,width/height);
   const dimension=cue.measurement?projectStripDimension(proxy,referenceCamera,{width,height},cue.measurement):null;
   const point=dimension?dimension.anchorLocal.clone():new T.Vector3().setFromMatrixPosition(anchor);
