@@ -53,6 +53,8 @@ export function sampleDetailCue(product,shot,powerMode=0){
   const next=starts[index+1],detailEnd=three?19:13;
   const fadeOut=next?1-smooth((local-(next-.3))/.3):1-smooth((local-detailEnd)/.5);
   const end=next??detailEnd+.5;
-  const featureEmphasis=featureCue?smooth(elapsed/.3)*fadeOut:0;
+  // A brief rise, hold and return marks each benefit without leaving the
+  // icon enlarged throughout the explanation. Sun brightness stays separate.
+  const featureEmphasis=featureCue?smooth(elapsed/.3)*(1-smooth((elapsed-.85)/.65))*fadeOut:0;
   return {index,label,subline,anchor,measurement,contactIndex,start,end,referenceTime:start+1.25,typing,featureCue,featureSource,featureSourceOpacity,featureEmphasis,underline,pointer,endpoint,branches,tips,witnesses,draw:pointer,opacity:fadeIn*fadeOut};
 }

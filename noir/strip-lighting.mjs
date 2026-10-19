@@ -2,7 +2,7 @@ import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {unlitEmitterColor} from './strip-appearance.mjs';
 import {sampleStripLight} from './strip-light-program.mjs';
 import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-3';
-import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-4';
+import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-6';
 import {projectStripDimension} from './strip-dimensions.mjs?v=detail-4';
 import {planStripCue} from './strip-cue-layout.mjs?v=detail-4';
 

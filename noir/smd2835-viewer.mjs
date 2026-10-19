@@ -6,7 +6,7 @@ import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
 import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-4';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-5';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-6';
 import {frameStripSection} from './strip-section-camera.mjs';
 
 // Review these three constructions before extending the film to the catalogue.
@@ -39,7 +39,7 @@ renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=T
 renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
 host.append(renderer.domElement);
-const voltageCue=createVoltageCue(host,{nearPad:true,avoidElement:intro,featureElement:document.querySelector('[data-feature="detail"] .feature-icon'),sequence:true});
+const voltageCue=createVoltageCue(host,{nearPad:true,avoidElement:intro,sequence:true});
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(32,1,1,2000);
 let sectionFraming=null;
 const models=products.map(product=>createCatalogStrip(product,{anisotropy:Math.min(8,renderer.capabilities.getMaxAnisotropy())}));

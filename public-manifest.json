@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1136,
-  "bytesExcludingManifest": 307992913,
+  "bytesExcludingManifest": 307993016,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4842,7 +4842,7 @@
     },
     "model-smd-2835/index.html": {
       "bytes": 5298,
-      "sha256": "60e08591b9bf1ecc288f946514cc198778fbc632160004157e38d67857cfea65",
+      "sha256": "c7c722ed9c6ac7dc549b16195d3c6ae0fbd70f239151a84349ee268d75aebe25",
       "source": "model-smd-2835/index.html"
     },
     "noir/catalog-strip-model.mjs": {
@@ -5621,8 +5621,8 @@
       "source": "noir/smd2835-viewer.css"
     },
     "noir/smd2835-viewer.mjs": {
-      "bytes": 22814,
-      "sha256": "9fbda944ae25c6d8db116b292e9404aaed1b2a6e7293bff9e45c03f9d619f753",
+      "bytes": 22735,
+      "sha256": "b3ee68697ce7d40e016c5146a17b29d20046b1f4967e56889a594137aa1c61ce",
       "source": "noir/smd2835-viewer.mjs"
     },
     "noir/strip-appearance.mjs": {
@@ -5641,8 +5641,8 @@
       "source": "noir/strip-cue-layout.mjs"
     },
     "noir/strip-detail-cues.mjs": {
-      "bytes": 3651,
-      "sha256": "6b346d506a746748633e89f34ac366e87669d2788b0066ffeb93356e48d95d70",
+      "bytes": 3833,
+      "sha256": "799ff1a233915c97841b2a8ca0d8e42be5a98edaf75d08cd04d037ee80db2d54",
       "source": "noir/strip-detail-cues.mjs"
     },
     "noir/strip-dimensions.mjs": {
@@ -5657,7 +5657,7 @@
     },
     "noir/strip-lighting.mjs": {
       "bytes": 22404,
-      "sha256": "b6c0b3f48f64015453b549cc88e88b5eed7e082f562c227dd72e98e623e23e3f",
+      "sha256": "ed32320a747de0f5d4bbb898564506b278fa87403d531781c71a5b28e3d97d86",
       "source": "noir/strip-lighting.mjs"
     },
     "noir/strip-presentation.mjs": {
