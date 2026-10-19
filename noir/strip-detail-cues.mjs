@@ -38,8 +38,12 @@ export function sampleDetailCue(product,shot,powerMode=0){
   const underline=smooth((elapsed-.42)/.3);
   const pointer=smooth((elapsed-.76)/.4);
   const endpoint=smooth((elapsed-1.16)/.16);
+  // A measurement is one continuous gesture: leader to centre, then two
+  // simultaneous outward branches. Width arrowheads appear at both edges last.
+  const branches=measurement?smooth((elapsed-1.18)/.26):0;
+  const tips=measurement?smooth((elapsed-1.44)/.12):0;
   const fadeIn=smooth(elapsed/.2);
   const fadeOut=introduction?1-smooth((local-3.75)/.25):index<2?1-smooth((local-([7,10][index]-.3))/.3):1-smooth((local-13)/.5);
   const end=introduction?4:index<2?[7,10][index]:13.5;
-  return {index,label,subline,anchor,measurement,contactIndex,start,end,referenceTime:start+1.25,typing,underline,pointer,endpoint,draw:pointer,opacity:fadeIn*fadeOut};
+  return {index,label,subline,anchor,measurement,contactIndex,start,end,referenceTime:start+1.25,typing,underline,pointer,endpoint,branches,tips,draw:pointer,opacity:fadeIn*fadeOut};
 }

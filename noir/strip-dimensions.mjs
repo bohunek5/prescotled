@@ -20,11 +20,11 @@ export function projectStripDimension(model,camera,viewport,kind){
   const measurement={kind,sectionIndex:section.index,start:section.start,end:section.end,width:spec.width,
     leds:spec.ledsPerSection,density:Math.round(spec.ledsPerSection/spec.section*1000)};
   if(kind==='width'){
-    // Place the dimension in the free space after the contact row, before the
-    // first LED. Witness lines connect both real PCB edges to the raised line.
+    // Measure directly between the real PCB edges in the clear interval
+    // between the contacts and first LED. Both arrows grow from this midpoint.
     const distance=section.start+Math.min(2.8,spec.section*.056);
     const edges=[-half,half].map(side=>project(at(distance,side,.16)));
-    const ends=[-half,half].map(side=>project(at(distance,side,1.45)));
+    const ends=edges;
     const [a,b]=ends,length=Math.hypot(b.x-a.x,b.y-a.y),ux=(b.x-a.x)/length,uy=(b.y-a.y)/length;
     const arrowSize=Math.min(6,length*.2),wing=arrowSize*.5;
     const arrows=ends.map((end,index)=>{
@@ -32,9 +32,12 @@ export function projectStripDimension(model,camera,viewport,kind){
       return [{x:end.x+direction*ux*arrowSize-uy*wing,y:end.y+direction*uy*arrowSize+ux*wing},end,
         {x:end.x+direction*ux*arrowSize+uy*wing,y:end.y+direction*uy*arrowSize-ux*wing}];
     });
-    const anchorLocal=at(distance,0,1.45);
+    const anchorLocal=at(distance,0,.16),anchor=project(anchorLocal);
+    const branches=ends.map(end=>polyline([anchor,end]));
+    const arrowBranches=arrows.map(polyline);
     return {...measurement,distance,edges,ends,anchorLocal,anchor:project(anchorLocal),
-      outline:'',dimension:polyline(ends),witness:edges.map((edge,index)=>polyline([edge,ends[index]])).join(' '),arrows:arrows.map(polyline).join(' ')};
+      branches,witnessBranches:['',''],arrowBranches,
+      outline:'',dimension:polyline(ends),witness:'',arrows:arrowBranches.join(' ')};
   }
   const cuts=[section.start,section.end].map(distance=>[-half-.55,half+.55].map(side=>project(at(distance,side,.2))));
   // One bracket spans the exact cut boundaries. Its short arms grip the
@@ -47,6 +50,11 @@ export function projectStripDimension(model,camera,viewport,kind){
     return project(at(section.start+section.length*t,side*(half+1.35+notch),.2));
   });
   const anchorLocal=at(section.center,side*(half+2.05),.2);
+  // The leader arrives at the notch first. Each half then grows from that
+  // shared centre towards its own cut boundary, finishing with the short grip.
+  const middle=(rail.length-1)/2;
+  const branches=[polyline([...rail.slice(0,middle+1).reverse(),grips[0]]),polyline([...rail.slice(middle),grips[1]])];
   return {...measurement,edges:cuts.flat(),cuts,grips,bracket:true,anchorLocal,anchor:project(anchorLocal),
+    branches,witnessBranches:['',''],arrowBranches:['',''],
     outline:'',dimension:polyline([grips[0],...rail,grips[1]]),witness:'',arrows:''};
 }

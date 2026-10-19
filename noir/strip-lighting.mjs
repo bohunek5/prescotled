@@ -1,10 +1,10 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {unlitEmitterColor} from './strip-appearance.mjs';
 import {sampleStripLight} from './strip-light-program.mjs';
-import {placeVoltageLabel} from './voltage-placement.mjs';
-import {sampleDetailCue} from './strip-detail-cues.mjs';
-import {projectStripDimension} from './strip-dimensions.mjs';
-import {planStripCue} from './strip-cue-layout.mjs';
+import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-2';
+import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-2';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-2';
+import {planStripCue} from './strip-cue-layout.mjs?v=detail-2';
 
 const supplyAnchors=new WeakMap();
 export function supplyAnchor(model,contactIndex=0,sectionIndex=null){
@@ -157,10 +157,11 @@ export function installStripLighting(model,product){
 export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=null,sequence=false}={}){
   const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
   svg.classList.add('voltage-cue');svg.setAttribute('aria-hidden','true');
-  svg.innerHTML='<path class="voltage-leader voltage-underline" pathLength="1"/><path class="voltage-leader voltage-pointer" pathLength="1"/><circle class="voltage-ring"/><circle class="voltage-dot" r="3"/><text class="voltage-value"/><text class="voltage-mode"/><g class="strip-dimension"><path class="dimension-outline" pathLength="1"/><path class="dimension-line" pathLength="1"/><path class="dimension-witness"/><path class="dimension-arrows"/></g>';
+  svg.innerHTML='<path class="voltage-leader voltage-underline" pathLength="1"/><path class="voltage-leader voltage-pointer" pathLength="1"/><circle class="voltage-ring"/><circle class="voltage-dot" r="3"/><text class="voltage-value"/><text class="voltage-mode"/><g class="strip-dimension"><path class="dimension-outline" pathLength="1"/><path class="dimension-line dimension-branch-start" pathLength="1"/><path class="dimension-line dimension-branch-end" pathLength="1"/><path class="dimension-witness dimension-witness-start" pathLength="1"/><path class="dimension-witness dimension-witness-end" pathLength="1"/><path class="dimension-arrows dimension-arrows-start"/><path class="dimension-arrows dimension-arrows-end"/></g>';
   host.append(svg);
   const [path,pointer,ring,dot,label,mode,dimensionGroup]=svg.children;
-  const [dimensionOutline,dimensionLine,dimensionWitness,dimensionArrows]=dimensionGroup.children;
+  const [dimensionOutline,...dimensionPaths]=dimensionGroup.children;
+  const dimensionBranches=dimensionPaths.slice(0,2),dimensionWitnesses=dimensionPaths.slice(2,4),dimensionArrows=dimensionPaths.slice(4,6);
   const matrix=new T.Matrix4(),localMatrix=new T.Matrix4(),point=new T.Vector3(),normal=new T.Vector3(),toward=new T.Vector3();
   let activeVoltage=null,activeContact=null,drawProgress=0,placement=null,placementModel=null,activeAnnotation=null,measurement=null,placementKey='',activeAnchor=null,stages=null;
   const plans=new WeakMap();
@@ -200,14 +201,15 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       if(measurement)localMatrix.setPosition(measurement.anchorLocal);
       matrix.multiplyMatrices(model.group.matrixWorld,localMatrix);point.setFromMatrixPosition(matrix);
       normal.setFromMatrixColumn(matrix,2).normalize();toward.copy(camera.position).sub(point).normalize();
-      point.addScaledVector(normal,.16).project(camera);
+      if(!measurement)point.addScaledVector(normal,.16);
+      point.project(camera);
       if(normal.dot(toward)<.1||point.z>1||Math.abs(point.x)>.95||Math.abs(point.y)>.95){svg.style.opacity='0';return;}
       activeVoltage=product.voltage;
       activeContact=!cue||cue.anchor==='contact'?model.group.userData.contacts[contactIndex]:null;
       if(activeContact)activeAnchor={name:activeContact,contactIndex,sectionIndex:sequence?sectionIndex:null,
         padIndex:sequence?sectionIndex*model.group.userData.contacts.length*2+contactIndex:null,
         row:sequence?'section-start':'nearest',local:new T.Vector3().setFromMatrixPosition(localMatrix).toArray()};
-      const x=(point.x*.5+.5)*width,y=(-point.y*.5+.5)*height;
+      const x=measurement?.anchor.x??(point.x*.5+.5)*width,y=measurement?.anchor.y??(-point.y*.5+.5)*height;
       // Reserve clear space above the product instead of covering PCB legends.
       const cueScale=compact?Math.max(.4,Math.min(.65,width/500)):nearPad?Math.min(1,width/850):1;
       let tx=Math.min(36*cueScale,width*.07),ty=Math.min(100*cueScale,height*.14);
@@ -222,7 +224,9 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       const underlineProgress=cue?.underline??drawProgress;
       const pointerProgress=cue?.pointer??drawProgress;
       const endpointProgress=cue?.endpoint??drawProgress*drawProgress;
-      stages={typing,underline:underlineProgress,pointer:pointerProgress,endpoint:endpointProgress,highlight:measurement?pointerProgress:0};
+      const branchProgress=measurement?(cue?.branches??pointerProgress):0;
+      const tipProgress=measurement?(cue?.tips??endpointProgress):0;
+      stages={typing,underline:underlineProgress,pointer:pointerProgress,endpoint:endpointProgress,branches:branchProgress,tips:tipProgress,highlight:branchProgress};
       label.textContent=fullLabel;mode.textContent=cue?.subline??(threeInOne?`+${product.voltage} V DC  /  ${activeContact}`:'');
       activeAnnotation={label:fullLabel,anchor:cue?.anchor??'contact',index:cue?.index??0};
       const emphasis=!!measurement;
@@ -250,16 +254,17 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       const lineY=ty+9*cueScale,exitX=nearPad?placement.exitX:tx+leaderWidth;
       path.setAttribute('d',`M ${tx} ${lineY} H ${tx+leaderWidth}`);
       pointer.setAttribute('d',`M ${exitX} ${lineY} L ${x} ${y}`);
-      pointer.style.display=measurement?'none':'';
+      pointer.style.display='';
       drawPath(path,underlineProgress);drawPath(pointer,pointerProgress);
       ring.style.opacity=dot.style.opacity=String(endpointProgress);
       if(measurement){
         dimensionGroup.style.display='';
-        dimensionOutline.setAttribute('d',measurement.outline);dimensionLine.setAttribute('d',measurement.dimension);
-        dimensionWitness.setAttribute('d',measurement.witness);dimensionArrows.setAttribute('d',measurement.arrows);
-        for(const element of [dimensionOutline,dimensionLine])drawPath(element,pointerProgress);
-        dimensionWitness.style.opacity=String(pointerProgress);
-        dimensionArrows.style.opacity=String(endpointProgress);
+        dimensionOutline.setAttribute('d',measurement.outline);drawPath(dimensionOutline,branchProgress);
+        for(let i=0;i<2;i++){
+          dimensionBranches[i].setAttribute('d',measurement.branches[i]);drawPath(dimensionBranches[i],branchProgress);
+          dimensionWitnesses[i].setAttribute('d',measurement.witnessBranches[i]);drawPath(dimensionWitnesses[i],tipProgress);
+          dimensionArrows[i].setAttribute('d',measurement.arrowBranches[i]);dimensionArrows[i].style.opacity=String(tipProgress);
+        }
         ring.style.opacity=dot.style.opacity='0';
       }
     },

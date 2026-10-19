@@ -1,12 +1,12 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-2';
 import {filmProducts} from './film-catalog.mjs';
 import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
 import {createFeatureIcons} from './film-feature-3d.mjs';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-2';
 import {frameStripSection} from './strip-section-camera.mjs';
 
 // Review these three constructions before extending the film to the catalogue.

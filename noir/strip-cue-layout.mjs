@@ -1,8 +1,8 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {frameStripSection} from './strip-section-camera.mjs';
 import {samplePresentation,presentationStart} from './strip-presentation.mjs';
-import {placeVoltageLabel} from './voltage-placement.mjs';
-import {projectStripDimension} from './strip-dimensions.mjs';
+import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-2';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-2';
 
 // Resolve a caption against one deterministic pose, before its first letter.
 // The real ribbon may move beneath it; the caption never follows or hops
@@ -17,6 +17,9 @@ export function planStripCue(model,product,camera,cue,anchor,{width,height,label
   if(!dimension)point.addScaledVector(new T.Vector3().setFromMatrixColumn(anchor,2),.16);
   point.applyMatrix4(proxy.group.matrixWorld).project(referenceCamera);
   const x=(point.x*.5+.5)*width,y=(-point.y*.5+.5)*height;
+  const branchAxis=dimension?.kind==='width'?{
+    x:dimension.ends[1].x-dimension.ends[0].x,y:dimension.ends[1].y-dimension.ends[0].y
+  }:null;
   return {...placeVoltageLabel(proxy,referenceCamera,{width,height,x,y,labelWidth,twoLines:true,scale,leftBound,
-    raise:dimension?18*scale:0}),locked:true,referenceTime:cue.referenceTime};
+    raise:dimension?18*scale:0,branchAxis}),locked:true,referenceTime:cue.referenceTime};
 }

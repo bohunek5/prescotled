@@ -5,7 +5,7 @@ const overlap=(a,b)=>Math.max(0,Math.min(a.right,b.right)-Math.max(a.left,b.left
 
 // Choose nearby negative space using the projected PCB, including the other
 // turns of the helix. Never reserve a distant corner for a small contact label.
-export function placeVoltageLabel(model,camera,{width,height,x,y,labelWidth,twoLines,scale=1,choice=-1,leftBound=14,raise=0}){
+export function placeVoltageLabel(model,camera,{width,height,x,y,labelWidth,twoLines,scale=1,choice=-1,leftBound=14,raise=0,branchAxis=null}){
   const obstacles=[];
   const samples=Math.ceil(model.specification.length/5),half=model.specification.width/2+.6;
   let previous;
@@ -18,7 +18,9 @@ export function placeVoltageLabel(model,camera,{width,height,x,y,labelWidth,twoL
     if(previous){const p=[...previous,...points];obstacles.push({left:Math.min(...p.map(v=>v.x))-6,top:Math.min(...p.map(v=>v.y))-6,right:Math.max(...p.map(v=>v.x))+6,bottom:Math.max(...p.map(v=>v.y))+6});}
     previous=points;
   }
-  const offsets=[[-1.35,-85],[-.65,-125],[.2,-135],[-1.35,-175],[-.65,-220],[.3,-225],[-1.6,-35],[.7,-280],[-.8,-280]];
+  // Width needs a visible junction: a nearly parallel leader would cover one
+  // branch. These are additional positions for that measurement only.
+  const offsets=[...(branchAxis?[[-2.2,-70],[-2.7,-105],[-3.2,-150],[-2,-30],[-2.8,-180]]:[]),[-1.35,-85],[-.65,-125],[.2,-135],[-1.35,-175],[-.65,-220],[.3,-225],[-1.6,-35],[.7,-280],[-.8,-280]];
   const candidates=offsets.map(([horizontal,vertical],index)=>{
     const tx=clamp(x+horizontal*labelWidth,leftBound,width-labelWidth-14);
     const ty=clamp(y+vertical*scale-raise,32,height-(twoLines?40:20));
@@ -31,7 +33,9 @@ export function placeVoltageLabel(model,camera,{width,height,x,y,labelWidth,twoL
       if(obstacles.some(o=>px>=o.left&&px<=o.right&&py>=o.top&&py<=o.bottom))crossings++;
     }
     const diagonal=Math.hypot(x-elbow.x,y-elbow.y);
-    return {x:tx,y:ty,exitX:elbow.x,choice:index,clearance:intrusion===0,overlap:intrusion,crossings,lineLength:labelWidth+diagonal,score:intrusion*20+crossings*180+diagonal+(index===choice?-25:0)};
+    const approachAngle=branchAxis?Math.acos(clamp(Math.abs((x-elbow.x)*branchAxis.x+(y-elbow.y)*branchAxis.y)/(diagonal*Math.hypot(branchAxis.x,branchAxis.y)),0,1))*180/Math.PI:null;
+    const approachPenalty=approachAngle===null?0:Math.max(0,40-approachAngle)*40;
+    return {x:tx,y:ty,exitX:elbow.x,choice:index,clearance:intrusion===0,overlap:intrusion,crossings,lineLength:labelWidth+diagonal,approachAngle,score:intrusion*20+crossings*180+diagonal+approachPenalty+(index===choice?-25:0)};
   });
   return candidates.sort((a,b)=>a.score-b.score)[0];
 }

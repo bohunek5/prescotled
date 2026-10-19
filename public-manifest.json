@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1134,
-  "bytesExcludingManifest": 307967572,
+  "bytesExcludingManifest": 307973738,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4842,12 +4842,12 @@
     },
     "model-smd-2835/index.html": {
       "bytes": 5297,
-      "sha256": "b745f07bba19354a513980817face9c190403418781e1456fb77460040fff856",
+      "sha256": "0a5834f7b28259e54c2fc15ed517c5f5ad007f09ea1e8c9af9f1d4ed016b64cf",
       "source": "model-smd-2835/index.html"
     },
     "noir/catalog-strip-model.mjs": {
-      "bytes": 20864,
-      "sha256": "63f6a5ef087a9b65f6c00719672a988253594ab7e82504e6c340c0f3cd974b92",
+      "bytes": 24462,
+      "sha256": "81bf53eef0e9f8920b239d7c353fbcabd023e1f72a5d42eb066160a3d591c675",
       "source": "noir/catalog-strip-model.mjs"
     },
     "noir/delux-pcb-artwork.mjs": {
@@ -5621,8 +5621,8 @@
       "source": "noir/smd2835-viewer.css"
     },
     "noir/smd2835-viewer.mjs": {
-      "bytes": 22462,
-      "sha256": "53c1014a5b79936e043be665f1746d59ceff8a14ff0c8bc7081017c4428f3099",
+      "bytes": 22484,
+      "sha256": "b7f27252bf44d5180babe5325c619e179411436fa70e983dad80b10805f6efa7",
       "source": "noir/smd2835-viewer.mjs"
     },
     "noir/strip-appearance.mjs": {
@@ -5636,18 +5636,18 @@
       "source": "noir/strip-backing.mjs"
     },
     "noir/strip-cue-layout.mjs": {
-      "bytes": 1591,
-      "sha256": "628dbef3aea578497a1e51b957ace131daeffecfdcc30f0792948a50a85ac86c",
+      "bytes": 1769,
+      "sha256": "d996a72ecef78c6c812c32833c7570c873c604966139372bfe605bd65dae7f7e",
       "source": "noir/strip-cue-layout.mjs"
     },
     "noir/strip-detail-cues.mjs": {
-      "bytes": 2668,
-      "sha256": "8971f65e4d350dcf71d9b0002a1fa9218e3f1792e23ffba0c0e85590eae736b2",
+      "bytes": 2949,
+      "sha256": "7482140dc15c88ac1257b9ad0ff497c5fb2f3be34e182c9f467bd9a82b431d7a",
       "source": "noir/strip-detail-cues.mjs"
     },
     "noir/strip-dimensions.mjs": {
-      "bytes": 3305,
-      "sha256": "f4a3ca1d3e671518c87ffbe4705ee602fcf6b4062b9a8de877dc835529cb689f",
+      "bytes": 3735,
+      "sha256": "3902f9d1d679ed18029fed62979705760d9541c3404e63aef48a8b67cbe782a9",
       "source": "noir/strip-dimensions.mjs"
     },
     "noir/strip-light-program.mjs": {
@@ -5656,8 +5656,8 @@
       "source": "noir/strip-light-program.mjs"
     },
     "noir/strip-lighting.mjs": {
-      "bytes": 19631,
-      "sha256": "e9c87d7de65d47723b6be7b8d1d857d52409e2119c27e9235ca68d1f2448a1be",
+      "bytes": 20348,
+      "sha256": "333370070250fa11054d26b320ae9743cc645100024e3e85442cefeb29e2ee22",
       "source": "noir/strip-lighting.mjs"
     },
     "noir/strip-presentation.mjs": {
@@ -5676,8 +5676,8 @@
       "source": "noir/strip-section-camera.mjs"
     },
     "noir/voltage-placement.mjs": {
-      "bytes": 2388,
-      "sha256": "b01123d91be4246f925bc5a071aab4ae55dcb37f2c71e73d3a06bb7dbad53cb2",
+      "bytes": 2926,
+      "sha256": "fb8f506233d09dce0273939b08afe9da0ed67bd330f29ef4904e84fdcd1ee8be",
       "source": "noir/voltage-placement.mjs"
     },
     "targi/index.html": {
@@ -5691,8 +5691,8 @@
       "source": "targi/media/profile-klus.jpg"
     },
     "targi/media/tasmy-cztery.jpg": {
-      "bytes": 139351,
-      "sha256": "b6a69afd0e90842c05c433f78917bdedfce31a01404b97f2b3c48d2f0a266a56",
+      "bytes": 139731,
+      "sha256": "ba3e637c8755cd861fcaa2bdeb726688f9bcd83c0ef32948fc3332439337730a",
       "source": "targi/media/tasmy-cztery.jpg"
     },
     "targi/media/tasmy-final.jpg": {
@@ -5717,7 +5717,7 @@
     },
     "tasmy-opcja-2/index.html": {
       "bytes": 1230,
-      "sha256": "243e471ae270b8fd024dbc1c865fd29bdfaf3c460cdd55428362ee6dcdfd6330",
+      "sha256": "17b11fd7f469b28c9b7f521fc9351f540c363b1b1f7af353e4a2e4385210e9b5",
       "source": "tasmy-opcja-2/index.html"
     },
     "tasmy-opcja-2/mini-shot.mjs": {
@@ -5731,8 +5731,8 @@
       "source": "tasmy-opcja-2/presentation.css"
     },
     "tasmy-opcja-2/presentation.mjs": {
-      "bytes": 16356,
-      "sha256": "ae2ebbc4895e28c4f4e221853b9f74a91de8c5d1b092d8835c8f7b3b01f6bbdc",
+      "bytes": 16378,
+      "sha256": "18d2621e00e17c0e74a0fc8ce9b3f5df38c59f8022888a9648b1d1064ce6fddc",
       "source": "tasmy-opcja-2/presentation.mjs"
     },
     "tasmy-opcja-2/product-details.mjs": {
