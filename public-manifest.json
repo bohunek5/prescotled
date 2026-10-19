@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1136,
-  "bytesExcludingManifest": 307986723,
+  "bytesExcludingManifest": 307992899,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4842,7 +4842,7 @@
     },
     "model-smd-2835/index.html": {
       "bytes": 5297,
-      "sha256": "7c53495c4f4d08118c913e0aa6e2372397d9ed6ae9592c25ff40ab292883b2d4",
+      "sha256": "9cb903726774acc0a8a6fb330aff90364e88e96b16d1ded24d97895b3966d965",
       "source": "model-smd-2835/index.html"
     },
     "noir/catalog-strip-model.mjs": {
@@ -4861,8 +4861,8 @@
       "source": "noir/film-catalog.mjs"
     },
     "noir/film-feature-3d.mjs": {
-      "bytes": 26030,
-      "sha256": "62ecd536aa1c1109b89020e6293ad8fa3e857f29ca47e978ed5d1b146ca1eac2",
+      "bytes": 28763,
+      "sha256": "404b29e5201058be1076c9f6cb608e09d02791d9fe449f6892762fa1cfb99fed",
       "source": "noir/film-feature-3d.mjs"
     },
     "noir/film-numbers.mjs": {
@@ -5616,13 +5616,13 @@
       "source": "noir/smd2835-model.mjs"
     },
     "noir/smd2835-viewer.css": {
-      "bytes": 25008,
-      "sha256": "2aa53c2ed18015bbee23fd10bb064a599c305c11c63992038c664651731b2e3d",
+      "bytes": 25091,
+      "sha256": "27380953249883dd704a3a219c047b3219ed1364effbb76d9ccd6f94b80c97a0",
       "source": "noir/smd2835-viewer.css"
     },
     "noir/smd2835-viewer.mjs": {
-      "bytes": 22673,
-      "sha256": "2b3d8736b06a983a1d32d71276975551fe31123ac321d1dc40082fafd4df21c6",
+      "bytes": 22814,
+      "sha256": "1f5492020b84567f15fa8a4b13644b85fc1c78fa42b1b970ed717c214d5c0c5a",
       "source": "noir/smd2835-viewer.mjs"
     },
     "noir/strip-appearance.mjs": {
@@ -5637,17 +5637,17 @@
     },
     "noir/strip-cue-layout.mjs": {
       "bytes": 1825,
-      "sha256": "ac675e763afb99604a4928c0acc0d883e5b9441b41f2712014f49d9513b9dab1",
+      "sha256": "9c07a8ff358e57e92d26437453a908b910703c93167e88d1c760a4ddfe123d71",
       "source": "noir/strip-cue-layout.mjs"
     },
     "noir/strip-detail-cues.mjs": {
-      "bytes": 3042,
-      "sha256": "b2f5aeb7e91da5dc01925e974127d48d449daabd529d93d892bfe5c877457f50",
+      "bytes": 3651,
+      "sha256": "6b346d506a746748633e89f34ac366e87669d2788b0066ffeb93356e48d95d70",
       "source": "noir/strip-detail-cues.mjs"
     },
     "noir/strip-dimensions.mjs": {
-      "bytes": 4006,
-      "sha256": "ebc9621741c19bd0ee5211e31d7e5f1d058bbf1eed242bfaf629f9980dc2d8a7",
+      "bytes": 4573,
+      "sha256": "1f30cf80c270a6df5a19134c7fd6dc1f0422060195bc4cc11f3ad4b64f516fc8",
       "source": "noir/strip-dimensions.mjs"
     },
     "noir/strip-light-program.mjs": {
@@ -5656,8 +5656,8 @@
       "source": "noir/strip-light-program.mjs"
     },
     "noir/strip-lighting.mjs": {
-      "bytes": 20348,
-      "sha256": "a11bc227ef5fd170bd968197da7f2a98c11b4923c1e067479168c6c4d1191187",
+      "bytes": 22391,
+      "sha256": "14aeaabd4b5bf506b351d85d139dda489431ae96a6ebdef04213246666a555cc",
       "source": "noir/strip-lighting.mjs"
     },
     "noir/strip-presentation.mjs": {

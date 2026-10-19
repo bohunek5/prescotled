@@ -2,7 +2,7 @@ import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {frameStripSection} from './strip-section-camera.mjs';
 import {samplePresentation,presentationStart} from './strip-presentation.mjs?v=detail-3';
 import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-3';
-import {projectStripDimension} from './strip-dimensions.mjs?v=detail-3';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-4';
 
 // Resolve a caption against one deterministic pose, before its first letter.
 // The real ribbon may move beneath it; the caption never follows or hops

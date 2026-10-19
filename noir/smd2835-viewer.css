@@ -174,7 +174,8 @@ body[data-theme="day"] .voltage-value{stroke:#e8e9e2}
 body[data-theme="day"] .voltage-ring{stroke:#a87b36}
 body[data-theme="day"] .voltage-dot{fill:#ab7932}
 .strip-dimension{fill:none;stroke:currentColor;stroke-width:1;opacity:.55;pointer-events:none}
-.voltage-cue.measuring .voltage-leader,.strip-dimension{stroke-linecap:round;stroke-linejoin:round}
+.voltage-cue.measuring .voltage-leader,.voltage-cue.feature-linked .voltage-leader,.strip-dimension{stroke-linecap:round;stroke-linejoin:round}
+.voltage-cue.feature-linked{z-index:0}
 .voltage-cue.measuring .voltage-mode{font-weight:500}
 .intro[data-rebuilding=true]>.color-block,.intro[data-rebuilding=true]>.product-facts,.intro[data-rebuilding=true]>.power-modes,.intro[data-rebuilding=true]>.product-bottom{visibility:hidden}
 .product-facts{border-bottom:1px solid var(--line)}

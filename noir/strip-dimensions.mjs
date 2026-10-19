@@ -38,9 +38,16 @@ export function projectStripDimension(model,camera,viewport,kind){
     const anchorLocal=at(distance,0,.16),anchor=project(anchorLocal);
     const branches=ends.map(end=>polyline([anchor,end]));
     const arrowBranches=arrows.map(polyline);
+    // Longitudinal witness lines follow each real PCB edge, including its
+    // curvature. Each grows in both directions from the width arrow's tip.
+    const witnessHalfLength=2.4;
+    const witnessRails=[-half,half].map(side=>[-1,1].map(direction=>Array.from({length:9},(_,i)=>
+      project(at(distance+direction*witnessHalfLength*i/8,side,.16)))));
+    const witnessHalfPaths=witnessRails.map(halves=>halves.map(polyline));
+    const witnessBranches=witnessHalfPaths.map(halves=>halves.join(' '));
     return {...measurement,distance,edges,ends,anchorLocal,anchor:project(anchorLocal),
-      branches,witnessBranches:['',''],arrowBranches,
-      outline:'',dimension:polyline(ends),witness:'',arrows:arrowBranches.join(' ')};
+      branches,witnessBranches,witnessHalfPaths,witnessRails,witnessHalfLength,arrowBranches,
+      outline:'',dimension:polyline(ends),witness:witnessBranches.join(' '),arrows:arrowBranches.join(' ')};
   }
   const cuts=[section.start,section.end].map(distance=>[-half-.55,half+.55].map(side=>project(at(distance,side,.2))));
   // One bracket spans the exact cut boundaries. Its short arms grip the

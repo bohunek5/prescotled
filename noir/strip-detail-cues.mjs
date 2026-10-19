@@ -34,18 +34,25 @@ export function sampleDetailCue(product,shot,powerMode=0){
 
   // Show the product benefit first, then section/density, then PCB width.
   // Each caption clears before the next one; the last fades at pullback.
+  const featureCue=!measurement&&(three?index<3:index===0);
   const typing=smooth(elapsed/.4);
-  const underline=smooth((elapsed-.42)/.3);
-  const pointer=smooth((elapsed-.76)/.4);
-  const endpoint=smooth((elapsed-1.16)/.16);
+  // The distinctive icon introduces the benefit. Its line reaches the
+  // caption before the underline continues towards the physical detail.
+  const featureSource=featureCue?smooth((elapsed-.42)/.46):0;
+  const featureSourceOpacity=featureCue?1-smooth((elapsed-.9)/.3):0;
+  const underline=smooth((elapsed-(featureCue?.9:.42))/.3);
+  const pointer=smooth((elapsed-(featureCue?1.22:.76))/.4);
+  const endpoint=smooth((elapsed-(featureCue?1.62:1.16))/.16);
   // A measurement is one continuous gesture: leader to centre, then two
   // simultaneous outward branches. Width arrowheads appear at both edges last.
   const branchDuration=.56;
   const branches=measurement?smooth((elapsed-1.18)/branchDuration):0;
   const tips=measurement?smooth((elapsed-1.18-branchDuration)/.08):0;
+  const witnesses=measurement==='width'?smooth((elapsed-1.18-branchDuration)/.26):0;
   const fadeIn=smooth(elapsed/.2);
   const next=starts[index+1],detailEnd=three?19:13;
   const fadeOut=next?1-smooth((local-(next-.3))/.3):1-smooth((local-detailEnd)/.5);
   const end=next??detailEnd+.5;
-  return {index,label,subline,anchor,measurement,contactIndex,start,end,referenceTime:start+1.25,typing,underline,pointer,endpoint,branches,tips,draw:pointer,opacity:fadeIn*fadeOut};
+  const featureEmphasis=featureCue?smooth(elapsed/.3)*fadeOut:0;
+  return {index,label,subline,anchor,measurement,contactIndex,start,end,referenceTime:start+1.25,typing,featureCue,featureSource,featureSourceOpacity,featureEmphasis,underline,pointer,endpoint,branches,tips,witnesses,draw:pointer,opacity:fadeIn*fadeOut};
 }

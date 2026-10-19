@@ -2,9 +2,9 @@ import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {unlitEmitterColor} from './strip-appearance.mjs';
 import {sampleStripLight} from './strip-light-program.mjs';
 import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-3';
-import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-3';
-import {projectStripDimension} from './strip-dimensions.mjs?v=detail-3';
-import {planStripCue} from './strip-cue-layout.mjs?v=detail-3';
+import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-4';
+import {projectStripDimension} from './strip-dimensions.mjs?v=detail-4';
+import {planStripCue} from './strip-cue-layout.mjs?v=detail-4';
 
 const supplyAnchors=new WeakMap();
 export function supplyAnchor(model,contactIndex=0,sectionIndex=null){
@@ -154,16 +154,19 @@ export function installStripLighting(model,product){
 
 // A screen-space annotation anchored to an actual positive copper pad.
 // Digital data terminals are never used as supply contacts.
-export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=null,sequence=false}={}){
+export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=null,featureElement=null,sequence=false}={}){
   const ns='http://www.w3.org/2000/svg',svg=document.createElementNS(ns,'svg');
   svg.classList.add('voltage-cue');svg.setAttribute('aria-hidden','true');
   svg.innerHTML='<path class="voltage-leader voltage-underline" pathLength="1"/><path class="voltage-leader voltage-pointer" pathLength="1"/><circle class="voltage-ring"/><circle class="voltage-dot" r="3"/><text class="voltage-value"/><text class="voltage-mode"/><g class="strip-dimension"><path class="dimension-outline" pathLength="1"/><path class="dimension-line dimension-branch-start" pathLength="1"/><path class="dimension-line dimension-branch-end" pathLength="1"/><path class="dimension-witness dimension-witness-start" pathLength="1"/><path class="dimension-witness dimension-witness-end" pathLength="1"/><path class="dimension-arrows dimension-arrows-start"/><path class="dimension-arrows dimension-arrows-end"/></g>';
   host.append(svg);
   const [path,pointer,ring,dot,label,mode,dimensionGroup]=svg.children;
+  const featurePath=document.createElementNS(ns,'path');
+  featurePath.setAttribute('class','voltage-leader voltage-feature-source');featurePath.setAttribute('pathLength','1');svg.prepend(featurePath);
   const [dimensionOutline,...dimensionPaths]=dimensionGroup.children;
   const dimensionBranches=dimensionPaths.slice(0,2),dimensionWitnesses=dimensionPaths.slice(2,4),dimensionArrows=dimensionPaths.slice(4,6);
+  const witnessHalves=dimensionWitnesses.map(first=>{const second=first.cloneNode();dimensionGroup.append(second);return [first,second];});
   const matrix=new T.Matrix4(),localMatrix=new T.Matrix4(),point=new T.Vector3(),normal=new T.Vector3(),toward=new T.Vector3();
-  let activeVoltage=null,activeContact=null,drawProgress=0,placement=null,placementModel=null,activeAnnotation=null,measurement=null,placementKey='',activeAnchor=null,stages=null;
+  let activeVoltage=null,activeContact=null,drawProgress=0,placement=null,placementModel=null,activeAnnotation=null,measurement=null,placementKey='',activeAnchor=null,stages=null,featureLink=null;
   const plans=new WeakMap();
   const drawPath=(element,progress)=>{
     element.style.strokeDasharray='1';element.style.strokeDashoffset=String(1-progress);
@@ -188,7 +191,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       const cue=sequence?sampleDetailCue(product,shot,powerMode):null;
       const opacity=cue?cue.opacity:(shot?.contactLevel??0);
       svg.style.opacity=String(opacity);activeVoltage=null;activeContact=null;measurement=null;
-      activeAnchor=null;stages=null;
+      activeAnchor=null;stages=null;featureLink=null;featurePath.style.visibility='hidden';
       dimensionGroup.style.display='none';
       if(opacity<=0||!model.group.visible){svg.style.opacity='0';drawProgress=0;placement=null;return;}
       const threeInOne=product.id==='3w1',contactIndex=cue?.contactIndex??(threeInOne?powerMode+1:0);
@@ -226,7 +229,8 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       const endpointProgress=cue?.endpoint??drawProgress*drawProgress;
       const branchProgress=measurement?(cue?.branches??pointerProgress):0;
       const tipProgress=measurement?(cue?.tips??endpointProgress):0;
-      stages={typing,underline:underlineProgress,pointer:pointerProgress,endpoint:endpointProgress,branches:branchProgress,tips:tipProgress,highlight:branchProgress};
+      const witnessProgress=measurement?(cue?.witnesses??tipProgress):0;
+      stages={typing,featureSource:cue?.featureSource??0,featureSourceOpacity:cue?.featureSourceOpacity??0,featureEmphasis:cue?.featureEmphasis??0,underline:underlineProgress,pointer:pointerProgress,endpoint:endpointProgress,branches:branchProgress,tips:tipProgress,witnesses:witnessProgress,highlight:branchProgress};
       label.textContent=fullLabel;mode.textContent=cue?.subline??(threeInOne?`+${product.voltage} V DC  /  ${activeContact}`:'');
       activeAnnotation={label:fullLabel,anchor:cue?.anchor??'contact',index:cue?.index??0};
       const emphasis=!!measurement;
@@ -252,6 +256,21 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       label.textContent=fullLabel.slice(0,Math.ceil(fullLabel.length*typing));
       mode.style.opacity=String(typing);
       const lineY=ty+9*cueScale,exitX=nearPad?placement.exitX:tx+leaderWidth;
+      svg.classList.toggle('feature-linked',!!cue?.featureCue);
+      if(cue?.featureCue&&featureElement){
+        const iconRect=featureElement.getBoundingClientRect(),hostRect=host.getBoundingClientRect();
+        // Desktop films keep the feature row to the left of the stage. Follow
+        // its empty gutter, outside all parameter cells, to the caption start.
+        // A stacked phone layout has no such gutter; keep its local cue only.
+        if(iconRect.right<hostRect.left&&iconRect.width>0){
+          const source={x:iconRect.left-hostRect.left+iconRect.width*.5,y:iconRect.top-hostRect.top+iconRect.height*.48};
+          const end={x:tx,y:lineY},bendX=Math.min(tx-24,Math.max(14,source.x+60));
+          const control1={x:bendX,y:source.y},control2={x:bendX,y:lineY};
+          const d=`M ${source.x} ${source.y} C ${control1.x} ${control1.y} ${control2.x} ${control2.y} ${end.x} ${end.y}`;
+          featurePath.setAttribute('d',d);drawPath(featurePath,cue.featureSource);featurePath.style.strokeOpacity=String(cue.featureSourceOpacity);
+          featureLink={source,end,control1,control2,path:d,progress:cue.featureSource,opacity:cue.featureSourceOpacity,iconRect:{x:iconRect.x,y:iconRect.y,width:iconRect.width,height:iconRect.height}};
+        }
+      }
       path.setAttribute('d',`M ${tx} ${lineY} H ${tx+leaderWidth}`);
       pointer.setAttribute('d',`M ${exitX} ${lineY} L ${x} ${y}`);
       pointer.style.display='';
@@ -262,13 +281,16 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
         dimensionOutline.setAttribute('d',measurement.outline);drawPath(dimensionOutline,branchProgress);
         for(let i=0;i<2;i++){
           dimensionBranches[i].setAttribute('d',measurement.branches[i]);drawPath(dimensionBranches[i],branchProgress);
-          dimensionWitnesses[i].setAttribute('d',measurement.witnessBranches[i]);drawPath(dimensionWitnesses[i],tipProgress);
+          for(let half=0;half<2;half++){
+            const element=witnessHalves[i][half];
+            element.setAttribute('d',measurement.witnessHalfPaths?.[i]?.[half]??'');drawPath(element,witnessProgress);
+          }
           dimensionArrows[i].setAttribute('d',measurement.arrowBranches[i]);dimensionArrows[i].style.opacity=String(tipProgress);
         }
         ring.style.opacity=dot.style.opacity='0';
       }
     },
-    inspect:()=>({contactVoltage:activeVoltage,contact:activeContact,contactAnchor:activeAnchor,contactDrawProgress:drawProgress,contactPlacement:placement,annotation:activeAnnotation,cueStages:stages,measurement:measurement?{...measurement,anchorLocal:measurement.anchorLocal.toArray()}:null}),
+    inspect:()=>({contactVoltage:activeVoltage,contact:activeContact,contactAnchor:activeAnchor,contactDrawProgress:drawProgress,contactPlacement:placement,annotation:activeAnnotation,cueStages:stages,featureLink,measurement:measurement?{...measurement,anchorLocal:measurement.anchorLocal.toArray()}:null}),
     dispose(){svg.remove();}
   };
 }

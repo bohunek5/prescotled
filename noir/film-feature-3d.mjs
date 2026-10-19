@@ -15,6 +15,8 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
   const previousViewport=new T.Vector4(),previousScissor=new T.Vector4();
   let views=[],resources=new Set(),revision=0,kind='',power=0,sunLevel=.25,theme='night';
   let palette=null,beamInfo=null,emitterInfo=null,featureProduct=null,emitterMaterials=[],distinction=null,featureColor=null;
+  let emphasis={amount:0,scale:1,cameraDistance:7,clipAdjusted:false};
+  const emphasisPoint=new T.Vector3();
   const keep=v=>(resources.add(v),v);
   const mat=(color,options={})=>keep(new T.MeshPhysicalMaterial({color,roughness:.27,metalness:.12,clearcoat:.35,...options}));
   function rounded(w,h,d,r=.16){
@@ -280,6 +282,8 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     if(cob)board(views[0].actor,true,false,false,p);else if(p.digital)board(views[0].actor,false,true);else led(views[0].actor);
     board(views[1].actor,cob,false,!cob,p);drop(views[2],p.ipOptions.length===1?p.ip:'variants');beam(views[3],p.beam);
     if(kind==='brightness')sun(views[4]);else if(kind==='bread')bread(views[4]);else if(kind==='slim')slim(views[4]);else if(kind==='cut')precisionCut(views[4],p);else if(kind==='flex')flexibleBoard(views[4]);else if(kind==='digital'||kind==='cct')lightControl(views[4],p,kind==='digital');else colorFan(views[4],kind==='cri'&&Number(p.quality)>=97);
+    views[4].baseScale=views[4].actor.scale.clone();
+    emphasis={amount:0,scale:1,cameraDistance:7,clipAdjusted:false};
     const detail=root.querySelector('[data-product="detail"]'),label=root.querySelector('[data-product="detail-label"]');
     detail.textContent=kind==='brightness'?'LOW':kind==='bread'?'Do pieczywa':kind==='slim'?`Tylko ${p.width} mm`:kind==='cut'?`Co ${p.cut} mm`:kind==='flex'?'Giętka PCB':kind==='digital'?'Digital':kind==='cct'?'CCT':kind==='channels'?p.control:`CRI ${p.quality}`;
     label.textContent=kind==='brightness'?'3 poziomy jasności':kind==='bread'?'Złocisty odcień':kind==='slim'?'Wąska taśma':kind==='cut'?'Precyzyjne cięcie':kind==='flex'?'Forma S-Shape':kind==='digital'?`${p.control} · moduły`:kind==='cct'?'Regulacja bieli':kind==='channels'?'Sterowanie barwą':Number(p.quality)>=90?'Wysokie oddawanie barw':'Oddawanie barw';
@@ -294,7 +298,7 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     root.querySelector('[data-feature="ip"] small').textContent=p.ipOptions.length>1?'Dostępne warianty':'Stopień ochrony';
     setPower(0);
   }
-  function render(time,still=false,reducedMotion=false){
+  function render(time,still=false,reducedMotion=false,featureEmphasis=0){
     if(!views.length)return;
     const bounds=(sharedRenderer?renderer.domElement:host).getBoundingClientRect(),w=Math.round(bounds.width),h=Math.round(bounds.height);if(!w||!h)return;
     const previousExposure=renderer.toneMappingExposure,previousAutoClear=renderer.autoClear,previousScissorTest=renderer.getScissorTest();
@@ -308,6 +312,8 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     renderer.setScissorTest(true);
     sunLevel=still?[.25,.5,1][power]:T.MathUtils.lerp(sunLevel,[.25,.5,1][power],.12);
     animatePalette(time,reducedMotion);
+    const amount=T.MathUtils.clamp(Number.isFinite(featureEmphasis)?featureEmphasis:0,0,1);
+    const emphasisScale=1+.22*T.MathUtils.smoothstep(amount,0,1);
     slots.forEach((slot,i)=>{
       const r=slot.getBoundingClientRect(),v=views[i],t=still?1:time;
       if(!r.width||!r.height||r.right<=bounds.left||r.left>=bounds.right||r.bottom<=bounds.top||r.top>=bounds.bottom)return;
@@ -315,6 +321,38 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       v.camera.aspect=r.width/r.height;v.camera.updateProjectionMatrix();
       v.actor.rotation.set(-.16+Math.sin(t*.7+i)*.07,Math.sin(t*.85+i*.8)*.38,-.08+Math.sin(t*.5+i)*.045);v.actor.position.y=Math.sin(t*1.3+i)*.11;
       for(const {object:o,type} of v.moving){if(type==='ripple'){o.scale.setScalar(.9+.16*Math.sin(t*2));o.material.opacity=.35+.2*Math.sin(t*2);}if(type==='beam')o.material.uniforms.strength.value=(theme==='night'?.85:.38)+.025*Math.sin(t*1.6);if(type==='beamHalo')o.material.uniforms.strength.value=theme==='night'?.3:.08;if(type==='cut')o.position.y=Math.sin(t*.9)*.9;if(type==='sun')o.material.emissiveIntensity=sunLevel*1.6;if(type==='glow'){o.material.uniforms.strength.value=sunLevel*.8;o.scale.setScalar(.8+sunLevel*.4);}if(type==='rays'){o.rotation.z=t*.13;o.scale.setScalar(.84+sunLevel*.16);}}
+      if(i===4){
+        // Apply after every icon animation, preserving SLIM's authored scale
+        // and the CRI fan's independent unfolding. No wall-clock state.
+        v.actor.scale.copy(v.baseScale).multiplyScalar(emphasisScale);
+        let cameraDistance=7,cameraOffsetY=0;
+        if(amount>0){
+          v.actor.updateMatrixWorld(true);
+          const vertical=Math.tan(T.MathUtils.degToRad(v.camera.fov/2))*.985,horizontal=vertical*v.camera.aspect;
+          const projectedHeights=[];let minY=Infinity,maxY=-Infinity,maxZ=-Infinity;
+          v.actor.traverseVisible(object=>{
+            // Soft halo planes deliberately extend beyond their visible glow;
+            // only physical geometry determines the safe camera framing.
+            if(!object.isMesh||object.material?.isShaderMaterial)return;
+            if(!object.geometry.boundingBox)object.geometry.computeBoundingBox();
+            const box=object.geometry.boundingBox;
+            for(const x of [box.min.x,box.max.x])for(const y of [box.min.y,box.max.y])for(const z of [box.min.z,box.max.z]){
+              emphasisPoint.set(x,y,z).applyMatrix4(object.matrixWorld);
+              cameraDistance=Math.max(cameraDistance,emphasisPoint.z+Math.abs(emphasisPoint.x)/horizontal);
+              minY=Math.min(minY,emphasisPoint.y);maxY=Math.max(maxY,emphasisPoint.y);maxZ=Math.max(maxZ,emphasisPoint.z);
+              projectedHeights.push([emphasisPoint.y,emphasisPoint.z]);
+            }
+          });
+          // SLIM includes a ruler below the board. Recenter only the necessary
+          // amount before pulling back, keeping its emphasis visibly larger.
+          cameraDistance=Math.max(cameraDistance,maxZ+(maxY-minY)/(2*vertical));
+          let lower=-Infinity,upper=Infinity;
+          for(const [y,z] of projectedHeights){const halfHeight=(cameraDistance-z)*vertical;lower=Math.max(lower,y-halfHeight);upper=Math.min(upper,y+halfHeight);}
+          cameraOffsetY=T.MathUtils.clamp(0,lower,upper);
+        }
+        v.camera.position.set(0,cameraOffsetY,cameraDistance);v.camera.updateMatrixWorld();
+        emphasis={amount,scale:emphasisScale,cameraDistance,cameraOffsetY,clipAdjusted:cameraDistance>7||cameraOffsetY!==0,actorScale:v.actor.scale.toArray(),iconRect:{x:r.left,y:r.top,width:r.width,height:r.height}};
+      }
       renderer.setViewport(r.left-bounds.left,bounds.bottom-r.bottom,r.width,r.height);
       if(sharedRenderer){
         const left=Math.max(r.left,bounds.left),right=Math.min(r.right,bounds.right),top=Math.max(r.top,bounds.top),bottom=Math.min(r.bottom,bounds.bottom);
@@ -327,5 +365,5 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       renderer.setViewport(previousViewport);renderer.setScissor(previousScissor);renderer.setScissorTest(previousScissorTest);
     }
   }
-  return {update,render,setPower,setColor,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,emitter:emitterInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
+  return {update,render,setPower,setColor,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,emphasis,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,emitter:emitterInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
 }

@@ -4,9 +4,9 @@ import {filmProducts} from './film-catalog.mjs';
 import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-3';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
-import {createFeatureIcons} from './film-feature-3d.mjs';
+import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-4';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-3';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-4';
 import {frameStripSection} from './strip-section-camera.mjs';
 
 // Review these three constructions before extending the film to the catalogue.
@@ -39,7 +39,7 @@ renderer.setPixelRatio(Math.min(devicePixelRatio,2));renderer.outputColorSpace=T
 renderer.toneMapping=T.ACESFilmicToneMapping;renderer.toneMappingExposure=1.08;
 renderer.shadowMap.enabled=true;renderer.shadowMap.type=T.PCFSoftShadowMap;
 host.append(renderer.domElement);
-const voltageCue=createVoltageCue(host,{nearPad:true,avoidElement:intro,sequence:true});
+const voltageCue=createVoltageCue(host,{nearPad:true,avoidElement:intro,featureElement:document.querySelector('[data-feature="detail"] .feature-icon'),sequence:true});
 const scene=new T.Scene(),camera=new T.PerspectiveCamera(32,1,1,2000);
 let sectionFraming=null;
 const models=products.map(product=>createCatalogStrip(product,{anisotropy:Math.min(8,renderer.capabilities.getMaxAnisotropy())}));
@@ -101,7 +101,7 @@ function render(now){
     sectionFraming=frameStripSection(camera,focusModel,{...shot,zoom,rotation,tilt},camera.aspect);
     model.group.rotation.copy(focusModel.group.rotation);activeRebuild?.group.rotation.copy(focusModel.group.rotation);
     voltageCue.update(model,products[modelIndex],camera,reduced.matches?null:shot,width,height,powerMode);
-    renderer.render(scene,camera);featureIcons.render(shot?.iconTime??0,reduced.matches||!touring,reduced.matches);painted++;needsPaint=false;
+    renderer.render(scene,camera);featureIcons.render(shot?.iconTime??0,reduced.matches||!touring,reduced.matches,voltageCue.inspect().cueStages?.featureEmphasis??0);painted++;needsPaint=false;
   }
   inRender=false;
   if(rotating||Math.abs(zoom-targetZoom)>.0001)raf=requestAnimationFrame(render);
