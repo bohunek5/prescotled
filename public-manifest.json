@@ -59,8 +59,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 1141,
-  "bytesExcludingManifest": 308051916,
+  "fileCountExcludingManifest": 1142,
+  "bytesExcludingManifest": 308063887,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4841,28 +4841,28 @@
       "source": "model-profile-micro/index.html"
     },
     "model-smd-2835/index.html": {
-      "bytes": 5300,
-      "sha256": "c3db11ab345319f94a32fd2b327d276fbbbc59161b555186ab40117611e80acd",
+      "bytes": 5302,
+      "sha256": "ced31997793c6e1d8a355bcd0d2787eca7addffc70ac999cf0fbbfba6121d39c",
       "source": "model-smd-2835/index.html"
     },
     "noir/catalog-strip-model.mjs": {
-      "bytes": 33352,
-      "sha256": "4e2e316c3748130e9fc1f45e8b3bfbffb8a02544d607bd11ab6cd466e27282b1",
+      "bytes": 35838,
+      "sha256": "e5595666a1e586fc67c4e562007ef1c4848d6ab4e1b5da930d236a7d59ee7d7e",
       "source": "noir/catalog-strip-model.mjs"
     },
     "noir/delux-pcb-artwork.mjs": {
-      "bytes": 5803,
-      "sha256": "df843e218cef4e74c97eb91fd01496f095a4e5bed9045cbbd1c32f51e312b483",
+      "bytes": 5827,
+      "sha256": "3e41c528735980b94c63d1c5abca5a9e96baf1e4244eaa1b13c3949e5b36ab0f",
       "source": "noir/delux-pcb-artwork.mjs"
     },
     "noir/film-catalog.mjs": {
-      "bytes": 114650,
-      "sha256": "e977572299071ababc70a4aa38a74c40c3ef18bcb55530d850e7b44e81225800",
+      "bytes": 119798,
+      "sha256": "4401f5a0755d0b8ad95f4a823520d7989a7753d37304d76fb649cd3fb3e9210b",
       "source": "noir/film-catalog.mjs"
     },
     "noir/film-feature-3d.mjs": {
-      "bytes": 35254,
-      "sha256": "f51dd837d9afbe44a93ebd09afd5c8dbc789fb027b7770b05559108f409a5fb2",
+      "bytes": 44521,
+      "sha256": "0ce227bbcc8935175f7914b1865085761aed8966ff8759aa67b2f3e7e34df964",
       "source": "noir/film-feature-3d.mjs"
     },
     "noir/film-numbers.mjs": {
@@ -5612,17 +5612,17 @@
     },
     "noir/smd2835-model.mjs": {
       "bytes": 14969,
-      "sha256": "06c9d8fc8abb36efbdd167ae88d248f96e6b42f1d7ede605a6dcf75ad0b5d911",
+      "sha256": "68fd226c9789ac867cb34370bcb275496a101a5c360a6c36c118cd2aedae5abc",
       "source": "noir/smd2835-model.mjs"
     },
     "noir/smd2835-viewer.css": {
-      "bytes": 26397,
-      "sha256": "05fa6dfac7f389aa1bae247f887f52104b63e14946f0ebadee01e2a4321f7ee3",
+      "bytes": 26714,
+      "sha256": "685a80cc732d2a7d1c81e20924af0b35a917ffd1c76276834b551ba89baa8490",
       "source": "noir/smd2835-viewer.css"
     },
     "noir/smd2835-viewer.mjs": {
-      "bytes": 26297,
-      "sha256": "9fea9516dda92ac45686a95e49b8cfc072729c0fe25876be67715a13d2226157",
+      "bytes": 27687,
+      "sha256": "5bdee838f73d7f0b08cdbf6768cc186ab94a13de4446aadb15a096bb6e777ff8",
       "source": "noir/smd2835-viewer.mjs"
     },
     "noir/strip-appearance.mjs": {
@@ -5636,8 +5636,8 @@
       "source": "noir/strip-backing.mjs"
     },
     "noir/strip-cue-layout.mjs": {
-      "bytes": 3070,
-      "sha256": "fadc7dbb13368a86e5e8db460e00c044b3a9af165c1691572624e1d7046ca700",
+      "bytes": 3194,
+      "sha256": "d9010f69688d522df9ccb6d3c3e748662cf243ec638ce00911d43fe2f699becd",
       "source": "noir/strip-cue-layout.mjs"
     },
     "noir/strip-detail-cues.mjs": {
@@ -5656,13 +5656,13 @@
       "source": "noir/strip-light-program.mjs"
     },
     "noir/strip-lighting.mjs": {
-      "bytes": 26167,
-      "sha256": "3787b76979a7019cc8449b3e8858bc704a181ab5f8add7ecc6ad53bcf2afcf08",
+      "bytes": 26946,
+      "sha256": "dc4d00837fce68579359e02b9b9c90355b2e3abe81551f7ad2ce72a11e24388e",
       "source": "noir/strip-lighting.mjs"
     },
     "noir/strip-presentation.mjs": {
       "bytes": 3372,
-      "sha256": "74fdf3335df41668803e4db94c7049aa2c352740f65650f5b7734acfa75636b5",
+      "sha256": "37d368d1c6b1264dfab18b40f257f876a51c0dec9be13354913fb7da6921202c",
       "source": "noir/strip-presentation.mjs"
     },
     "noir/strip-rebuild.mjs": {
@@ -5671,13 +5671,13 @@
       "source": "noir/strip-rebuild.mjs"
     },
     "noir/strip-section-camera.mjs": {
-      "bytes": 3314,
-      "sha256": "102cd900f8c2d3cb1d73b8c27445682f6caa75e49ff25c1cd6e52ad0fe21109f",
+      "bytes": 4365,
+      "sha256": "7555631b96cef3c249fecd812bae034d4ec80fcae1c9557c81dea4f439054064",
       "source": "noir/strip-section-camera.mjs"
     },
     "noir/voltage-placement.mjs": {
-      "bytes": 3115,
-      "sha256": "9d568654a70431c6f9cfe84d9bcd48c81b81d14abacbc20ff14496d90a0687c4",
+      "bytes": 3205,
+      "sha256": "ff9a09cd7d9bb31ee4d2a797b8ecaae2b09c8299a19f837dae260666ec2a8983",
       "source": "noir/voltage-placement.mjs"
     },
     "targi/index.html": {
@@ -5706,8 +5706,8 @@
       "source": "targi/targi.css"
     },
     "tasmy-opcja-2/assortment.mjs": {
-      "bytes": 2280,
-      "sha256": "748402f7a939a519834bbf2a0db6631409d39bf773aa9c398c31df7eb6c113bd",
+      "bytes": 2611,
+      "sha256": "7054511751094062b7607da6c8ab134a4171868fc4c66971d9414ca93a3653f1",
       "source": "tasmy-opcja-2/assortment.mjs"
     },
     "tasmy-opcja-2/five-volt.mjs": {
@@ -5717,12 +5717,12 @@
     },
     "tasmy-opcja-2/index.html": {
       "bytes": 1230,
-      "sha256": "73f44b894202529eb8b664faf904a54c5aa6fff7da634e3779429f4429832349",
+      "sha256": "cd3b3b1cbce80ec40a41b47dadfb08b6343649244573d663287c4f65757108b1",
       "source": "tasmy-opcja-2/index.html"
     },
     "tasmy-opcja-2/mini-shot.mjs": {
-      "bytes": 4893,
-      "sha256": "2e1a38f0852c032854917b47b142c0118b3cd1987b1bb8b8039882dad1ca1778",
+      "bytes": 4904,
+      "sha256": "fd57ac26ac1e7af194c74789efeccec75e77996480e4d044575caa63364ef3db",
       "source": "tasmy-opcja-2/mini-shot.mjs"
     },
     "tasmy-opcja-2/presentation.css": {
@@ -5731,13 +5731,13 @@
       "source": "tasmy-opcja-2/presentation.css"
     },
     "tasmy-opcja-2/presentation.mjs": {
-      "bytes": 16382,
-      "sha256": "c054748a7f715e9ef7fbc9d3d89912c83b6c137956c91abb5e5eee88851bc8f5",
+      "bytes": 17043,
+      "sha256": "0dd12ae1b87d940e529668f068fde566b4a3fca0014548feb956ee4ccf8dcc9f",
       "source": "tasmy-opcja-2/presentation.mjs"
     },
     "tasmy-opcja-2/product-details.mjs": {
-      "bytes": 4774,
-      "sha256": "2f5d0d7e035590b944a028b775b060d2027f52c3b20b4fa45def442bbb7ca7f6",
+      "bytes": 4553,
+      "sha256": "026a422ede9a83249df8492df285ae6beb8605fa12f052e4c81332eba831da4d",
       "source": "tasmy-opcja-2/product-details.mjs"
     },
     "noir/media/delux-3w1-pcb-print.svg": {
@@ -5751,8 +5751,8 @@
       "source": "noir/media/smd2835-pcb-print.svg"
     },
     "noir/catalog-film-artwork.mjs": {
-      "bytes": 5592,
-      "sha256": "d6ac1c0eca27030e3e72ec0a47a61a0e1103beeb394582ebe3cc679565a1a916",
+      "bytes": 5603,
+      "sha256": "c204a8571d769aff8d2cc3061610687e10419a32cd18271cc54f17e60d12dd4f",
       "source": "noir/catalog-film-artwork.mjs"
     },
     "noir/strip-fact-highlight.mjs": {
@@ -5761,19 +5761,24 @@
       "source": "noir/strip-fact-highlight.mjs"
     },
     "noir/strip-film-selection.mjs": {
-      "bytes": 1039,
-      "sha256": "8ec972db8d6481a3b0fffed1e0d37855cc6d67e7aa4362020c515e48551e8a40",
+      "bytes": 1083,
+      "sha256": "15245c902c4511dcc212c879d6009778bef8937ba77ff30a8d8ec71d0021931a",
       "source": "noir/strip-film-selection.mjs"
     },
     "noir/wcob-detail-cues.mjs": {
-      "bytes": 1827,
-      "sha256": "f50b1c27a835322c49a77c59317d20d41b90b801b327c4a5668e475062583cba",
+      "bytes": 1317,
+      "sha256": "a96867e3d74147c8badc076101a96865d064c6cdc3cb50779f8f253b1f732fd6",
       "source": "noir/wcob-detail-cues.mjs"
     },
     "noir/wcob-section-detail.mjs": {
-      "bytes": 16034,
-      "sha256": "4956807185d1472a72222e354c2d14ff5b65227f772daa17e38259f91b31cdd9",
+      "bytes": 4886,
+      "sha256": "51866de1bbb66f81fff21ba204bcd24ed9662563a522292aae418fdc21e1e87c",
       "source": "noir/wcob-section-detail.mjs"
+    },
+    "noir/strip-product-variants.mjs": {
+      "source": "noir/strip-product-variants.mjs",
+      "bytes": 2114,
+      "sha256": "5c16cf76fd0d730838d76c2360c4bfda8206335316a5beafabe084bef118cbe5"
     }
   }
 }

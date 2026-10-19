@@ -1,21 +1,22 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-5';
-import {mainFilmProducts as products} from './strip-film-selection.mjs?v=detail-2';
-import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-5';
+import {createCatalogStrip} from './catalog-strip-model.mjs?v=detail-6';
+import {mainFilmProducts as products} from './strip-film-selection.mjs?v=detail-3';
+import {resolveFilmVariant} from './strip-product-variants.mjs?v=1';
+import {samplePresentation,sampleVariant,presentationStart} from './strip-presentation.mjs?v=detail-6';
 import {createStripRebuild} from './strip-rebuild.mjs';
 import {powerModes} from './offer-series-models.mjs';
-import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-6';
+import {createFeatureIcons} from './film-feature-3d.mjs?v=detail-7';
 import {createNumberAnimator} from './film-numbers.mjs';
-import {createVoltageCue} from './strip-lighting.mjs?v=detail-8';
-import {frameStripSection} from './strip-section-camera.mjs?v=detail-3';
+import {createVoltageCue} from './strip-lighting.mjs?v=detail-9';
+import {frameStripSection} from './strip-section-camera.mjs?v=detail-4';
 import {createFactHighlight} from './strip-fact-highlight.mjs';
-import {createWcobSectionDetail} from './wcob-section-detail.mjs';
-import {sampleWcobDetailCue} from './wcob-detail-cues.mjs';
+import {createWcobSectionDetail} from './wcob-section-detail.mjs?v=end-1';
+import {sampleWcobDetailCue} from './wcob-detail-cues.mjs?v=end-1';
 
 const PLAYBACK_RATE=1.15;
-const smdVoltageName=product=>/^SMD\s+(?:12|24)\s*V(?:\s*·|$)/.test(product.name)?`${product.name.split(' · ')[0]} · ${product.density}\u00a0LED/m`:null;
+const smdVoltageName=product=>/^(?:SMD|COB)\s+(?:12|24|48)\s*V(?:\s*·|$)/.test(product.name)?`${product.name.split(' · ')[0]} · ${product.density}\u00a0LED/m`:product.tech.includes('COB')?product.name:null;
 const modelOption=(product,sku=product.sku)=>`${product.range} · ${smdVoltageName(product)??product.name} · ${sku}`;
-let colorVariant=null,colorKey='';
+let colorVariant=null,colorKey='',effectiveProduct=products[0];
 let lightProgram=null;
 const catalogueNumber=value=>{const text=String(value??'').trim().replace(',','.');return /^\d+(?:\.\d+)?$/.test(text)?Number(text):null;};
 const smoothBlend=value=>{const x=T.MathUtils.clamp(value,0,1);return x*x*(3-2*x);};
@@ -90,6 +91,7 @@ const key=new T.DirectionalLight(0xfff0d6,3.2);key.position.set(-130,140,210);ke
 key.shadow.mapSize.set(2048,2048);Object.assign(key.shadow.camera,{left:-140,right:140,top:150,bottom:-150,near:1,far:600});key.shadow.bias=-.00006;key.shadow.normalBias=.035;key.shadow.radius=3;scene.add(key);
 const fill=new T.DirectionalLight(0xdbe8ff,1.3);fill.position.set(140,20,100);scene.add(fill);
 const rim=new T.DirectionalLight(0xffe4c0,2.4);rim.position.set(50,100,-180);scene.add(rim);
+const endFill=new T.DirectionalLight(0xffffff,0);scene.add(endFill,endFill.target);
 models[0].setPower(3/11);
 
 let rotating=!reduced.matches,lit=false,zoom=0,targetZoom=0,rotation=-.22,tilt=-.04,view='full',theme='day',visible=true;
@@ -127,17 +129,20 @@ function render(now){
     resize();
     const focusModel=shot?.rebuild?models[shot.rebuild.from]:model;
     if(wcobDetail){
-      wcobDetail.update(shot?.wcobDetail??0,{lightLevel:0,kelvin:colorVariant?.kelvin});
+      wcobDetail.update(shot?.wcobDetail??0,{lightLevel:0,kelvin:colorVariant?.kelvin,product:effectiveProduct});
     }
-    const detailBounds=wcobDetail?.group.visible?wcobDetail.inspect().boundsLocal:null;
+    if(wcobDetail)wcobDetail.group.visible=!activeRebuild;
+    const detailBounds=null;
     sectionFraming=frameStripSection(camera,focusModel,{...shot,zoom,rotation,tilt,detailBounds},camera.aspect);
+    endFill.intensity=2.1*(sectionFraming.endReveal??0);
+    if(endFill.intensity){endFill.position.copy(camera.position);endFill.target.position.copy(focusModel.frame(focusModel.specification.length).p.applyMatrix4(focusModel.group.matrixWorld));endFill.target.updateMatrixWorld();}
     model.group.rotation.copy(focusModel.group.rotation);activeRebuild?.group.rotation.copy(focusModel.group.rotation);
     let cueShot=shot;
     if(wcobDetail){
       wcobDetail.group.rotation.copy(model.group.rotation);wcobDetail.group.updateMatrixWorld(true);
       if(shot?.wcobDetail!==null&&shot?.wcobDetail!==undefined)cueShot={...shot,detailCue:sampleWcobDetailCue(wcobDetail,shot.local)};
     }
-    voltageCue.update(model,products[modelIndex],camera,reduced.matches?null:cueShot,width,height,powerMode);
+    voltageCue.update(model,effectiveProduct,camera,reduced.matches?null:cueShot,width,height,powerMode);
     const cueStages=voltageCue.inspect().cueStages;
     factHighlight.update(cueStages?.highlightFacts,cueStages?.highlightLevel);
     renderer.render(scene,camera);featureIcons.render(shot?.iconTime??0,reduced.matches||!touring,reduced.matches,cueStages?.featureEmphasis??0);painted++;needsPaint=false;
@@ -168,7 +173,7 @@ function setPowerMode(index){
   schedule();
 }
 function updateLighting(){
-  const p=products[modelIndex],variants=p.colorVariants;
+  const p=effectiveProduct,variants=products[modelIndex].colorVariants;
   const incoming=shot?.phase==='ready'||(shot?.rebuild&&shot.rebuild.to===modelIndex);
   const local=incoming?0:shot?.local??0,detailEnd=shot?.detailEnd??(p.id==='3w1'?13:18);
   // Addressable strips demonstrate from the opening shot. All constructions
@@ -188,9 +193,9 @@ function updateLighting(){
   function flux(v,mode){return catalogueNumber(v?.outputs[mode]??p.output)??reference;}
   function variantFlux(mode){return T.MathUtils.lerp(flux(previousVariant,mode),flux(colorVariant,mode),variantBlend);}
   let power=variantFlux(0)/reference;
-  if(p.id==='deluxlow'||p.id==='coblow')power*=.23;
+  if(p.id==='deluxlow'||p.id==='slimlow'||p.id==='coblow')power*=.23;
   if(p.id==='3w1'&&shot)power=T.MathUtils.lerp(variantFlux(Math.max(0,powerMode-1)),variantFlux(powerMode),shot.powerBlend)/reference;
-  lightProgram=model.updateLightAnimation(local,{lightLevel:level,power,variant:colorVariant?.kelvin??p.color,previousVariant:previousVariant?.kelvin??p.color,variantBlend,variantProgress});
+  lightProgram=model.updateLightAnimation(local,{activeProduct:p,lightLevel:level,power,variant:colorVariant?.kelvin??p.color,previousVariant:previousVariant?.kelvin??p.color,variantBlend,variantProgress});
   lit=level>0;
   const block=document.querySelector('.color-block');
   block.dataset.lightProgram=lit?'active':'off';
@@ -210,19 +215,17 @@ function selectModel(index){
   colorVariant=null;colorKey='';
   modelIndex=index;model=models[index];models.forEach((m,i)=>{if(m)m.group.visible=i===index;});
   keepAdjacent(index);
-  const p=products[index];document.body.dataset.model=p.id;
+  const p=products[index];effectiveProduct=p;document.body.dataset.model=p.id;
   if(p.id.startsWith('wcob')){wcobDetail=createWcobSectionDetail(model,p);scene.add(wcobDetail.group);}
-  const catalogueSectionCount=Number(p.density)*Number(p.cut)/1000;
-  const integralSectionCount=Math.abs(catalogueSectionCount-Math.round(catalogueSectionCount))<.15;
   document.querySelector('#model-select').value=String(index);
   document.querySelector('#model-count').textContent=`${String(index+1).padStart(2,'0')} / ${products.length}`;
-  const fields={kelvin:p.color,'color-unit':p.unit,color:p.colorCopy,power:p.power,output:p.output,density:p.density,voltage:p.voltage,width:p.width,'output-label':p.outputLabel,'output-unit':p.outputUnit,quality:p.quality,'quality-unit':p.qualityUnit,'quality-label':p.qualityLabel,tech:p.tech.includes('COB')?p.tech:`SMD ${p.tech}`,ip:p.ip,beam:p.beam,section:p.tech.includes('COB')?`Cięcie ${p.cut} mm`:`${model.specification.ledsPerSection} LED / sekcja`};
+  const fields={kelvin:p.color,'color-unit':p.unit,color:p.colorCopy,power:p.power,output:p.output,density:p.density,voltage:p.voltage,width:p.width,'output-label':p.outputLabel,'output-unit':p.outputUnit,quality:p.quality,'quality-unit':p.qualityUnit,'quality-label':p.qualityLabel,tech:p.tech.includes('COB')?p.tech:`SMD ${p.tech}`,ip:p.ip,beam:p.beam,section:`Cięcie co ${p.cut} mm`};
   for(const [key,value] of Object.entries(fields))document.querySelector(`[data-product="${key}"]`).textContent=value;
   fact('efficacy',p.efficacy??'—');fact('copper',p.copperOz??'—');
   document.querySelector('[data-product="copper-unit"]').textContent=p.copperOz?'oz':'';
-  const heading=document.querySelector('#product-title');heading.replaceChildren();const range=document.createElement('small');const series=document.createElement('b');series.className='series-caption';series.textContent='SERIA';const seriesName=document.createElement('span');seriesName.className='series-name';seriesName.textContent=p.range;range.append(series,seriesName);const name=document.createElement('span');const mainName=smdVoltageName(p)??p.name.split(' \u00b7 ')[0];name.textContent=mainName;
+  const heading=document.querySelector('#product-title');heading.replaceChildren();const range=document.createElement('small');const series=document.createElement('b');series.className='series-caption';series.textContent='SERIA';const seriesName=document.createElement('span');seriesName.className='series-name';seriesName.textContent=p.range;range.append(series,seriesName);const name=document.createElement('span');const mainName=(smdVoltageName(p)??p.name.split(' \u00b7 ')[0]).replace(/(\d+(?:[,.]\d+)?)\s+mm\b/g,'$1\u00a0mm');name.textContent=mainName;
   const reference=document.createElement('em');reference.className='model-variant';reference.dataset.product='sku';reference.setAttribute('aria-label','Symbol katalogowy');reference.textContent=p.sku;
-  heading.append(range,name,reference);heading.dataset.long=String(mainName.length>13);
+  heading.append(range,name,reference);heading.dataset.long=String(mainName.length>12);
   document.querySelector('[data-product="warranty"]').textContent=`${p.warrantyYears} ${p.warrantyYears===3?'lata':'lat'} gwarancji`;
   document.querySelector('.polish-flag').hidden=!p.madeInPoland;document.querySelector('.assurance-origin').hidden=!p.madeInPoland;
   document.querySelector('.power-modes').hidden=p.id!=='3w1';
@@ -235,7 +238,7 @@ function selectModel(index){
   revealFacts(pendingProductReveal?'heading':'all');
   schedule();
 }
-function swatch(k){return {czerwona:'#ed6957',niebieska:'#729ce8',różowa:'#e790ba',zielona:'#8fc497',żółta:'#f3d563'}[k]??(Number(k)<=2700?'#ffd393':Number(k)<3500?'#ffe0a4':Number(k)<=4500?'#fff3d6':Number(k)>6500?'#c0dbff':'#e0edff');}
+function swatch(k){return k==='CCT'?'linear-gradient(100deg,#ffd393 0%,#fff3d6 48%,#c0dbff 100%)':{czerwona:'#ed6957',niebieska:'#729ce8',różowa:'#e790ba',zielona:'#8fc497',żółta:'#f3d563'}[k]??(Number(k)<=2700?'#ffd393':Number(k)<3500?'#ffe0a4':Number(k)<=4500?'#fff3d6':Number(k)>6500?'#c0dbff':'#e0edff');}
 function buildColorVariants(p){
   document.querySelector('.color-block').dataset.extreme='false';
   const container=document.querySelector('#color-variants');container.replaceChildren();document.querySelector('.color-block').dataset.numeric=String(/^\d+$/.test(p.color));
@@ -245,9 +248,7 @@ function buildColorVariants(p){
     item.style.setProperty('--swatch',swatch(v.kelvin));
     const dot=document.createElement('i');dot.setAttribute('aria-hidden','true');
     const label=document.createElement('span');label.textContent=/^\d+$/.test(v.kelvin)?`${p.control==='RGBW'?'RGB + ':''}${v.kelvin} K`:v.label;
-    const outline=document.createElementNS('http://www.w3.org/2000/svg','svg');outline.setAttribute('class','variant-outline');outline.setAttribute('aria-hidden','true');outline.setAttribute('viewBox','0 0 100 36');outline.setAttribute('preserveAspectRatio','none');
-    const rect=document.createElementNS('http://www.w3.org/2000/svg','rect');for(const [key,value] of Object.entries({x:1,y:1,width:98,height:34,rx:4,pathLength:100}))rect.setAttribute(key,value);outline.append(rect);
-    item.append(dot,label,outline);container.append(item);
+    item.append(dot,label);container.append(item);
   }
 }
 function updateColorVariant(local=0){
@@ -255,20 +256,30 @@ function updateColorVariant(local=0){
   if(!variants.length){document.querySelector('.color-block').dataset.multicolor=String(p.control.startsWith('RGB'));return;}
   const v=variants[sampleVariant(local,variants.length)],key=`${p.id}:${v.kelvin}`;
   if(key===colorKey)return;
-  colorKey=key;colorVariant=v;model.setTemperature(v.kelvin);featureIcons.setColor(v.kelvin);
+  const previousSource=effectiveProduct.sourceProductId??effectiveProduct.id;
+  colorKey=key;colorVariant=v;effectiveProduct=resolveFilmVariant(p,v);
+  if(previousSource!==effectiveProduct.sourceProductId)featureIcons.update(effectiveProduct);
+  model.setTemperature(v.kelvin);featureIcons.setColor(v.kelvin);
+  model.group.userData.catalogueDensity=Number(effectiveProduct.density);
+  model.group.userData.catalogueCut=Number(effectiveProduct.cut);
   const reference=document.querySelector('[data-product="sku"]');reference.textContent=v.sku;
   document.querySelector('#model-select').options[modelIndex].textContent=modelOption(p,v.sku);
   if(!seeking&&!reduced.matches){reference.getAnimations().forEach(animation=>animation.cancel());reference.animate([{opacity:.3,transform:'translateY(3px)'},{opacity:1,transform:'translateY(0)'}],{duration:550,easing:'ease-out'});}
-  fact('kelvin',p.control==='RGBW'?'RGBW':v.kelvin);
-  document.querySelector('[data-product="color-unit"]').textContent=/^\d+$/.test(v.kelvin)&&p.control!=='RGBW'?'K':'';
+  fact('kelvin',effectiveProduct.control==='RGBW'?'RGBW':v.kelvin);
+  document.querySelector('[data-product="color-unit"]').textContent=/^\d+$/.test(v.kelvin)&&effectiveProduct.control!=='RGBW'?'K':'';
   document.querySelector('[data-product="color"]').textContent=v.label;
   fact('output',v.outputs[p.id==='3w1'?powerMode:0]??'—');
-  fact('efficacy',v.efficacies?.[p.id==='3w1'?powerMode:0]??p.efficacy??'—');
+  fact('efficacy',v.efficacies?.[p.id==='3w1'?powerMode:0]??effectiveProduct.efficacy??'—');
   if(p.id!=='3w1'&&v.power)fact('power',v.power);
-  energy(v.energyClass??p.energyClass);
-  const block=document.querySelector('.color-block');block.dataset.multicolor=String(p.control.startsWith('RGB'));block.style.setProperty('--swatch',swatch(v.kelvin));
+  for(const field of ['density','voltage','width','quality'])fact(field,effectiveProduct[field]);
+  for(const [field,value] of Object.entries({'output-label':effectiveProduct.outputLabel,'output-unit':effectiveProduct.outputUnit,'quality-unit':effectiveProduct.qualityUnit,'quality-label':effectiveProduct.qualityLabel,tech:effectiveProduct.tech.includes('COB')?effectiveProduct.tech:`SMD ${effectiveProduct.tech}`,ip:effectiveProduct.ip,beam:effectiveProduct.beam,section:`Cięcie co ${effectiveProduct.cut} mm`}))document.querySelector(`[data-product="${field}"]`).textContent=value;
+  document.querySelector('[data-feature="section"] small').textContent='Moduł cięcia';
+  fact('copper',effectiveProduct.copperOz??'—');
+  document.querySelector('[data-product="copper-unit"]').textContent=effectiveProduct.copperOz?'oz':'';
+  energy(effectiveProduct.energyClass);
+  const block=document.querySelector('.color-block');block.dataset.multicolor=String(effectiveProduct.control.startsWith('RGB'));block.dataset.numeric=String(/^\d+$/.test(v.kelvin));block.style.setProperty('--swatch',swatch(v.kelvin));
   block.dataset.extreme=String(v.label.toLowerCase().includes('bardzo'));
-  document.querySelectorAll('[data-kelvin]').forEach(item=>{const active=item.dataset.kelvin===v.kelvin;item.dataset.active=String(active);const outline=item.querySelector('rect');outline.getAnimations().forEach(a=>a.cancel());if(active&&!reduced.matches)outline.animate([{strokeDashoffset:100},{strokeDashoffset:0}],{duration:850,easing:'cubic-bezier(.22,.61,.36,1)',fill:'both'});});
+  document.querySelectorAll('[data-kelvin]').forEach(item=>{item.dataset.active=String(item.dataset.kelvin===v.kelvin);});
   if(!reduced.matches)for(const el of [document.querySelector('.color-fact'),document.querySelector('[data-product="output"]')]){
     el.getAnimations().forEach(a=>a.cancel());el.animate([{opacity:.3,transform:'translateY(5px)'},{opacity:1,transform:'translateY(0)'}],{duration:700,easing:'cubic-bezier(.22,.61,.36,1)'});
   }
@@ -325,7 +336,7 @@ function seekReady(seconds,{play=false}={}){
   if(shot.rebuild&&!reduced.matches)applyRebuild(shot.rebuild.from,shot.rebuild.progress);
   seeking=false;schedule();return true;
 }
-window.smdViewer={seek,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,modelIndex,productId:products[modelIndex].id,modelCount:products.length,loadedModelCount:models.filter(Boolean).length,chapterStarts:products.map((_,i)=>presentationStart(i)),models:products.map(p=>p.id),sectionFraming,wcobDetail:wcobDetail?.inspect()??null,featureIcons:featureIcons.inspect(),factHighlight:factHighlight.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
+window.smdViewer={seek,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,modelIndex,productId:products[modelIndex].id,activeVariant:{sourceProductId:effectiveProduct.sourceProductId??effectiveProduct.id,control:effectiveProduct.control,density:effectiveProduct.density,cut:effectiveProduct.cut,power:effectiveProduct.power,output:effectiveProduct.output,efficacy:effectiveProduct.efficacy,energyClass:effectiveProduct.energyClass},modelUuid:model.group.uuid,modelCount:products.length,loadedModelCount:models.filter(Boolean).length,chapterStarts:products.map((_,i)=>presentationStart(i)),models:products.map(p=>p.id),sectionFraming,wcobDetail:wcobDetail?.inspect()??null,featureIcons:featureIcons.inspect(),factHighlight:factHighlight.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
 const modelSelect=document.querySelector('#model-select');
 products.forEach((p,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=modelOption(p);modelSelect.append(option);});
 function startModel(index){if(!ready)return;seek(presentationStart((index+products.length)%products.length),{play:true});}

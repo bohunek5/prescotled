@@ -1,6 +1,6 @@
 // Deterministic camera choreography: full product, approach, macro drift,
 // rebuild during the pullback, then hold the finished next model in rotation.
-import {mainFilmProductIds,mainFilmProducts} from './strip-film-selection.mjs?v=detail-2';
+import {mainFilmProductIds,mainFilmProducts} from './strip-film-selection.mjs?v=detail-3';
 import {hasCopperDetail} from './strip-detail-cues.mjs?v=detail-8';
 export const SHOT_SECONDS=18;
 export const THREE_IN_ONE_SECONDS=24;

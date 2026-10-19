@@ -1,10 +1,10 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 import {unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
 import {sampleStripLight} from './strip-light-program.mjs?v=detail-3';
-import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-4';
+import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-5';
 import {sampleDetailCue} from './strip-detail-cues.mjs?v=detail-8';
 import {projectStripDimension} from './strip-dimensions.mjs?v=detail-6';
-import {planStripCue} from './strip-cue-layout.mjs?v=detail-6';
+import {planStripCue} from './strip-cue-layout.mjs?v=detail-7';
 
 const supplyAnchors=new WeakMap();
 export function supplyAnchor(model,contactIndex=0,sectionIndex=null){
@@ -95,22 +95,26 @@ export function installStripLighting(model,product){
   glow.setColorAt(0,new T.Color(0xffffff));glow.instanceColor.setUsage(T.DynamicDrawUsage);
   glow.material.color.set(0xffffff);glow.material.needsUpdate=true;
   restore.push(()=>{glow.instanceColor=oldGlowColors;});
+  let activeProduct=product;
   let level=0,power=1,time=0,variant=product.color,previousVariant=variant,variantBlend=1,variantProgress=null;
   let samples=[],current=sampleStripLight(product,0,{variant});
   const moduleCount=Math.max(1,model.specification.sections),emissionGain=isCob?1.65:2.2;
   function refresh(){
     const strength=level*Math.pow(power,.82);illumination.value=strength;
     const parameters={variant,previousVariant,variantBlend,variantProgress,moduleCount};
-    const global=sampleStripLight(product,time,parameters);
-    const modules=product.digital?Array.from({length:moduleCount},(_,module)=>sampleStripLight(product,time,{...parameters,module})):[global];
-    current=product.digital?modules[Math.floor(moduleCount/2)]:global;
+    // WCOB's fourth finish gets a complete warm-to-cool demonstration within
+    // its own colour slot, without replacing the continuous silicone body.
+    const sampleTime=activeProduct.id==='wcob'&&activeProduct.control==='CCT'&&variantProgress!==null?7+variantProgress*Math.PI/.55:time;
+    const global=sampleStripLight(activeProduct,sampleTime,parameters);
+    const modules=activeProduct.digital?Array.from({length:moduleCount},(_,module)=>sampleStripLight(activeProduct,sampleTime,{...parameters,module})):[global];
+    current=activeProduct.digital?modules[Math.floor(moduleCount/2)]:global;
     materials.forEach((material,i)=>{
       material.color.copy(resting[i]);material.emissive.set(0xffffff);material.emissiveIntensity=emissionGain*strength;
     });
     for(const {mesh,color,intensity} of emitterAttributes){
       const channels=mesh.userData.emitterChannels;
       for(let i=0;i<mesh.count;i++){
-        const sample=modules[product.digital?Math.min(moduleCount-1,i):0];
+        const sample=modules[activeProduct.digital?Math.min(moduleCount-1,i):0];
         const channel=channels?.length?sample.channels?.[channels[i%channels.length]]:null;
         const emission=channel?.color??sample.color;
         color.setXYZ(i,emission.r,emission.g,emission.b);intensity.setX(i,sample.intensity*(channel?.intensity??1));
@@ -118,16 +122,16 @@ export function installStripLighting(model,product){
       color.needsUpdate=intensity.needsUpdate=true;
     }
     for(let i=0;i<glow.count;i++){
-      const index=product.digital?Math.min(moduleCount-1,Math.floor((i+.5)/glow.count*moduleCount)):0,sample=modules[index];
+      const index=activeProduct.digital?Math.min(moduleCount-1,Math.floor((i+.5)/glow.count*moduleCount)):0,sample=modules[index];
       glowColor.copy(sample.color).multiplyScalar(sample.intensity);glow.setColorAt(i,glowColor);
     }
     glow.instanceColor.needsUpdate=true;
-    // IP67's curved diffuser emits continuously. Discrete halo planes would
-    // incorrectly reveal a row of bright spots through its silicone sleeve.
-    glow.visible=strength>.001&&product.id!=='cobip67';glow.material.opacity=(isCob?.15:.48)*strength;
-    const inspected=product.digital?modules:[global,global,global];
+    // COB emits through a continuous band. Separate halo planes would paint
+    // artificial bright dots across it; its surface already carries emission.
+    glow.visible=strength>.001&&!product.tech.includes('COB');glow.material.opacity=(isCob?.15:.48)*strength;
+    const inspected=activeProduct.digital?modules:[global,global,global];
     samples=inspected.map((sample,module)=>({module,color:`#${sample.color.getHexString()}`,intensity:sample.intensity*strength}));
-    return {program:current.program,phase:current.phase,color:`#${current.color.getHexString()}`,warmMix:current.warmMix,digital:!!product.digital};
+    return {program:current.program,phase:current.phase,color:`#${current.color.getHexString()}`,warmMix:current.warmMix,digital:!!activeProduct.digital};
   }
   function temperature(value){
     variant=value;
@@ -138,6 +142,7 @@ export function installStripLighting(model,product){
   model.setPower=value=>{power=T.MathUtils.clamp(value,0,1);refresh();};
   model.setTemperature=value=>{temperature(value);previousVariant=value;variantBlend=1;refresh();};
   model.updateLightAnimation=(seconds,options={})=>{
+    activeProduct=options.activeProduct??product;
     time=Math.max(0,Number(seconds)||0);
     if(options.lightLevel!==undefined)level=T.MathUtils.clamp(options.lightLevel,0,1);
     if(options.power!==undefined)power=T.MathUtils.clamp(options.power,0,1);
@@ -148,7 +153,7 @@ export function installStripLighting(model,product){
   };
   const inspect=model.inspect;
   model.inspect=()=>({...inspect(),lightOn:level>0,lightLevel:level,lightPower:power,lightColor:`#${current.color.getHexString()}`,
-    lightProgram:current.program,lightPhase:current.phase,lightWarmMix:current.warmMix,digital:!!product.digital,
+    lightProgram:current.program,lightPhase:current.phase,lightWarmMix:current.warmMix,digital:!!activeProduct.digital,
     lightSamples:samples.map(sample=>({...sample})),emissionGain,unlitEmitterColors:resting.map(c=>`#${c.getHexString()}`),
     emitterChannels:emitterAttributes.filter(({mesh})=>mesh.userData.emitterChannels?.length).map(({mesh,color,intensity})=>({mesh:mesh.name,channels:mesh.userData.emitterChannels.map((channel,i)=>({channel,color:`#${new T.Color(color.getX(i),color.getY(i),color.getZ(i)).getHexString()}`,intensity:intensity.getX(i)*level*Math.pow(power,.82)}))}))});
   refresh();return ()=>{
@@ -182,6 +187,8 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
   function featureAnchor(model,kind,camera){
     const section=model.sectionFrame(Math.max(0,Math.floor(model.specification.sections/2)-1));
     let frame=kind==='cut'?section.startFrame:section.frame,edgeOffset=model.specification.width/2;
+    const endFace=(model.group.userData.productId?.startsWith('wcob')&&['cover','emitters','pcb','backing'].includes(kind))||kind==='sleeve'&&model.group.userData.sleeveLayout;
+    if(endFace)frame=model.frame(model.specification.length);
     if(kind==='edge'&&model.group.userData.productId==='sshape'){
       const contour=model.group.userData.sShape?.sectionBounds;
       if(contour?.length){
@@ -191,6 +198,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       }
     }
     const result=new T.Matrix4().makeBasis(frame.x,frame.y,frame.z);
+    if(endFace)result.makeBasis(frame.x,frame.z.clone().negate(),frame.y);
     result.setPosition(frame.p.clone().addScaledVector(frame.x,kind==='edge'?edgeOffset:0)
       .addScaledVector(frame.z,kind==='coating'||kind==='sleeve'?(model.group.userData.coverHeight??.5):0));
     if(kind==='sleeve'&&model.group.userData.sleeveLayout){
@@ -253,7 +261,7 @@ export function createVoltageCue(host,{compact=false,nearPad=false,avoidElement=
       if(measurement)localMatrix.setPosition(measurement.anchorLocal);
       matrix.multiplyMatrices(model.group.matrixWorld,localMatrix);point.setFromMatrixPosition(matrix);
       normal.setFromMatrixColumn(matrix,2).normalize();toward.copy(camera.position).sub(point).normalize();
-      if(!measurement&&!['copper','sleeve'].includes(cue?.anchor))point.addScaledVector(normal,.16);
+      if(!measurement&&!cue?.anchorLocal&&!['copper','sleeve'].includes(cue?.anchor))point.addScaledVector(normal,.16);
       point.project(camera);
       if(normal.dot(toward)<.1||point.z>1||Math.abs(point.x)>.95||Math.abs(point.y)>.95){svg.style.opacity='0';return;}
       activeVoltage=product.voltage;

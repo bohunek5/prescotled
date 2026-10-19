@@ -2,7 +2,7 @@ import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
 
 // Newly added DELUX / PREMIUM chapters plus their Bread and One Cut variants.
 // The three approved chapters and the other catalogue constructions keep their artwork.
-const supported=new Set(['deluxlow','smd12','smd12dense','smd2470','smd24','smd24140','smd24210','premiumslim4','premiumslim120','rgbw','rgbw24','bread70','bread','onecut','onecutlow']);
+const supported=new Set(['deluxlow','deluxmid','smd12','smd12dense','smd2470','smd24','smd24140','smd24210','premiumslim4','premiumslim120','rgbw','rgbw24','bread70','bread','onecut','onecutlow']);
 export const supportsCatalogFilmArtwork=product=>supported.has(product.id);
 
 export function createCatalogFilmArtwork(product,spec,{brand,ce,contacts,padSpacing,padLength,footprints,anisotropy=4}){

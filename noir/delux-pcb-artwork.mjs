@@ -19,7 +19,7 @@ export function sectionFrame(spec,frame,index=0){
 }
 
 export async function createDeluxArtwork(product,spec,{anisotropy=4}={}){
-  const [brand,ce]=await marks(),w=spec.width,h=spec.section,slim=product.id==='slim',three=product.id==='3w1';
+  const [brand,ce]=await marks(),w=spec.width,h=spec.section,slim=product.id==='slim'||product.id==='slimlow',three=product.id==='3w1';
   const canvas=document.createElement('canvas');canvas.width=slim?512:768;canvas.height=4096;
   const ctx=canvas.getContext('2d');ctx.scale(canvas.width/w,canvas.height/h);
   ctx.fillStyle='#f2f2e9';ctx.fillRect(0,0,w,h);

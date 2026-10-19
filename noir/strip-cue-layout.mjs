@@ -1,9 +1,9 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {frameStripSection} from './strip-section-camera.mjs?v=detail-3';
-import {samplePresentation,presentationStart} from './strip-presentation.mjs?v=detail-5';
-import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-4';
+import {frameStripSection} from './strip-section-camera.mjs?v=detail-4';
+import {samplePresentation,presentationStart} from './strip-presentation.mjs?v=detail-6';
+import {placeVoltageLabel} from './voltage-placement.mjs?v=detail-5';
 import {projectStripDimension} from './strip-dimensions.mjs?v=detail-6';
-import {mainFilmProducts,mainFilmProductIds} from './strip-film-selection.mjs?v=detail-2';
+import {mainFilmProducts,mainFilmProductIds} from './strip-film-selection.mjs?v=detail-3';
 
 // Resolve a caption against one deterministic pose, before its first letter.
 // The real ribbon may move beneath it; the caption never follows or hops
@@ -16,7 +16,7 @@ export function planStripCue(model,product,camera,cue,anchor,{width,height,label
   frameStripSection(referenceCamera,proxy,{...shot,detailBounds:cue.referenceBounds},width/height);
   const dimension=cue.measurement?projectStripDimension(proxy,referenceCamera,{width,height},cue.measurement):null;
   const point=cue.referenceAnchorLocal?new T.Vector3().fromArray(cue.referenceAnchorLocal):dimension?dimension.anchorLocal.clone():new T.Vector3().setFromMatrixPosition(anchor);
-  if(!dimension&&!['copper','sleeve'].includes(cue.anchor))point.addScaledVector(new T.Vector3().setFromMatrixColumn(anchor,2),.16);
+  if(!dimension&&!cue.anchorLocal&&!['copper','sleeve'].includes(cue.anchor))point.addScaledVector(new T.Vector3().setFromMatrixColumn(anchor,2),.16);
   point.applyMatrix4(proxy.group.matrixWorld).project(referenceCamera);
   const x=(point.x*.5+.5)*width,y=(-point.y*.5+.5)*height;
   if(cue.referenceBounds){
@@ -37,5 +37,6 @@ export function planStripCue(model,product,camera,cue,anchor,{width,height,label
     x:dimension.ends[1].x-dimension.ends[0].x,y:dimension.ends[1].y-dimension.ends[0].y
   }:null;
   return {...placeVoltageLabel(proxy,referenceCamera,{width,height,x,y,labelWidth,twoLines:true,scale,leftBound,
+    endFace:product.id.startsWith('wcob')&&cue.index>=100||product.id==='cobip67'&&cue.anchor==='sleeve',
     raise:dimension?18*scale:0,branchAxis}),locked:true,referenceTime:cue.referenceTime};
 }

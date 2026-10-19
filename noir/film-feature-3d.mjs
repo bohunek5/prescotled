@@ -15,7 +15,7 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
   }
   const previousViewport=new T.Vector4(),previousScissor=new T.Vector4();
   let views=[],resources=new Set(),revision=0,kind='',power=0,sunLevel=.25,theme='night';
-  let palette=null,beamInfo=null,emitterInfo=null,featureProduct=null,emitterMaterials=[],distinction=null,featureColor=null;
+  let palette=null,beamInfo=null,emitterInfo=null,sectionInfo=null,featureProduct=null,emitterMaterials=[],distinction=null,featureColor=null;
   let emphasis={amount:0,scale:1,cameraDistance:7,clipAdjusted:false};
   const emphasisPoint=new T.Vector3();
   const keep=v=>(resources.add(v),v);
@@ -42,6 +42,18 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     for(const side of [-1,1])mesh(g,rounded(.32,1.5,.2,.06),silver,side*1.12,0,-.025);
     mesh(g,rounded(.07,.34,.018,.02),mat(0x414b4b),.94,-.72,.32);
     return {group:g,emitter};
+  }
+  function smd2016(parent){
+    // A separate 2.0 × 1.6 mm package: the white WCOB cover belongs to
+    // the enclosure icon, not to the underlying SMD diode.
+    const g=new T.Group();g.position.z=.12;g.scale.setScalar(1.27);parent.add(g);
+    const ceramic=mat(0xf5f2e7,{metalness:0,roughness:.48,clearcoat:.12});
+    const silver=mat(0xbfc8ca,{metalness:.84,roughness:.27});
+    mesh(g,rounded(1.6,2,.30,.09),ceramic);
+    mesh(g,rounded(1.28,1.66,.025,.07),mat(0xc5b682,{roughness:.65,metalness:0}),0,0,.31);
+    mesh(g,rounded(1.12,1.50,.045,.055),mat(0xf0c333,{roughness:.6,metalness:0,clearcoat:.06,emissive:0x000000}),0,0,.34);
+    for(const side of [-1,1])mesh(g,rounded(.16,1.30,.17,.03),silver,side*.83,0,-.025);
+    mesh(g,rounded(.06,.24,.012,.012),mat(0x4a514b,{roughness:.55}),.71,-.61,.315);
   }
   function rgbwLed(parent){
     const g=new T.Group();g.position.z=.16;g.scale.setScalar(.5);parent.add(g);
@@ -81,6 +93,66 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       for(const side of [-1,1])for(const y of [-.4,0,.4])mesh(parent,rounded(.3,.12,.07,.02),mat(0xbdcbd0,{metalness:.8}),side*.67,y,.2);
       mesh(parent,keep(new T.SphereGeometry(.07,12,8)),gold,-.3,.4,.53);
     }else for(const x of segment?[-.85,0,.85]:[0])led(parent,x,0,segment?.29:.65);
+  }
+  function cutSection(v,p){
+    const strip=new T.Group();strip.position.x=-.45;strip.scale.setScalar(.8);v.actor.add(strip);
+    const cob=stripAppearance(p).kind!=='smd';
+    if(cob)board(strip,true,false,false,p);
+    else{
+      mesh(strip,rounded(1.9,3.2,.13,.12),mat(0xeceee4,{roughness:.56,metalness:0}));
+      mesh(strip,rounded(1.9,3.2,.035,.12),mat(0xbfb186,{metalness:.55}),0,0,-.05);
+      for(const y of [-.82,.82])led(strip,0,y,.4);
+      const gold=mat(0xd99b52,{metalness:.7,roughness:.25});
+      for(const x of [-.55,.55])for(const y of [-.13,.13])mesh(strip,rounded(.32,.22,.025,.045),gold,x,y,.15);
+    }
+    const steel=mat(0xb8c6ca,{metalness:.88,roughness:.24}),grip=mat(0x496c70,{metalness:.12,roughness:.34});
+    const cutMark=keep(new T.MeshBasicMaterial({color:0xc58e48,toneMapped:false}));
+    // The cut mark stays in one place; the scissors close on that mark.
+    for(let i=0;i<5;i++)mesh(strip,rounded(.25,.035,.025,.01),cutMark,-.8+i*.4,0,.42);
+    const scissors=new T.Group();scissors.position.set(.4,0,.56);scissors.rotation.z=-Math.PI/2;scissors.scale.setScalar(.8);v.actor.add(scissors);
+    const shape=new T.Shape();shape.moveTo(-.075,.12);shape.lineTo(.085,.12);shape.lineTo(.03,-1.48);shape.quadraticCurveTo(-.08,-1.4,-.085,-1.18);shape.closePath();
+    const blade=keep(new T.ExtrudeGeometry(shape,{depth:.055,bevelEnabled:true,bevelSize:.015,bevelThickness:.015,bevelSegments:2,steps:1}));
+    const handle=keep(new T.TorusGeometry(.28,.075,10,40)),arms=[];
+    for(const side of [-1,1]){
+      const arm=new T.Group();arm.position.z=side*.055;scissors.add(arm);mesh(arm,blade,steel);
+      mesh(arm,rounded(.12,.58,.08,.045),steel,0,.3,.01);
+      const ring=mesh(arm,handle,grip,0,.8,.03);ring.scale.set(1,1.18,1);arms.push({arm,side});
+    }
+    const pivot=mesh(scissors,keep(new T.CylinderGeometry(.11,.11,.21,24)),steel,0,0,.04);pivot.rotation.x=Math.PI/2;
+    sectionInfo={kind:cob?'cob-cut':'smd-cut',cutMm:Number(p.cut),continuousStrip:true,scissors:true,stationaryCutLine:true};
+    v.animate=(time,reduced)=>{const aperture=reduced?.26:.16+.2*(.5+.5*Math.cos(time*1.6));for(const {arm,side} of arms)arm.rotation.z=side*aperture;};
+  }
+  function wcobCutSection(v,p){
+    const strip=new T.Group();strip.position.x=-.58;v.actor.add(strip);
+    const width=1.08,length=2.95,cutY=-.15;
+    const pcb=mat(0xe6e8dd,{roughness:.65,metalness:0,clearcoat:.05});
+    const milk=mat(0xe4e6df,{roughness:.68,metalness:0,clearcoat:.06,emissive:0x000000});
+    mesh(strip,rounded(width,length,.12,.05),pcb);
+    mesh(strip,rounded(width,length,.025,.04),mat(0xc3b994,{roughness:.66,metalness:.15}),0,0,-.035);
+    mesh(strip,keep(new T.CylinderGeometry(width/2,width/2,length,40,1,false,-Math.PI/2,Math.PI)),milk,0,0,.12);
+    // The dashed cut line follows the curved surface. The complete scissors
+    // sit in front of that surface, with their pivot outside the strip edge.
+    const mark=keep(new T.MeshBasicMaterial({color:0x88948a,toneMapped:false}));
+    for(let i=0;i<5;i++){
+      const x=-.45+i*.225,z=.12+Math.sqrt(Math.max(0,(width/2)**2-x*x))+.025;
+      const dash=mesh(strip,rounded(.14,.034,.014,.008),mark,x,cutY,z);
+      dash.rotation.y=Math.asin(x/(width/2));
+    }
+    const scissors=new T.Group();scissors.position.set(.42,cutY,.91);scissors.rotation.z=-Math.PI/2;scissors.scale.setScalar(.85);v.actor.add(scissors);
+    const steel=mat(0xaabcc2,{metalness:.88,roughness:.25}),grip=mat(0x3e6469,{metalness:.1,roughness:.38});
+    const shape=new T.Shape();shape.moveTo(-.075,.10);shape.lineTo(.085,.10);shape.lineTo(.032,-1.38);shape.quadraticCurveTo(-.085,-1.30,-.085,-1.10);shape.closePath();
+    const blade=keep(new T.ExtrudeGeometry(shape,{depth:.055,bevelEnabled:true,bevelSize:.015,bevelThickness:.015,bevelSegments:2,steps:1}));
+    const handle=keep(new T.TorusGeometry(.245,.072,10,40)),arms=[];
+    for(const side of [-1,1]){
+      const arm=new T.Group();arm.position.z=side*.045;scissors.add(arm);mesh(arm,blade,steel);
+      const stem=new T.CatmullRomCurve3([new T.Vector3(0,.08,.02),new T.Vector3(side*.08,.32,.02),new T.Vector3(side*.20,.58,.02)]);
+      mesh(arm,keep(new T.TubeGeometry(stem,12,.055,8,false)),steel);
+      const ring=mesh(arm,handle,grip,side*.20,.82,.02);ring.scale.y=1.17;
+      arms.push({arm,side});
+    }
+    const pivot=mesh(scissors,keep(new T.CylinderGeometry(.10,.10,.20,24)),steel,0,0,.04);pivot.rotation.x=Math.PI/2;
+    sectionInfo={kind:'wcob-cut',cutMm:Number(p.cut),continuousStrip:true,scissors:true,scissorsInFront:true,coatingLit:false};
+    v.animate=(time,reduced)=>{const aperture=reduced?.24:.16+.17*(.5+.5*Math.cos(time*1.6));for(const {arm,side} of arms)arm.rotation.z=-side*aperture;};
   }
   function drop(v,ip){
     const points=[[0,-1.15],[.38,-1.1],[.71,-.83],[.82,-.42],[.72,-.05],[.47,.42],[.21,.89],[.025,1.36],[0,1.4]].map(p=>new T.Vector2(...p));
@@ -122,13 +194,56 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     const glow=mesh(v.actor,keep(new T.PlaneGeometry(4.3,4.3)),glowMaterial,0,0,-.3);v.moving.push({object:glow,type:'glow'});
   }
   function bread(v){
-    const loaf=mesh(v.actor,keep(new T.SphereGeometry(1,40,24)),mat(0xc87b31,{roughness:.84,metalness:0,clearcoat:0}),0,-.12,0);loaf.scale.set(1.35,.79,.65);
-    const crust=mat(0xf3ca86,{roughness:1,metalness:0,clearcoat:0});
-    for(const x of [-.65,0,.65]){const score=mesh(v.actor,rounded(.1,.85,.025,.05),crust,x,.08,.59);score.rotation.z=-.4;}
-    // Small flour flecks follow the curved surface, with a deterministic pattern.
-    const dot=keep(new T.SphereGeometry(.025,6,4));
-    for(let i=0;i<42;i++){const x=Math.sin(i*2.4)*1.12,y=Math.cos(i*4.1)*.54,z=.65*Math.sqrt(Math.max(.05,1-(x/1.35)**2-(y/.79)**2));mesh(v.actor,dot,crust,x,y-.12,z);}
-    v.actor.rotation.z=-.12;
+    const smooth=x=>{const t=T.MathUtils.clamp(x,0,1);return t*t*(3-2*t);};
+    const crust=mat(0xffffff,{vertexColors:true,roughness:.56,metalness:0,clearcoat:.18,sheen:.2,sheenColor:0xffd59a,sheenRoughness:.7});
+    const score=mat(0xb37737,{roughness:.82,metalness:0,clearcoat:0});
+    const pore=mat(0xc49554,{roughness:1,metalness:0,clearcoat:0});
+    const halves=[];
+    for(const side of [-1,1]){
+      const half=new T.Group();v.actor.add(half);halves.push({half,side});
+      const geometry=keep(new T.SphereGeometry(1,48,32,side===1?Math.PI/2:-Math.PI/2,Math.PI)),positions=geometry.attributes.position,colors=[];
+      for(let i=0;i<positions.count;i++){
+        const x=positions.getX(i),y=positions.getY(i),z=positions.getZ(i),grain=Math.sin(x*31+y*47+z*29)*Math.sin(y*37-x*19);
+        const uneven=1+.009*grain+.013*Math.sin(x*7+y*5)*Math.sin(z*8);
+        positions.setXYZ(i,x*1.16*uneven,y*1.04*uneven,z*.7*uneven);
+        const warmth=.5+.21*Math.sin(x*8-y*11)+.07*grain;
+        const color=new T.Color(0x87431e).lerp(new T.Color(0xc88939),T.MathUtils.clamp(warmth+.14*Math.max(0,z),0,1));colors.push(color.r,color.g,color.b);
+      }
+      geometry.setAttribute('color',new T.Float32BufferAttribute(colors,3));geometry.computeVertexNormals();mesh(half,geometry,crust);
+      const inside=keep(new T.CircleGeometry(1,48));inside.rotateY(Math.PI/2);inside.scale(1,1.035,.695);
+      mesh(half,inside,mat(0xf3d89c,{roughness:.88,metalness:0,clearcoat:0,side:T.DoubleSide}),side*.002,0,0);
+      const poreGeometry=keep(new T.SphereGeometry(1,8,6));
+      for(let i=0;i<17;i++){
+        const radius=Math.sqrt((i+.5)/17)*.86,angle=i*2.39996,y=Math.cos(angle)*radius,z=Math.sin(angle)*radius*.64;
+        const hole=mesh(half,poreGeometry,pore,side*.008,y,z);hole.scale.set(.007,.018+(i%3)*.011,.024+(i%4)*.007);
+      }
+    }
+    // Five gently curved scores give the roll its characteristic crown.
+    for(let arm=0;arm<5;arm++){
+      const points=[];
+      for(let i=0;i<=22;i++){const r=.09+.8*i/22,a=arm*Math.PI*2/5+.35*r;points.push(new T.Vector3(Math.cos(a)*r*1.16,Math.sin(a)*r*1.04,.7*Math.sqrt(1-r*r)-.016));}
+      const owner=halves[points[4].x<0?0:1].half;
+      mesh(owner,keep(new T.TubeGeometry(new T.CatmullRomCurve3(points),28,.025,8,false)),score);
+    }
+    const seedGeometry=keep(new T.SphereGeometry(1,10,8)),seedMaterials=[0xe9cb8d,0xcfa363,0xf1d89f].map(color=>mat(color,{roughness:.48,metalness:0,clearcoat:.22}));
+    for(let i=0;i<29;i++){
+      const r=Math.sqrt((i+.4)/29)*.86,a=i*2.39996+.4,x=Math.cos(a)*r*1.16,y=Math.sin(a)*r*1.04,z=.7*Math.sqrt(1-r*r);
+      const seed=mesh(halves[x<0?0:1].half,seedGeometry,seedMaterials[i%3],x,y,z+.025);
+      seed.quaternion.setFromUnitVectors(new T.Vector3(0,0,1),new T.Vector3(x/1.3456,y/1.0816,z/.49).normalize());seed.rotateZ(a+.6*Math.sin(i*3.1));seed.scale.set(.04,.092+(i%3)*.012,.024);
+    }
+    const crumbs=[];
+    for(let i=0;i<6;i++){
+      const material=mat(0xe6bf7e,{roughness:.86,metalness:0,clearcoat:0,transparent:true,opacity:0});
+      const piece=mesh(v.actor,keep(new T.IcosahedronGeometry(.025+(i%3)*.012,0)),material);piece.visible=false;crumbs.push(piece);
+    }
+    distinction={kind:'bread',shape:'kaiser-roll',sunflowerSeeds:29,halves:2,crumbs:6,opening:0,visibleCrumbs:0};
+    v.animate=(time,reduced)=>{
+      const phase=((time%7)+7)%7/7,opening=reduced?0:smooth((phase-.12)/.18)*(1-smooth((phase-.67)/.22));
+      for(const {half,side} of halves){half.position.x=side*opening*.14;half.rotation.y=side*opening*.3;half.rotation.z=-side*opening*.025;}
+      crust.roughness=reduced?.56:.56+.025*Math.sin(time*.8);let visible=0;
+      crumbs.forEach((piece,i)=>{const age=(phase-(.29+i*.025))/.31;piece.visible=!reduced&&age>=0&&age<1;if(!piece.visible)return;visible++;const side=i%2?1:-1;piece.position.set(side*(.04+.31*age),.24-1.7*age*age,.64+.12*age);piece.rotation.set(age*3+i,age*4-i,age*2);piece.material.opacity=smooth(age/.1)*(1-smooth((age-.7)/.3));});
+      distinction.opening=opening;distinction.visibleCrumbs=visible;
+    };
   }
   function slim(v,p){
     const width=.74,height=3.45;
@@ -159,7 +274,7 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     const width=1.1,height=3.05;
     mesh(v.actor,rounded(width,height,.12,.09),mat(0xeaece1,{roughness:.55,metalness:0}));
     if(opaque){
-      mesh(v.actor,keep(new T.CylinderGeometry(width/2,width/2,height,48,1,false,-Math.PI/2,Math.PI)),mat(0xf4f3ec,{roughness:.34,metalness:0,clearcoat:.35}),0,0,.13);
+      mesh(v.actor,keep(new T.CylinderGeometry(width/2,width/2,height,48,1,false,-Math.PI/2,Math.PI)),mat(0xe4e6df,{roughness:.68,metalness:0,clearcoat:.06,emissive:0x000000,emissiveIntensity:0}),0,0,.13);
     }else{
       // The IP67 card shows white U-shaped walls around a hollow cream arch,
       // with yellow COB inside. Keep the same small icon envelope.
@@ -179,7 +294,7 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       for(let i=1;i<=20;i++){const a=Math.PI-i/20*Math.PI;core.push([Math.cos(a)*1.7,.025+Math.sin(a)*1.75]);}
       profile(core,mat(0xf2c32e,{roughness:.58,metalness:0,clearcoat:.03}),height);
     }
-    distinction={kind:opaque?'coating':'sleeve',opaque,ip:p.ip,cover:true};
+    distinction={kind:opaque?'coating':'sleeve',opaque,ip:p.ip,cover:true,...(opaque?{unlit:true,emissiveIntensity:0,glow:false}:{} )};
   }
   function precisionCut(v,p){
     const pcb=mat(0xeceee4,{roughness:.56,metalness:0}),gold=mat(0xd99b52,{metalness:.72}),steel=mat(0xc4d2d8,{metalness:.88,roughness:.2});
@@ -367,11 +482,11 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
   }
   function update(p){
     const feature=describeStripFeature(p);
-    resources.forEach(r=>r.dispose());resources=new Set();palette=null;distinction=null;emitterMaterials=[];featureProduct=p;featureColor=p.color;views=Array.from({length:5},view);revision++;kind=feature.kind;
-    const appearance=stripAppearance(p),cob=appearance.kind!=='smd';
-    emitterInfo={kind:appearance.kind,color:cob?unlitEmitterColor(p):0xf0c333,opaqueFront:appearance.opaqueFront};
-    if(cob)board(views[0].actor,true,false,false,p);else if(p.digital)board(views[0].actor,false,true);else if(p.control==='RGBW')rgbwLed(views[0].actor);else led(views[0].actor);
-    board(views[1].actor,cob,false,!cob,p);drop(views[2],p.ipOptions.length===1?p.ip:'variants');beam(views[3],p.beam);
+    resources.forEach(r=>r.dispose());resources=new Set();palette=null;distinction=null;sectionInfo=null;emitterMaterials=[];featureProduct=p;featureColor=p.color;views=Array.from({length:5},view);revision++;kind=feature.kind;
+    const appearance=stripAppearance(p),cob=appearance.kind!=='smd',wcob=appearance.kind==='wcob-dome';
+    emitterInfo={kind:wcob?'smd':appearance.kind,color:wcob||!cob?0xf0c333:unlitEmitterColor(p),opaqueFront:wcob?false:appearance.opaqueFront,...(wcob?{package:'2016',packageMm:[2,1.6],unlit:true}:{})};
+    if(wcob)smd2016(views[0].actor);else if(cob)board(views[0].actor,true,false,false,p);else if(p.digital)board(views[0].actor,false,true);else if(p.control==='RGBW')rgbwLed(views[0].actor);else led(views[0].actor);
+    if(wcob)wcobCutSection(views[1],p);else cutSection(views[1],p);drop(views[2],p.ipOptions.length===1?p.ip:'variants');beam(views[3],p.beam);
     if(kind==='brightness')sun(views[4]);else if(kind==='accent')accent(views[4],p);else if(kind==='bread')bread(views[4]);else if(kind==='slim')slim(views[4],p);else if(kind==='cut')precisionCut(views[4],p);else if(kind==='flex')flexibleBoard(views[4]);else if(kind==='coating'||kind==='sleeve')enclosure(views[4],p,kind==='coating');else if(['digital','cct','channels'].includes(kind))lightControl(views[4],p,kind==='digital');else colorFan(views[4],kind==='cri'&&Number(p.quality)>=97);
     views[4].baseScale=views[4].actor.scale.clone();
     emphasis={amount:0,scale:1,cameraDistance:7,clipAdjusted:false};
@@ -381,11 +496,12 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
     root.querySelector('.brightness-steps').hidden=kind!=='brightness';
     const ip=root.querySelector('[data-product="ip"]');ip.replaceChildren();
     for(const value of p.ipOptions){const item=document.createElement('span');item.textContent=value;ip.append(item);}
-    if(cob){const cut=mesh(views[1].actor,rounded(2.3,.035,.06,.01),mat(0xe87650,{metalness:.2}),0,0,.43);views[1].moving.push({object:cut,type:'cut'});}
-    slots.forEach((slot,i)=>{slot.dataset.model=[cob?'cob':p.digital?'digital':'smd',cob?'cut':'section','water','beam',kind][i];});
+    slots.forEach((slot,i)=>{slot.dataset.model=[wcob?'smd':cob?'cob':p.digital?'digital':'smd','scissors-cut','water','beam',kind][i];});
     slots[3].dataset.beamAngle=String(beamInfo.angle);
     slots[3].dataset.beamShape=beamInfo.type;
-    root.querySelector('[data-feature="section"] small').textContent=cob?'Moduł cięcia':'Podział taśmy';
+    root.querySelector('[data-feature="tech"] small').textContent=cob&&appearance.kind!=='wcob-dome'?'Dioda COB':'Dioda';
+    root.querySelector('[data-product="section"]').textContent=`Cięcie co ${String(p.cut).replace('.',',')} mm`;
+    root.querySelector('[data-feature="section"] small').textContent='Moduł cięcia';
     root.querySelector('[data-feature="ip"] small').textContent=p.ipOptions.length>1?'Dostępne warianty':'Stopień ochrony';
     setPower(0);
   }
@@ -411,7 +527,7 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       v.animate?.(time,reducedMotion);
       v.camera.aspect=r.width/r.height;v.camera.updateProjectionMatrix();
       v.actor.rotation.set(-.16+Math.sin(t*.7+i)*.07,Math.sin(t*.85+i*.8)*.38,-.08+Math.sin(t*.5+i)*.045);v.actor.position.y=Math.sin(t*1.3+i)*.11;
-      for(const {object:o,type} of v.moving){if(type==='ripple'){o.scale.setScalar(.9+.16*Math.sin(t*2));o.material.opacity=.35+.2*Math.sin(t*2);}if(type==='beam')o.material.uniforms.strength.value=(theme==='night'?.85:.6)+.025*Math.sin(t*1.6);if(type==='beamHalo')o.material.uniforms.strength.value=theme==='night'?.3:.12;if(type==='cut')o.position.y=Math.sin(t*.9)*.9;if(type==='sun')o.material.emissiveIntensity=sunLevel*1.6;if(type==='glow'){o.material.uniforms.strength.value=sunLevel*.8;o.scale.setScalar(.8+sunLevel*.4);}if(type==='rays'){o.rotation.z=t*.13;o.scale.setScalar(.84+sunLevel*.16);}}
+      for(const {object:o,type} of v.moving){if(type==='ripple'){o.scale.setScalar(.9+.16*Math.sin(t*2));o.material.opacity=.35+.2*Math.sin(t*2);}if(type==='beam')o.material.uniforms.strength.value=(theme==='night'?.85:.6)+.025*Math.sin(t*1.6);if(type==='beamHalo')o.material.uniforms.strength.value=theme==='night'?.3:.12;if(type==='sun')o.material.emissiveIntensity=sunLevel*1.6;if(type==='glow'){o.material.uniforms.strength.value=sunLevel*.8;o.scale.setScalar(.8+sunLevel*.4);}if(type==='rays'){o.rotation.z=t*.13;o.scale.setScalar(.84+sunLevel*.16);}}
       if(i===4){
         // Apply after every icon animation, preserving SLIM's authored scale
         // and the CRI fan's independent unfolding. No wall-clock state.
@@ -456,5 +572,5 @@ export function createFeatureIcons({root=document,renderer:sharedRenderer=null}=
       renderer.setViewport(previousViewport);renderer.setScissor(previousScissor);renderer.setScissorTest(previousScissorTest);
     }
   }
-  return {update,render,setPower,setColor,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,emphasis,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,beamSource:beamInfo?.source,beamRays:beamInfo?.rays,emitter:emitterInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
+  return {update,render,setPower,setColor,setTheme(value){theme=value;if(!sharedRenderer)renderer.toneMappingExposure=value==='day'?.92:1.1;},inspect:()=>({views:views.length,revision,geometry:true,sharedRenderer:!!sharedRenderer,kind,power,sunLevel,emphasis,beamAngle:beamInfo?.angle,beamType:beamInfo?.type,beamSpread:beamInfo?.spread,beamSource:beamInfo?.source,beamRays:beamInfo?.rays,emitter:emitterInfo,sectionIcon:sectionInfo,cutInterval:distinction?.cutInterval??null,animatedCut:distinction?.animatedCut??false,distinction,palette:palette?{cards:palette.cards.length,visible:palette.visible,intensity:palette.intensity}:null}),dispose(){resources.forEach(r=>r.dispose());if(!sharedRenderer){renderer.dispose();renderer.domElement.remove();}}};
 }

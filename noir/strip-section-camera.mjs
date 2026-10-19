@@ -43,9 +43,24 @@ export function frameStripSection(camera,model,shot,aspect){
   // Leave room above the section for the supply/LOW/MEDIUM/HIGH annotation.
   target.y+=distance*tangent*.16*zoom;
   camera.aspect=ratio;camera.far=Math.max(2000,fit*3);camera.clearViewOffset();camera.updateProjectionMatrix();
+  camera.up.set(0,1,0);
   camera.position.copy(target).add(new T.Vector3(0,10*(1-zoom),distance));camera.lookAt(target);camera.updateMatrixWorld(true);
+  // Show the physical open end while the full ribbon remains connected.
+  // The end retreats into the curved product, as in the supplied cross-section photo.
+  const id=model.group.userData.productId,local=shot.local??0;
+  const endReveal=id?.startsWith('wcob')?smooth((local-6)/2)*(1-smooth((local-23)/3)):
+    id==='cobip67'?smooth((local-1)/3)*(1-smooth((local-6.7)/2)):0;
+  if(endReveal>0){
+    const f=model.frame(spec.length),matrix=model.group.matrixWorld;
+    const p=f.p.clone().applyMatrix4(matrix),x=f.x.clone().transformDirection(matrix),y=f.y.clone().transformDirection(matrix),z=f.z.clone().transformDirection(matrix);
+    const endCamera=camera.clone();
+    endCamera.up.copy(z);
+    endCamera.position.copy(p).addScaledVector(y,28).addScaledVector(x,6).addScaledVector(z,60);
+    endCamera.lookAt(p.clone().addScaledVector(y,-8).addScaledVector(z,2));
+    camera.position.lerp(endCamera.position,endReveal);camera.quaternion.slerp(endCamera.quaternion,endReveal);camera.updateMatrixWorld(true);
+  }
   const ndc=points.map(point=>point.clone().project(camera));
-  return {index,start,end,length:spec.section,width:spec.width,leds:spec.ledsPerSection,zoom,distance,macroDistance,
+  return {index,start,end,length:spec.section,width:spec.width,leds:spec.ledsPerSection,zoom,distance,macroDistance,endReveal,
     center:center.toArray(),bounds:{left:Math.min(...ndc.map(p=>p.x)),right:Math.max(...ndc.map(p=>p.x)),bottom:Math.min(...ndc.map(p=>p.y)),top:Math.max(...ndc.map(p=>p.y))},
     cuts:[start,end].map(d=>model.frame(d).p.applyMatrix4(model.group.matrixWorld).project(camera).toArray())};
 }

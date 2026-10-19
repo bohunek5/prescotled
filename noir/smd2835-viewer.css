@@ -87,9 +87,15 @@ h1 .model-variant{display:block;font-size:16px;font-weight:400;font-style:normal
 #color-variants>span{position:relative;border:0;padding:8px 12px;background:none!important;gap:8px}
 #color-variants>[data-active=true]{border-color:transparent;background:none!important}
 #color-variants i{width:10px;height:10px;box-shadow:none}
-.variant-outline{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible}
-.variant-outline rect{fill:none;stroke:var(--text);stroke-width:1;vector-effect:non-scaling-stroke;stroke-dasharray:100;stroke-dashoffset:100;opacity:.6}
-[data-active=true] .variant-outline rect{stroke-dashoffset:0}
+#color-variants>span::after{content:"";position:absolute;inset:0;pointer-events:none;border:1px solid var(--text);border-radius:4px;opacity:0}
+#color-variants>[data-active=true]::after{opacity:.6;animation:variant-outline-draw .85s cubic-bezier(.22,.61,.36,1) both}
+@keyframes variant-outline-draw{
+  0%{clip-path:polygon(50% 50%,0 0,0 0,0 0,0 0,0 0)}
+  25%{clip-path:polygon(50% 50%,0 0,100% 0,100% 0,100% 0,100% 0)}
+  50%{clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,100% 100%,100% 100%)}
+  75%{clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 100%)}
+  100%{clip-path:polygon(50% 50%,0 0,100% 0,100% 100%,0 100%,0 0)}
+}
 .product-bottom{position:relative;gap:14px;padding-top:10px}
 .feature-icon{width:100%;height:82px;margin:0;display:block}
 .feature-canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:0}
@@ -102,7 +108,7 @@ h1 .model-variant{display:block;font-size:16px;font-weight:400;font-style:normal
 @media(min-width:761px) and (max-height:850px){.product-assurance{margin-bottom:15px;font-size:11px}h1 .series-name{font-size:26px}.feature-icon{height:74px}.product-feature strong{font-size:13px}.color-swatch,body[data-theme=day] .color-swatch{width:30px;height:30px;flex-basis:30px}.product-facts>div{padding:10px 0 12px}.color-block{padding:14px 0}}
 @media(min-width:761px) and (max-height:680px){.product-assurance{margin-bottom:10px;font-size:10px}.feature-icon{height:58px}.product-feature strong{font-size:12px}h1 .series-name{font-size:22px}.color-fact>.color-name{font-size:28px}.product-bottom{padding-top:4px}}
 @media(max-width:760px){.product-assurance{font-size:10px;gap:7px;white-space:normal;margin-bottom:20px}.assurance-origin{gap:7px}.polish-flag{width:32px;height:20px;flex-basis:32px}h1 .series-name{font-size:28px}.color-swatch,body[data-theme=day] .color-swatch{width:30px;height:30px;flex-basis:30px}.color-fact{gap:12px}.color-fact>.color-name{font-size:27px;gap:10px}.product-feature{display:flex;align-items:center;gap:5px}.feature-icon{width:100%;height:80px}.product-bottom{gap:15px 20px}.product-feature strong{font-size:14px}}
-@media(prefers-reduced-motion:reduce){.polish-flag{animation:none}.variant-outline rect{animation:none!important}}
+@media(prefers-reduced-motion:reduce){.polish-flag{animation:none}#color-variants>span::after{animation:none!important}}
 /* Catalogue facts, energy class and the five consistently aligned miniatures. */
 h1 small{padding-left:8px;gap:16px}
 .product-assurance{margin-bottom:24px}

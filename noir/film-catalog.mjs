@@ -120,7 +120,7 @@ export const filmProducts = [
   {
     "id": "deluxlow",
     "range": "DELUX",
-    "name": "Low Brightness",
+    "name": "8 mm LOW",
     "catalogFamily": "DELUX Low Brightness",
     "sku": "24D002-050-8-WW27",
     "voltage": "24",
@@ -242,9 +242,208 @@ export const filmProducts = [
     "featureKind": "cri"
   },
   {
+    "id": "deluxmid",
+    "range": "DELUX",
+    "name": "8 mm MID",
+    "catalogFamily": "DELUX SMD",
+    "sku": "24D004-050-8-WW50",
+    "voltage": "24",
+    "power": "7",
+    "output": "1000",
+    "outputUnit": "lm/m",
+    "outputLabel": "Strumień światła",
+    "color": "3000",
+    "unit": "K",
+    "colorCopy": "Ciepła biel",
+    "width": "8",
+    "density": "160",
+    "cut": "50",
+    "quality": "80",
+    "qualityUnit": "Ra",
+    "qualityLabel": "Oddawanie barw",
+    "control": "MONO",
+    "tech": "2835",
+    "ip": "IP20",
+    "beam": "120",
+    "image": "/prescotled/noir/media/40027.webp",
+    "sleeve": false,
+    "source": "assets/tasmy-2026/tasmy-prescot-led-2026.pdf#page=7",
+    "colorVariants": [
+      {
+        "kelvin": "3000",
+        "label": "Ciepła biel",
+        "sku": "24D004-050-8-WW50",
+        "power": "7",
+        "outputs": [
+          "1000"
+        ],
+        "energyClass": "F",
+        "efficacies": [
+          "143"
+        ]
+      },
+      {
+        "kelvin": "4000",
+        "label": "Neutralna biel",
+        "sku": "24D004-050-8-NW50",
+        "power": "7",
+        "outputs": [
+          "1100"
+        ],
+        "energyClass": "E",
+        "efficacies": [
+          "157"
+        ]
+      }
+    ],
+    "warrantyYears": 7,
+    "madeInPoland": true,
+    "originEvidence": "Original DELUX manufacturer specification: Polish production; prescot.com.pl product 13279.",
+    "warrantyEvidence": "Original manufacturer card 24D004-050-8-XX.pdf: 84 months.",
+    "catalogPage": 7,
+    "catalogVariants": [
+      [
+        "24D004-050-8-WW50",
+        "3000",
+        "7",
+        "1000"
+      ],
+      [
+        "24D004-050-8-NW50",
+        "4000",
+        "7",
+        "1100"
+      ]
+    ],
+    "energyClass": "F",
+    "digital": false,
+    "copperOz": "4",
+    "efficacy": "143",
+    "assortmentSource": "assets/tasmy-2026/tasmy-prescot-led-2026.pdf#page=7",
+    "ipOptions": [
+      "IP20",
+      "IP54",
+      "IP67"
+    ],
+    "featureKind": "cri",
+    "copperEvidence": "Original DELUX manufacturer specification: 4 oz; prescot.com.pl product 13279.",
+    "sourceConflicts": [
+      "The older manufacturer card 24D004-050-8-XX lists WW efficacy 130 lm/W and a combined D/E energy field. Variant-specific 50 m catalogue rows on page 7 are used: WW 143 lm/W, F; NW 157 lm/W, E. No 6500 K variant is documented in these source rows."
+    ]
+  },
+  {
+    "id": "slimlow",
+    "range": "DELUX",
+    "name": "SLIM 4 mm LOW",
+    "catalogFamily": "DELUX Slim Low Brightness",
+    "sku": "24DS002-050-4-WW",
+    "voltage": "24",
+    "power": "3,5",
+    "output": "550",
+    "outputUnit": "lm/m",
+    "outputLabel": "Strumień światła",
+    "color": "3000",
+    "unit": "K",
+    "colorCopy": "Ciepła biel",
+    "width": "4",
+    "density": "160",
+    "cut": "50",
+    "quality": "80",
+    "qualityUnit": "Ra",
+    "qualityLabel": "Oddawanie barw",
+    "control": "MONO",
+    "tech": "2835",
+    "ip": "IP20",
+    "beam": "120",
+    "image": "/prescotled/wp-content/uploads/2026/02/24DS002-050-4-W_2-2-scaled-1.webp",
+    "sleeve": false,
+    "source": "assets/tasmy-2026/karty/8356451464f666a3.pdf#page=1",
+    "colorVariants": [
+      {
+        "kelvin": "3000",
+        "label": "Ciepła biel",
+        "sku": "24DS002-050-4-WW",
+        "power": "3,5",
+        "outputs": [
+          "550"
+        ],
+        "energyClass": "D",
+        "efficacies": [
+          "150"
+        ]
+      },
+      {
+        "kelvin": "4000",
+        "label": "Neutralna biel",
+        "sku": "24DS002-050-4-NW",
+        "power": "3,5",
+        "outputs": [
+          "550"
+        ],
+        "energyClass": "D",
+        "efficacies": [
+          "150"
+        ]
+      },
+      {
+        "kelvin": "6500",
+        "label": "Chłodna biel",
+        "sku": "24DS002-050-4-W",
+        "power": "3,5",
+        "outputs": [
+          "550"
+        ],
+        "energyClass": "D",
+        "efficacies": [
+          "150"
+        ]
+      }
+    ],
+    "warrantyYears": 7,
+    "madeInPoland": true,
+    "originEvidence": "Original DELUX manufacturer specification: Polish production; prescot.com.pl products 13167 and 13169.",
+    "warrantyEvidence": "Original manufacturer card 24DS002-050-4-XX: 84 months.",
+    "catalogPage": 1,
+    "catalogVariants": [
+      [
+        "24DS002-050-4-WW",
+        "3000",
+        "3,5",
+        "550"
+      ],
+      [
+        "24DS002-050-4-NW",
+        "4000",
+        "3,5",
+        "550"
+      ],
+      [
+        "24DS002-050-4-W",
+        "6500",
+        "3,5",
+        "550"
+      ]
+    ],
+    "energyClass": "D",
+    "digital": false,
+    "copperOz": "4",
+    "efficacy": "150",
+    "assortmentSource": "assets/tasmy-2026/karty/8356451464f666a3.pdf#page=1",
+    "ipOptions": [
+      "IP20",
+      "IP54",
+      "IP67"
+    ],
+    "featureKind": "slim",
+    "copperEvidence": "Original DELUX manufacturer specification: 4 oz; prescot.com.pl products 13167 and 13169.",
+    "sourceConflicts": [
+      "The manufacturer 10 m card prints 150 lm/W for all three variants. A separate 50 m WW row in the full catalogue prints 157 lm/W; the 10 m card is used for these exact 10 m SKUs."
+    ]
+  },
+  {
     "id": "slim",
     "range": "DELUX",
-    "name": "SLIM 4 mm",
+    "name": "SLIM 4 mm MID",
     "catalogFamily": "DELUX Slim",
     "sku": "24DS004-050-4-WW",
     "voltage": "24",
@@ -455,7 +654,7 @@ export const filmProducts = [
     "id": "truecolor10",
     "range": "DELUX",
     "name": "CRI 97 · 10 W",
-    "catalogFamily": "PREMIUM SMD",
+    "catalogFamily": "DELUX CRI97",
     "sku": "24D160-10-2797-810",
     "voltage": "24",
     "power": "10",

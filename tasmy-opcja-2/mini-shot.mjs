@@ -1,5 +1,5 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {supplyAnchor} from '../noir/strip-lighting.mjs';
+import {supplyAnchor} from '../noir/strip-lighting.mjs?v=detail-9';
 
 // The full film's approach and pullback, sampled from each card's own clock.
 // A longer catalogue sequence extends the detail hold, not the camera move.

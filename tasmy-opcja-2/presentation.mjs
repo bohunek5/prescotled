@@ -1,16 +1,17 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {filmProducts} from '../noir/film-catalog.mjs';
-import {createCatalogStrip} from '../noir/catalog-strip-model.mjs?v=detail-3';
+import {filmProducts} from '../noir/film-catalog.mjs?v=detail-3';
+import {filmVariantFamily,resolveFilmVariant} from '../noir/strip-product-variants.mjs?v=1';
+import {createCatalogStrip} from '../noir/catalog-strip-model.mjs?v=detail-6';
 import {createStripRebuild} from '../noir/strip-rebuild.mjs';
-import {createFeatureIcons} from '../noir/film-feature-3d.mjs';
+import {createFeatureIcons} from '../noir/film-feature-3d.mjs?v=detail-7';
 import {createNumberAnimator} from '../noir/film-numbers.mjs';
-import {createVoltageCue} from '../noir/strip-lighting.mjs?v=detail-3';
-import {sampleMiniShot,frameMiniCamera} from './mini-shot.mjs';
-import {groups} from './assortment.mjs?v=7';
+import {createVoltageCue} from '../noir/strip-lighting.mjs?v=detail-9';
+import {sampleMiniShot,frameMiniCamera} from './mini-shot.mjs?v=2';
+import {groups} from './assortment.mjs?v=8';
 import {additionalProducts} from './five-volt.mjs';
-import {getProductDetails} from './product-details.mjs';
+import {getProductDetails} from './product-details.mjs?v=2';
 
-const allProducts=[...filmProducts,...additionalProducts],byId=new Map(allProducts.map(p=>[p.id,p]));
+const allProducts=[...filmProducts,...additionalProducts].map(filmVariantFamily),byId=new Map(allProducts.map(p=>[p.id,p]));
 const reduced=matchMedia('(prefers-reduced-motion: reduce)'),events=new AbortController();
 const groupNames={delux:'DELUX',premium:'PREMIUM',cob:'COB / WCOB',special:'SPECIAL'};
 const firstModels={delux:'3w1',premium:'smd24',cob:'wcob',special:'onecut'};
@@ -75,7 +76,10 @@ function update(v,immediate=false){
  const detailTime=Math.max(0,v.clock-DETAIL_START);
  v.colorIndex=Math.min(count-1,Math.floor(detailTime/step));v.powerIndex=p.id==='3w1'?Math.min(2,Math.floor((detailTime-v.colorIndex*12)/4)):0;
  const key=p.id+':'+v.colorIndex+':'+v.powerIndex;if(key===v.key)return;v.key=key;
- const d=getProductDetails(p,v.colorIndex,v.powerIndex);v.details=d;
+ const activeProduct=resolveFilmVariant(p,p.colorVariants[v.colorIndex]);
+ if(v.effectiveProduct?.sourceProductId!==activeProduct.sourceProductId){v.icons.update(activeProduct);v.icons.setTheme('day');}
+ v.effectiveProduct=activeProduct;
+ const d=getProductDetails(activeProduct,v.colorIndex,v.powerIndex);v.details=d;
  const root=v.root;root.querySelector('h2').textContent=d.name;root.querySelector('.product-sku').textContent=d.sku;
  root.querySelector('select').options[v.modelIndex].textContent=p.name+' · '+d.sku;
  root.querySelector('.warranty').textContent=d.warranty.label;root.querySelector('.flag').hidden=!d.warranty.madeInPoland;root.querySelector('.assurance-origin').hidden=!d.warranty.madeInPoland;
@@ -106,18 +110,20 @@ function paint(now=0){
    v.transition.rebuild.update(reduced.matches?1:Math.min(1,v.transition.time/REBUILD_SECONDS));
    if(v.transition.time>=REBUILD_SECONDS||reduced.matches)finishTransition(v);
   }else if(playing&&!reduced.matches&&!v.pending){v.clock+=delta;v.turn+=delta*.19;if(v.clock>=duration(v))pick(v,v.modelIndex+1);update(v);}
-  const p=v.products[v.modelIndex],r=v.host.getBoundingClientRect();if(r.bottom<=0||r.top>=height||!r.width||!r.height)continue;
+  const p=v.effectiveProduct??v.products[v.modelIndex],r=v.host.getBoundingClientRect();if(r.bottom<=0||r.top>=height||!r.width||!r.height)continue;
   const shot=sampleMiniShot(v.clock,duration(v),{product:p,turn:v.turn,rebuilding:!!v.transition});
   shot.powerMode=v.powerIndex;shot.powerBlend=v.powerIndex===0?1:smooth((v.clock-DETAIL_START-v.colorIndex*12-v.powerIndex*4)/.9);v.shot=shot;
   const level=shot.lightLevel;
   const outputs=p.colorVariants.flatMap(c=>c.outputs).map(numeric).filter(n=>n>0),reference=Math.max(1,...outputs,numeric(p.output)||0);
   const output=numeric(v.details.facts.find(f=>f.key==='output').value);
   let power=Number.isFinite(output)?output/reference:1;
+  if(p.id==='deluxlow'||p.id==='slimlow'||p.id==='coblow')power*=.23;
   if(p.id==='3w1'&&v.powerIndex>0){const previousOutput=numeric(v.details.variant?.outputs[v.powerIndex-1]);if(Number.isFinite(previousOutput))power=T.MathUtils.lerp(previousOutput/reference,power,shot.powerBlend);}
   const colorStart=DETAIL_START+v.colorIndex*(p.id==='3w1'?12:6),previousVariant=p.colorVariants[Math.max(0,v.colorIndex-1)]?.kelvin??p.color;
-  const lighting=v.model.updateLightAnimation(v.clock,{lightLevel:level,power,variant:v.details.variant?.kelvin??p.color,previousVariant,variantBlend:smooth((v.clock-colorStart)/.7)});
+  const lighting=v.model.updateLightAnimation(v.clock,{activeProduct:p,variantProgress:T.MathUtils.clamp((v.clock-colorStart)/6,0,1),lightLevel:level,power,variant:v.details.variant?.kelvin??p.color,previousVariant,variantBlend:smooth((v.clock-colorStart)/.7)});
   if(level>0&&lighting?.color)v.root.querySelector('.color-dot').style.background=lighting.color;else v.root.querySelector('.color-dot').style.background='';
-  if(level>0&&p.control!=='MONO'&&lighting?.phase)v.root.querySelector('.color-label').textContent=lighting.phase;else v.root.querySelector('.color-label').textContent=v.details.color.label;
+  if(p.control==='CCT')v.root.querySelector('.color-label').textContent='Regulowana barwa';
+  else if(level>0&&p.control!=='MONO'&&lighting?.phase)v.root.querySelector('.color-label').textContent=lighting.phase;else v.root.querySelector('.color-label').textContent=v.details.color.label;
   v.framing=frameMiniCamera(v.camera,v.model,shot,r.width/r.height);
   v.transition?.rebuild.group.rotation.copy(v.model.group.rotation);
   v.voltageCue.update(v.model,p,v.camera,shot,r.width,r.height,v.powerIndex);

@@ -1,5 +1,6 @@
 import {powerModes} from '../noir/offer-series-models.mjs';
 import {stripAppearance} from '../noir/strip-appearance.mjs';
+import {describeStripFeature} from '../noir/strip-detail-cues.mjs?v=detail-8';
 
 // The overview uses the same variant rows as the full film. Missing catalogue
 // data remains an em dash; no efficacy, warranty or energy class is inferred.
@@ -7,6 +8,7 @@ const shown=value=>value===undefined||value===null||value===''?'—':String(valu
 const number=value=>Number(String(value).replace(',','.'));
 const bounded=(value,length)=>Math.max(0,Math.min(Math.max(0,length-1),Math.floor(Number(value)||0)));
 export function colorSwatch(value){
+  if(value==='CCT')return 'linear-gradient(110deg,#ffd393,#fff3d6 50%,#c0dbff)';
   return {czerwona:'#ed6957',niebieska:'#729ce8','różowa':'#e790ba',zielona:'#8fc497','żółta':'#f3d563'}[value]
     ??(!Number.isFinite(number(value))?'#fff0d4':number(value)<=2700?'#ffd393':number(value)<3500?'#ffe0a4':number(value)<=4500?'#fff3d6':number(value)>6500?'#c0dbff':'#e0edff');
 }
@@ -22,19 +24,8 @@ export function getProductDetails(product,colorIndex=0,levelIndex=0){
   const ipOptions=p.ipOptions?.length?[...p.ipOptions]:[p.ip].filter(Boolean);
   const appearance=stripAppearance(p),wcob=appearance.opaqueFront;
   const cob=appearance.kind!=='smd';
-  const ledCount=Math.max(1,Math.round(number(p.density)*number(p.cut)/1000));
-  const kind=p.featureKind??'cri';
-  const distinction={
-    brightness:[mode?.nav??'LOW','3 poziomy jasności'],
-    bread:['Do pieczywa','Złocisty odcień'],
-    slim:[`Tylko ${p.width} mm`,'Wąska taśma'],
-    cut:[`Co ${p.cut} mm`,'Precyzyjne cięcie'],
-    flex:['Giętka PCB','Forma S-Shape'],
-    digital:['Digital',`${p.control} · moduły`],
-    cct:['CCT','Regulacja bieli'],
-    channels:[p.control,'Sterowanie barwą'],
-    cri:[`CRI ${p.quality}`,number(p.quality)>=90?'Wysokie oddawanie barw':'Oddawanie barw']
-  }[kind]??[`CRI ${p.quality}`,'Oddawanie barw'];
+  const feature=describeStripFeature(p);
+  const distinction=[brightness?mode?.nav??'LOW':feature.title,feature.caption];
   const fact=(key,label,value,unit='')=>({key,label,value:shown(value),unit});
   const energyFact=fact('energy','Klasa energetyczna',energy);
   if(/^[A-G]$/.test(energy??'')){
@@ -42,12 +33,12 @@ export function getProductDetails(product,colorIndex=0,levelIndex=0){
     energyFact.imageAlt=`Klasa energetyczna ${energy}, skala A–G`;
   }
   return {
-    id:p.id,name:p.id.startsWith('onecut')?'One Cut':p.pcbColor?p.name:p.name.split(/\s*·\s*/)[0],range:p.range,sku:variant?.sku??p.sku,
+    id:p.id,name:/^(?:SMD|COB)\s+(?:12|24|48)\s*V(?:\s*·|$)/.test(p.name)?`${p.name.split(' · ')[0]} · ${p.density}\u00a0LED/m`:p.id.startsWith('onecut')?'One Cut':p.pcbColor||p.tech.includes('COB')?p.name:p.name.split(/\s*·\s*/)[0],range:p.range,sku:variant?.sku??p.sku,
     colorIndex:ci,levelIndex:li,variant,
     color:{
       value:p.control==='RGBW'?'RGBW':shown(kelvin),
       unit:/^\d+$/.test(String(kelvin))&&p.control!=='RGBW'?'K':p.unit==='K'?'':(p.unit??''),
-      label:variant?.label??p.colorCopy,swatch:colorSwatch(kelvin),multicolor:String(p.control).startsWith('RGB'),
+      label:p.control==='CCT'?'Regulowana barwa':variant?.label??p.colorCopy,swatch:colorSwatch(kelvin),multicolor:String(p.control).startsWith('RGB'),
       variants:variants.map((v,index)=>({index,value:v.kelvin,
         label:/^\d+$/.test(String(v.kelvin))?`${p.control==='RGBW'?'RGB + ':''}${v.kelvin} K`:v.label,
         swatch:colorSwatch(v.kelvin),active:index===ci,sku:v.sku}))
@@ -63,10 +54,10 @@ export function getProductDetails(product,colorIndex=0,levelIndex=0){
       fact('copper','Miedź PCB',p.copperOz,p.copperOz?'oz':''),energyFact
     ],
     features:[
-      {key:'tech',value:wcob?'WCOB':cob?p.tech:`SMD ${p.tech}`,label:'Dioda'},
-      {key:'section',value:cob?`Cięcie ${p.cut} mm`:`${ledCount} LED / sekcja`,label:cob?'Moduł cięcia':'Podział taśmy'},
+      {key:'tech',value:wcob?'SMD 2016':cob?p.tech:`SMD ${p.tech}`,label:cob&&!wcob?'Dioda COB':'Dioda'},
+      {key:'section',value:`Cięcie co ${p.cut} mm`,label:'Moduł cięcia'},
       {key:'ip',value:ipOptions.join(' · '),label:ipOptions.length>1?'Dostępne warianty':'Stopień ochrony'},
-      {key:'beam',value:`${p.beam}°`,label:'Kąt światła'},
+      {key:'beam',value:`${p.beam}°`,label:'Kąt świecenia'},
       {key:'detail',value:distinction[0],label:distinction[1]}
     ],
     powerLevels:brightness?powerModes.map((m,index)=>({index,name:m.nav,power:m.power,

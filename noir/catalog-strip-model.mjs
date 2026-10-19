@@ -1,12 +1,12 @@
 import * as T from '../konfigurator/vendor/three/build/three.module.min.js';
-import {createSmd2835Model} from './smd2835-model.mjs?v=detail-3';
+import {createSmd2835Model} from './smd2835-model.mjs?v=detail-4';
 import {createBackingTexture} from './strip-backing.mjs';
-import {filmProducts} from './film-catalog.mjs?v=detail-2';
+import {filmProducts} from './film-catalog.mjs?v=detail-3';
 import {applyPcbFinish} from './pcb-finish.mjs';
-import {installStripLighting} from './strip-lighting.mjs?v=detail-8';
+import {installStripLighting} from './strip-lighting.mjs?v=detail-9';
 import {stripAppearance,unlitEmitterColor} from './strip-appearance.mjs?v=detail-2';
-import {createDeluxArtwork,sectionFrame} from './delux-pcb-artwork.mjs?v=detail-3';
-import {createCatalogFilmArtwork,supportsCatalogFilmArtwork} from './catalog-film-artwork.mjs?v=detail-7';
+import {createDeluxArtwork,sectionFrame} from './delux-pcb-artwork.mjs?v=detail-4';
+import {createCatalogFilmArtwork,supportsCatalogFilmArtwork} from './catalog-film-artwork.mjs?v=detail-8';
 
 // Reuse the supplied vector artwork; no text approximation of the brand or CE.
 let marksPromise;
@@ -168,13 +168,20 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
   const contacts=digital?[`+${product.voltage}V`,'DI','GND']:product.control==='CCT'?[`+${product.voltage}V`,'CW','WW']:product.control==='RGB+CCT'?[`+${product.voltage}V`,'R','G','B','CW','WW']:product.control==='RGBW'?[`+${product.voltage}V`,'R','G','B','W']:product.control==='RGB'?[`+${product.voltage}V`,'R','G','B']:[`+${product.voltage}V`,'−'];
   const edgePads=cob&&product.control==='MONO'&&!digital;
   const monoPads=product.control==='MONO'&&!digital;
+  // The photographed 24EC784 analogue RGBW segment has two contact rails:
+  // +24V / G above its continuous band, R / B / W below it. Positions are
+  // traced proportions, not additional catalogue dimensions. Preserve the
+  // electrical contact order because the presentation anchors use its indices.
+  const rgbw784=product.id==='cobrgbw'&&!digital;
   const padSpacing=sshape?2.85:edgePads?width-1.4:monoPads?(width<6?width*.5:width-1.95):(width-1)/contacts.length;
-  const padWidth=sshape?1.9:edgePads?.85:monoPads?Math.min(1.35,width*.23):Math.min(2.2,padSpacing*.72),padLength=sshape?2.9:edgePads?Math.min(1.65,section*.1):Math.min(1.85,section*.12);
+  const contactX=rgbw784?[-4.9,2.5,-3.1,3.8,5]:contacts.map((_,c)=>(c-(contacts.length-1)/2)*padSpacing);
+  const padWidth=rgbw784?.8:sshape?1.9:edgePads?.85:monoPads?Math.min(1.35,width*.23):Math.min(2.2,padSpacing*.72),padLength=sshape?2.9:edgePads?Math.min(1.65,section*.1):Math.min(1.85,section*.12);
   const pads=[];
-  for(let s=0;s<sections;s++)for(const d of [s*section+padLength*(sshape?.52:.6),(s+1)*section-padLength*(sshape?.52:.6)])for(let c=0;c<contacts.length;c++)pads.push({d,x:(c-(contacts.length-1)/2)*padSpacing,z:.025});
+  for(let s=0;s<sections;s++)for(const d of [s*section+padLength*(sshape?.52:.6),(s+1)*section-padLength*(sshape?.52:.6)])for(let c=0;c<contacts.length;c++)pads.push({d,x:contactX[c],z:.025});
   if(!opaque&&!sealed)instances('Copper solder pads / catalogue contacts',rounded(padWidth,padLength,.075,sshape?.65:.18),copper,pads);
 
-  const leds=[],resistors=[],refinedDelux=product.id==='slim'||product.id==='truecolor10';
+  const slimDelux=product.id==='slim'||product.id==='slimlow';
+  const leds=[],resistors=[],refinedDelux=slimDelux||product.id==='truecolor10';
   let coatingLayout=null,controllerLayout=[];
   let packageSize=null;
   if(!cob){
@@ -185,7 +192,7 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
       // Reserve the actual terminal + legend area before the first package.
       // Narrow boards and multichannel pads share the centre lane with LEDs.
       const axialSize=angle?w:h;
-      const margin=refinedDelux?(product.id==='slim'?6:section/count/2):
+      const margin=refinedDelux?(slimDelux?6:section/count/2):
         product.control!=='MONO'||width<6?padLength*1.5+1+.325+axialSize/2+.45:section/count/2;
       for(let i=0;i<count;i++)leds.push({d:s*section+(sshape?([100,388,649][i]-16)/838*section:count===1?section/2:margin+i*(section-2*margin)/(count-1)),angle,z:.07,section:s,index:i});
       const sectionLeds=leds.slice(-count);
@@ -245,7 +252,7 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     // follow the drawing and are not additional manufacturer dimensions.
     const sx=sealedWidth/10.5,sz=sealedHeight/4.5;
     const scaled=points=>points.map(([x,z])=>[x*sx,z*sz]);
-    function sweepProfile(name,profile,mat){
+    function sweepProfile(name,profile,mat,cutMaterial=null){
       const positions=[],indices=[],steps=1600,ring=profile.length,mid=frame(length/2);
       for(let row=0;row<=steps;row++)for(let col=0;col<ring;col++){
         const [x,z]=profile[col],p=point(frame(row/steps*length),x,z).sub(mid.p);
@@ -255,10 +262,21 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
       const capTriangles=T.ShapeUtils.triangulateShape(profile.map(([x,z])=>new T.Vector2(x,z)),[]);
       // Cut faces have flat normals, independent of the rounded long sides.
       const start=positions.length/3,end=start+ring;
-      positions.push(...positions.slice(0,ring*3),...positions.slice(steps*ring*3,(steps+1)*ring*3));
-      for(const [a,b,c] of capTriangles){indices.push(start+a,start+b,start+c,end+a,end+c,end+b);}
+      const cutPositions=[...positions.slice(0,ring*3),...positions.slice(steps*ring*3,(steps+1)*ring*3)];
+      if(!cutMaterial){
+        positions.push(...cutPositions);
+        for(const [a,b,c] of capTriangles)indices.push(start+a,start+b,start+c,end+a,end+c,end+b);
+      }
       const g=keep(new T.BufferGeometry());g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.setIndex(indices);g.computeVertexNormals();
-      return instances(name,g,mat,[{d:length/2}]);
+      const body=instances(name,g,mat,[{d:length/2}]);
+      if(!cutMaterial)return {body};
+      // The cut plane reveals the material's actual section. It must not
+      // inherit the bright white emission shader of the long emitting face.
+      const cutIndices=[];
+      for(const [a,b,c] of capTriangles)cutIndices.push(a,b,c,ring+a,ring+c,ring+b);
+      const caps=keep(new T.BufferGeometry());caps.setAttribute('position',new T.Float32BufferAttribute(cutPositions,3));caps.setIndex(cutIndices);caps.computeVertexNormals();
+      const cutFaces=instances(name.replace(/phosphor/gi,'section')+' / cut faces',caps,cutMaterial,[{d:length/2}]);
+      return {body,cutFaces};
     }
     const wall=material({color:0xf1f1ea,roughness:.43,clearcoat:.16});
     sweepProfile('IP67 silicone sleeve / white side walls and base',scaled([
@@ -270,27 +288,31 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     arch.push([3.75,0],[2.85,0],[2.85,1.03]);
     for(let i=1;i<=32;i++){const a=Math.PI/2-i/32*Math.PI;arch.push([Math.sin(a)*2.85,1.03+Math.cos(a)*1.51]);}
     arch.push([-2.85,0]);
-    sweepProfile('IP67 continuous phosphor / hollow rounded cover',scaled(arch),phosphor);
+    const whiteCut=material({color:0xf4f3ec,roughness:.65});
+    sweepProfile('IP67 continuous phosphor / hollow rounded cover',scaled(arch),phosphor,whiteCut);
     const core=[[1.7,.025],[-1.7,.025]];
     for(let i=1;i<=28;i++){const a=Math.PI-i/28*Math.PI;core.push([Math.cos(a)*1.7,.025+Math.sin(a)*1.75]);}
     const coreMaterial=material({color:0xf2c32e,roughness:.58,clearcoat:.03});
-    sweepProfile('IP67 COB phosphor / inner yellow core',scaled(core),coreMaterial);
+    const yellowCut=material({color:0xf2c32e,roughness:.68,emissive:0xf2c32e,emissiveIntensity:0});
+    const coreSection=sweepProfile('IP67 COB phosphor / inner yellow core',scaled(core),coreMaterial,yellowCut);
+    coreSection.cutFaces.onBeforeRender=()=>{yellowCut.emissiveIntensity=.06*Math.min(1,coreMaterial.emissiveIntensity/1.65);};
     coatingLayout={kind:'hollow-rounded-phosphor-cover',lanes:1,totalBand:7.5*sx,baseHeight:0,topHeight:sealedTop,closed:true,hollow:true};
   }else{
-    // Each curved phosphor segment is real geometry following the same PCB frame.
+    // Module meshes meet along the same PCB frame as one uninterrupted band.
     // It is a coating over the emitters, not a protective sleeve around the strip.
     // Warm and cool CCT channels sit under one shared phosphor band. The
     // three analogue connections (+V, CW, WW) do not imply two visible strips.
     // The actual 24EC784 RGBW photograph likewise shows a single milky band.
-    const lanes=digital||sealed||product.control==='CCT'||product.id==='cobrgbw'?1:product.control==='RGBW'||product.control==='RGB+CCT'?2:1;
-    const totalBand=sealed?width*.76:width<4?width*.73:width*.52,laneWidth=totalBand/lanes-.10;
+    // Owner confirms RGB+CCT also shares one band; six analogue contacts
+    // describe the electrical channels, not separate visible coatings.
+    const lanes=1;
+    const totalBand=rgbw784?3.7:sealed?width*.76:width<4?width*.73:width*.52,laneWidth=totalBand/lanes-.10;
     const steps=64,across=12;
-    const padLegendEnd=padLength*1.5+1+.325+.25;
-    const gap=sealed||freeCut||edgePads?.10:Math.min(padLegendEnd,section*.28);
-    // The IC sits between the solder row and the beginning of the coating.
-    // A clear segment here prevents the chip and its pins cutting through it.
-    const startGap=digital?6.6:gap,endGap=gap;
-    coatingLayout={kind:'flat-phosphor-coating',lanes,laneWidth,totalBand,startGap,endGap,baseHeight:.045,edgeHeight:.23,topHeight:.32,closed:true};
+    const startGap=0,endGap=0;
+    // Cut marks and electrical modules do not interrupt the visible coating.
+    // Separate instances retain addressable lighting, while their ends meet
+    // exactly; only the two physical strip ends receive closing faces.
+    coatingLayout={kind:'flat-phosphor-coating',lanes,laneWidth,totalBand,startGap,endGap,baseHeight:.045,edgeHeight:.23,topHeight:.32,closed:true,continuous:true,from:0,to:length,controllerConcealed:digital};
     const f0=frame(section/2);
     function localPoint(d,x,z){const p=point(frame(d),x,z).sub(f0.p);return [p.dot(f0.x),p.dot(f0.y),p.dot(f0.z)];}
     for(let lane=0;lane<lanes;lane++){
@@ -308,19 +330,26 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
         positions.push(...localPoint(d,x+offset,z));
         if(row<steps){const a=row*ring+col,b=row*ring+(col+1)%ring;indices.push(a,b,a+ring,b,b+ring,a+ring);}
       }
-      for(let col=1;col<ring-1;col++){
-        indices.push(0,col+1,col);
-        const end=steps*ring;indices.push(end,end+col,end+col+1);
-      }
       const g=keep(new T.BufferGeometry());g.setAttribute('position',new T.Float32BufferAttribute(positions,3));g.setIndex(indices);g.computeVertexNormals();
       const segments=Array.from({length:sections},(_,s)=>({d:(s+.5)*section,z:0,color:lane&&!digital?0xffe595:0xffffff}));
       instances(`COB continuous phosphor ${lane}`,g,phosphor,segments);
+      const cutMaterial=material({color:unlitEmitterColor(product),roughness:.72});
+      for(const end of [0,1]){
+        const face=keep(new T.BufferGeometry()),faceIndices=[];
+        face.setAttribute('position',new T.Float32BufferAttribute(positions.slice(end?steps*ring*3:0,end?(steps+1)*ring*3:ring*3),3));
+        for(let col=1;col<ring-1;col++)faceIndices.push(...(end?[0,col,col+1]:[0,col+1,col]));
+        face.setIndex(faceIndices);face.computeVertexNormals();
+        instances(`COB coating ${end?'end':'start'} cut face ${lane}`,face,cutMaterial,[segments[end?segments.length-1:0]]);
+      }
     }
     if(digital){
       const controllers=Array.from({length:sections},(_,s)=>({d:s*section+4.6,x:0,z:.06,section:s}));
-      controllerLayout=controllers.filter(p=>p.section===0).map(p=>({...p,width:2.2,length:3,pinSpan:2.95}));
-      instances('Digital controller IC',rounded(2.2,3,.6,.12),dark,controllers);
-      instances('Digital controller pins',rounded(.45,.32,.2,.04),tin,controllers.flatMap(p=>[-1,1].flatMap(side=>[-.8,0,.8].map(dy=>({...p,x:p.x+side*1.25,d:p.d+dy,z:.025})))));
+      controllerLayout=controllers.filter(p=>p.section===0).map(p=>({...p,width:2.2,length:3,pinSpan:2.95,concealedByPhosphor:true}));
+      // The opaque continuous band conceals the controller construction.
+      // Retain its module positions without exposing a black package through
+      // the luminophor or relocating it to an unsupported side position.
+      instances('Digital controller IC',rounded(2.2,3,.6,.12),dark,controllers).visible=false;
+      instances('Digital controller pins',rounded(.45,.32,.2,.04),tin,controllers.flatMap(p=>[-1,1].flatMap(side=>[-.8,0,.8].map(dy=>({...p,x:p.x+side*1.25,d:p.d+dy,z:.025}))))).visible=false;
     }
   }
   if(resistors.length){
@@ -360,10 +389,10 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     for(const x of [.2,width-.2]){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,section);ctx.stroke();}
     ctx.setLineDash([.22,.2]);for(const y of [.02,section-.02]){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(width,y);ctx.stroke();}ctx.setLineDash([]);
     const text=(value,x,y,size,rotate=false)=>{ctx.save();ctx.translate(x,sshape?section-y:y);if(rotate)ctx.rotate(sshape?-Math.PI/2:Math.PI/2);ctx.font=`600 ${size}px Arial`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(value,0,0);const advance=ctx.measureText(value).width;ctx.restore();return {x:x-(rotate?size:advance)/2,y:y-(rotate?advance:size)/2,width:rotate?size:advance,height:rotate?advance:size};};
-    const legendSize=printLayout?.legendSize??Math.min(.65,padSpacing*.52);
-    contacts.forEach((label,i)=>{const x=width/2+(i-(contacts.length-1)/2)*padSpacing;for(const [end,y] of (printLayout?.legendY??[padLength*1.5+1,section-padLength*1.5-1]).entries()){
+    const legendSize=printLayout?.legendSize??(rgbw784?.48:Math.min(.65,padSpacing*.52));
+    contacts.forEach((label,i)=>{const x=width/2+contactX[i];for(const [end,y] of (printLayout?.legendY??[padLength*1.5+1,section-padLength*1.5-1]).entries()){
       const value=sshape?(i?'−':'+'):digital&&label==='DI'&&end?'DO':label;
-      const bounds=text(value,x,y,legendSize,edgePads);if(printLayout)printLayout.legends.push({name:value,...bounds});
+      const bounds=text(value,x,y,legendSize,edgePads||rgbw784);if(printLayout)printLayout.legends.push({name:value,...bounds});
     }});
     if(sshape){
       const bounds=text('12V DC',.55,(388-16)/838*section,.43,true);printLayout.legends.push({name:'12V DC',...bounds});
@@ -415,6 +444,7 @@ function createCatalogGeometry(product,{anisotropy=4,turns=2.25}={}){
     return {resistorLane:'center',leds:leds.filter(l=>l.section===0).map(l=>({d:l.d,x:l.x??0,angle:l.angle})),resistors:resistors.filter(r=>r.section===0).map(r=>({d:r.d,x:r.x,between:r.between})),pads:pads.filter(p=>p.d<section).map(p=>({d:p.d,x:p.x,width:padWidth,length:padLength})),controllers:controllerLayout,coating:coatingLayout,footprints,resistorClearanceMm:clearances.length?Math.min(...clearances):null};
   }
   group.userData={units:'mm',family:product.id,productId:product.id,specification:spec,ledCount,padCount:opaque||sealed?0:pads.length,contacts,rearPrintMirrored:false,sectionLedCounts:cob?[]:Array(sections).fill(count),sleeve:sealed,construction:cob?'cob':sshape?'s-shape':'smd',appearance:appearance.kind,opaqueFront:opaque,macroSide:appearance.macroSide,coverHeight:opaque?wcobTopHeight:sealed?sealedTop:cob?.32:.5,concealedContacts:opaque||sealed,packageSize,printMarksPerSection:opaque||sealed?{brand:0,ce:0,rohs:0}:{brand:1,ce:1,rohs:1}};
+  if(rgbw784)group.userData.contactLayout={source:'noir/media/segment-24ec784-071-12-rgbnw.webp',measurement:'photographic proportions',positions:contacts.map((name,i)=>({name,x:contactX[i]}))};
   if(sealed)group.userData.sleeveLayout={outerWidth:sealedWidth,overallHeight:sealedHeight,baseBottom:sealedBottom,topHeight:sealedTop,pcbWidth:width,backingZ,hollow:true,source:'assets/tasmy-2026/karty/44c2ebd0869d82b1.pdf#page=2'};
   if(sshape)group.userData.sShape={...sShapeOutline,componentAxis:'straight',artworkUV:'physical-width',sectionBounds:Array.from({length:321},(_,i)=>{const d=i/320*section;return {d,minX:sShapeEdges[0](d),maxX:sShapeEdges[1](d)};})};
   return {group,frame,ready,specification:spec,setLight(on){lightOn=on;phosphor.emissive.set(0xffe6b2);phosphor.emissiveIntensity=on?2:0;},setPower(){},setTemperature(){},
