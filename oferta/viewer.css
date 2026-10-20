@@ -1,0 +1,8 @@
+/* Only /oferta/?offer=1 loads this adapter. Film exports retain their layout. */
+html,body{overflow:hidden!important;background:#e8e9e2!important}
+main{min-height:0!important;height:100svh!important}
+.film-model-counter,.film-preview-nav{display:none!important}
+html:not(.offer-mobile) .intro{transform:scale(var(--offer-ui-scale,1))!important;transform-origin:top left}
+html.offer-mobile main{padding:0!important;display:block!important}
+html.offer-mobile .intro{display:none!important}
+html.offer-mobile #stage{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;margin:0!important;order:0!important}

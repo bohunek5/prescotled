@@ -59,8 +59,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 1144,
-  "bytesExcludingManifest": 308156664,
+  "fileCountExcludingManifest": 1147,
+  "bytesExcludingManifest": 308069026,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4396,9 +4396,9 @@
       "source": "noir/touch-card.mjs"
     },
     "oferta/index.html": {
-      "bytes": 122807,
-      "sha256": "5be4bc657ac53748d1828317eb46d541cb7643fff34ab2006751997824f3c92d",
-      "source": "noir/oferta/index.html"
+      "source": "oferta/index.html",
+      "bytes": 5951,
+      "sha256": "12bec909510b04fd46a4a9c4cca12fa3ee59dc6004b68b3d481d8d5fa814abee"
     },
     "oprawy/index.html": {
       "bytes": 20662,
@@ -4843,7 +4843,7 @@
     "model-smd-2835/index.html": {
       "source": "model-smd-2835/index.html",
       "bytes": 5456,
-      "sha256": "b4e2bb29683232afe10ed1ec75748118fa7871e969db1e9d3b7d7a4f78b5c878"
+      "sha256": "edbb9f76cfbb71caba48bd4eec5c88a227cef3a85f319dfefa97dc94ed8a3e90"
     },
     "noir/catalog-strip-model.mjs": {
       "source": "noir/catalog-strip-model.mjs",
@@ -5622,8 +5622,8 @@
     },
     "noir/smd2835-viewer.mjs": {
       "source": "noir/smd2835-viewer.mjs",
-      "bytes": 34379,
-      "sha256": "d3fcc62145699c9777d092d4cdd187a9069f553c73e255b2064eb6fa30e21cd2"
+      "bytes": 36399,
+      "sha256": "528a0ce3a45296262bc40d2ea6c17ce67d3aa198df23c00651a6979d38d3356b"
     },
     "noir/strip-appearance.mjs": {
       "bytes": 1057,
@@ -5789,6 +5789,21 @@
       "source": "tasmy-opcja-2/master-frame.css",
       "bytes": 304,
       "sha256": "cfd51c5393ac99b7cc29b540e227bb9306d6c2ba0767b73aa97f8b28d94aef80"
+    },
+    "oferta/offer.css": {
+      "source": "oferta/offer.css",
+      "bytes": 13866,
+      "sha256": "e714a7ff4d222bd8a5f2aea1542e863a01abe152fb764479316f81ca28b08ac8"
+    },
+    "oferta/offer.mjs": {
+      "source": "oferta/offer.mjs",
+      "bytes": 12691,
+      "sha256": "5a6154abc065e7d500e88cbf56d48d73362246f2f19e155632de05337bf8b7c0"
+    },
+    "oferta/viewer.css": {
+      "source": "oferta/viewer.css",
+      "bytes": 641,
+      "sha256": "945d06797a65c8594bdb35d1d6e4ec3b82e781340eb127e8db2c14f37ae59496"
     }
   }
 }

@@ -16,6 +16,13 @@ import {formatStripSku} from './strip-display-sku.mjs';
 
 const PLAYBACK_RATE=1.15;
 const parameters=new URLSearchParams(location.search);
+const offer=parameters.get('offer')==='1';
+const offerStyles=offer?new Promise((resolve,reject)=>{
+  const link=document.createElement('link');link.rel='stylesheet';
+  link.href=new URL('../oferta/viewer.css?v=1',import.meta.url).href;
+  link.onload=resolve;link.onerror=()=>reject(new Error('Nie udało się wczytać układu oferty.'));
+  document.documentElement.dataset.offer='true';document.head.append(link);
+}):Promise.resolve();
 const family=['delux','premium','cob','special'].includes(parameters.get('family'))?parameters.get('family'):null;
 const embedded=parameters.get('embed')==='1';
 const products=family?filmProductsForFamily(family):mainFilmProducts;
@@ -128,7 +135,7 @@ const endFill=new T.DirectionalLight(0xffffff,0);scene.add(endFill,endFill.targe
 if(products[0].id==='3w1')models[0].setPower(3/11);
 
 let rotating=!reduced.matches,lit=false,zoom=0,targetZoom=0,rotation=-.22,tilt=-.04,view='full',theme='day',visible=true;
-let touring=!reduced.matches&&parameters.get('autoplay')!=='0',tourSeconds=0,shot=null,cameraTargetY=0,ready=false;
+let touring=!offer&&!reduced.matches&&parameters.get('autoplay')!=='0',tourSeconds=0,shot=null,cameraTargetY=0,ready=false;
 rotating=touring;
 const rebuilds=[];let activeRebuild=null;
 let raf=0,last=0,elapsed=0,disposed=false,painted=0,needsPaint=true,width=0,height=0,inRender=false;
@@ -348,7 +355,7 @@ const visibilityObserver=new IntersectionObserver(([entry])=>{
 });visibilityObserver.observe(host);
 function visibility(){if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;}else schedule();}
 document.addEventListener('visibilitychange',visibility);
-function motionChanged(){rotating=touring=!reduced.matches;if(reduced.matches){numbers.finish();clearRebuild();model.setLight(false);lit=false;document.querySelectorAll('[data-reveal]').forEach(el=>el.getAnimations().forEach(a=>a.cancel()));}schedule();}reduced.addEventListener('change',motionChanged);
+function motionChanged(){rotating=touring=!offer&&!reduced.matches;if(reduced.matches){numbers.finish();clearRebuild();model.setLight(false);lit=false;document.querySelectorAll('[data-reveal]').forEach(el=>el.getAnimations().forEach(a=>a.cancel()));}schedule();}reduced.addEventListener('change',motionChanged);
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);raf=0;loading.hidden=false;loading.textContent='Podgląd 3D został wstrzymany. Odśwież stronę, aby go przywrócić.';disposed=true;});
 function dispose(){disposed=true;wcobDetail?.dispose();numbers.finish();cancelAnimationFrame(raf);observer.disconnect();visibilityObserver.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',motionChanged);rebuilds.forEach(r=>r?.dispose());models.forEach(m=>m?.dispose());featureIcons.dispose();factHighlight.dispose();voltageCue.dispose();environment.dispose();renderer.dispose();}
 addEventListener('pagehide',e=>{if(e.persisted){cancelAnimationFrame(raf);raf=0;last=0;}else dispose();});
@@ -374,11 +381,37 @@ function seekReady(seconds,{play=false}={}){
   updateColorVariant(shot.productTime);
   updateLighting();
   zoom=targetZoom=shot.zoom;rotation=shot.rotation;tilt=shot.tilt;cameraTargetY=shot.targetY;
-  view=zoom>.35?'macro':'full';rotating=touring=play&&!reduced.matches;last=0;
+  view=zoom>.35?'macro':'full';rotating=touring=play&&!offer&&!reduced.matches;last=0;
   if(shot.rebuild&&!reduced.matches)applyRebuild(shot.rebuild.from,shot.rebuild.progress);
   seeking=false;schedule();return true;
 }
-function setPlaying(value){endCapture();rotating=touring=!!value&&!reduced.matches;last=0;schedule();return touring;}
+// Scroll scrubbing reuses the current model, icons and section detail. Unlike
+// film seeking, it must not reconstruct those objects for every wheel event.
+function scrub(seconds){
+  if(!ready||disposed)return false;
+  endCapture();rotating=touring=false;last=0;
+  const time=T.MathUtils.clamp(Number(seconds)||0,0,presentationStart(products.length)-.000001);
+  const request=++seekRequest,candidate=samplePresentation(time,products.length);
+  const apply=()=>request===seekRequest&&!disposed?scrubReady(time,candidate):false;
+  if(!shotModelsReady(candidate)){
+    const indices=candidate.rebuild?[candidate.rebuild.from,candidate.rebuild.to]:[candidate.model];
+    return Promise.all(indices.map(index=>modelPromises[index])).then(apply);
+  }
+  return apply();
+}
+function scrubReady(seconds,candidate){
+  seeking=true;numbers.finish();
+  if(activeRebuild&&(!candidate.rebuild||activeRebuild!==rebuilds[candidate.rebuild.from]))clearRebuild();
+  tourSeconds=seconds;elapsed=seconds/PLAYBACK_RATE;shot=candidate;
+  if(shot.model!==modelIndex)selectModel(shot.model);
+  if(products[modelIndex].id==='3w1'&&powerMode!==shot.powerMode)setPowerMode(shot.powerMode);
+  updateColorVariant(shot.productTime);seeking=false;updateLighting();
+  zoom=targetZoom=shot.zoom;rotation=shot.rotation;tilt=shot.tilt;cameraTargetY=shot.targetY;
+  if(shot.rebuild&&!reduced.matches)applyRebuild(shot.rebuild.from,shot.rebuild.progress);
+  view=zoom>.35?'macro':'full';rotating=touring=false;last=0;
+  seeking=false;schedule();return true;
+}
+function setPlaying(value){endCapture();rotating=touring=!!value&&!offer&&!reduced.matches;last=0;schedule();return touring;}
 function setRenderScale(value=1){
   renderScale=T.MathUtils.clamp(Number(value)||1,.15,1);
   renderer.setPixelRatio(Math.min(devicePixelRatio,2)*renderScale);
@@ -443,7 +476,7 @@ async function captureFrame(realSeconds){
   advanceCaptureAnimations(milliseconds,initial);
   return {time:seconds,filmTime:tourSeconds,model:products[modelIndex].id,frame:painted};
 }
-window.smdViewer={seek,captureFrame,setPlaying,setRenderScale,selectProduct,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,family,embedded,capturing,captureTime,filmDuration:presentationStart(products.length),exportDuration:presentationStart(products.length)/PLAYBACK_RATE,renderScale,pixelRatio:renderer.getPixelRatio(),modelIndex,productId:products[modelIndex].id,activeVariant:{sourceProductId:effectiveProduct.sourceProductId??effectiveProduct.id,control:effectiveProduct.control,density:effectiveProduct.density,cut:effectiveProduct.cut,power:effectiveProduct.power,output:effectiveProduct.output,efficacy:effectiveProduct.efficacy,energyClass:effectiveProduct.energyClass},modelUuid:model.group.uuid,modelCount:products.length,loadedModelCount:models.filter(Boolean).length,chapterStarts:products.map((_,i)=>presentationStart(i)),models:products.map(p=>p.id),sectionFraming,wcobDetail:wcobDetail?.inspect()??null,featureIcons:featureIcons.inspect(),factHighlight:factHighlight.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
+window.smdViewer={seek,scrub,captureFrame,setPlaying,setRenderScale,selectProduct,inspect:()=>({...model.inspect(),...voltageCue.inspect(),ready,family,embedded,offer,capturing,captureTime,filmDuration:presentationStart(products.length),exportDuration:presentationStart(products.length)/PLAYBACK_RATE,renderScale,pixelRatio:renderer.getPixelRatio(),modelIndex,productId:products[modelIndex].id,activeVariant:{sourceProductId:effectiveProduct.sourceProductId??effectiveProduct.id,control:effectiveProduct.control,density:effectiveProduct.density,cut:effectiveProduct.cut,power:effectiveProduct.power,output:effectiveProduct.output,efficacy:effectiveProduct.efficacy,energyClass:effectiveProduct.energyClass},modelUuid:model.group.uuid,modelCount:products.length,loadedModelCount:models.filter(Boolean).length,chapterStarts:products.map((_,i)=>presentationStart(i)),models:products.map(p=>p.id),sectionFraming,wcobDetail:wcobDetail?.inspect()??null,featureIcons:featureIcons.inspect(),factHighlight:factHighlight.inspect(),sku:colorVariant?.sku??products[modelIndex].sku,playbackRate:PLAYBACK_RATE,powerMode,touring,tourSeconds,phase:activeRebuild?'rebuild':shot?.phase,rebuild:activeRebuild?.inspect()??null,rotating,lit,view,theme,visible,kelvin:Number(colorVariant?.kelvin??products[modelIndex].color)||null,zoom,targetZoom,rotation,cameraPosition:camera.position.toArray(),elapsed,frames:painted,drawCalls:renderer.info.render.calls,triangles:renderer.info.render.triangles,reducedMotion:reduced.matches})};
 const modelSelect=document.querySelector('#model-select');
 products.forEach((p,i)=>{const option=document.createElement('option');option.value=String(i);option.textContent=modelOption(p);modelSelect.append(option);});
 function startModel(index){if(!ready)return;seek(presentationStart((index+products.length)%products.length),{play:true});}
@@ -452,7 +485,7 @@ document.querySelector('[data-model-step="-1"]').addEventListener('click',()=>st
 document.querySelector('[data-model-step="1"]').addEventListener('click',()=>startModel(modelIndex+1));
 document.querySelector('[data-model-restart]').addEventListener('click',()=>startModel(modelIndex));
 resize();setTheme('day');
-Promise.all(initialModels.map(i=>modelPromises[i])).then(()=>{
+Promise.all([...initialModels.map(i=>modelPromises[i]),offerStyles]).then(()=>{
   if(disposed)return;
   ready=true;loading.hidden=true;document.querySelectorAll('.film-preview-nav button,.film-preview-nav select').forEach(el=>el.disabled=false);selectModel(0);schedule();
   if(embedded&&parent!==window)parent.postMessage({type:'prescot-film-ready',family,modelCount:products.length},location.origin);
