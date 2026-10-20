@@ -59,8 +59,8 @@
   "indexable": false,
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
-  "fileCountExcludingManifest": 1147,
-  "bytesExcludingManifest": 308069026,
+  "fileCountExcludingManifest": 1148,
+  "bytesExcludingManifest": 308079953,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4397,8 +4397,8 @@
     },
     "oferta/index.html": {
       "source": "oferta/index.html",
-      "bytes": 5951,
-      "sha256": "12bec909510b04fd46a4a9c4cca12fa3ee59dc6004b68b3d481d8d5fa814abee"
+      "bytes": 6320,
+      "sha256": "d49edbaa66b0a085892bc04b90ca232eba0d3a6e84570a940d2d00f75646d35e"
     },
     "oprawy/index.html": {
       "bytes": 20662,
@@ -4843,7 +4843,7 @@
     "model-smd-2835/index.html": {
       "source": "model-smd-2835/index.html",
       "bytes": 5456,
-      "sha256": "edbb9f76cfbb71caba48bd4eec5c88a227cef3a85f319dfefa97dc94ed8a3e90"
+      "sha256": "4429b02ea6a04af74fb7c81edbd8253302342120950a937d5079ab80ca8e8552"
     },
     "noir/catalog-strip-model.mjs": {
       "source": "noir/catalog-strip-model.mjs",
@@ -5622,8 +5622,8 @@
     },
     "noir/smd2835-viewer.mjs": {
       "source": "noir/smd2835-viewer.mjs",
-      "bytes": 36399,
-      "sha256": "528a0ce3a45296262bc40d2ea6c17ce67d3aa198df23c00651a6979d38d3356b"
+      "bytes": 37871,
+      "sha256": "aa4dfe5e35063b5b7a67bbf6f94c59b3de699661d5f5ab16206cdb4465088112"
     },
     "noir/strip-appearance.mjs": {
       "bytes": 1057,
@@ -5792,18 +5792,23 @@
     },
     "oferta/offer.css": {
       "source": "oferta/offer.css",
-      "bytes": 13866,
-      "sha256": "e714a7ff4d222bd8a5f2aea1542e863a01abe152fb764479316f81ca28b08ac8"
+      "bytes": 15574,
+      "sha256": "36cdfe53bd3dc32ab19a4ebdd3222d652789f53d394275f7fa8c51131ddf2ddf"
     },
     "oferta/offer.mjs": {
       "source": "oferta/offer.mjs",
-      "bytes": 12691,
-      "sha256": "5a6154abc065e7d500e88cbf56d48d73362246f2f19e155632de05337bf8b7c0"
+      "bytes": 16530,
+      "sha256": "1fff11a7e920858089b9d723b306d3308953eb29676a0da1f4bdaa2e05d879bf"
     },
     "oferta/viewer.css": {
       "source": "oferta/viewer.css",
-      "bytes": 641,
-      "sha256": "945d06797a65c8594bdb35d1d6e4ec3b82e781340eb127e8db2c14f37ae59496"
+      "bytes": 3382,
+      "sha256": "20d9698e22a8ed20b683960d144a1ac6def44d616db92f276451e9c40aa91ed8"
+    },
+    "oferta/typography.css": {
+      "source": "oferta/typography.css",
+      "bytes": 798,
+      "sha256": "eb5a22c443cb284954e9780a848efe2f6a27ff8da1a4e74f482a21f404dfbd95"
     }
   }
 }

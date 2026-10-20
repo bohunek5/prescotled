@@ -19,7 +19,7 @@ const parameters=new URLSearchParams(location.search);
 const offer=parameters.get('offer')==='1';
 const offerStyles=offer?new Promise((resolve,reject)=>{
   const link=document.createElement('link');link.rel='stylesheet';
-  link.href=new URL('../oferta/viewer.css?v=1',import.meta.url).href;
+  link.href=new URL('../oferta/viewer.css?v=2',import.meta.url).href;
   link.onload=resolve;link.onerror=()=>reject(new Error('Nie udało się wczytać układu oferty.'));
   document.documentElement.dataset.offer='true';document.head.append(link);
 }):Promise.resolve();
@@ -139,6 +139,17 @@ let touring=!offer&&!reduced.matches&&parameters.get('autoplay')!=='0',tourSecon
 rotating=touring;
 const rebuilds=[];let activeRebuild=null;
 let raf=0,last=0,elapsed=0,disposed=false,painted=0,needsPaint=true,width=0,height=0,inRender=false;
+let offerAmbientTime=0,offerAmbientLast=0;
+function offerShot(candidate){
+  if(!offer)return candidate;
+  const product=products[candidate.rebuild?.from??candidate.model];
+  const cut=Number(product.cut)||50;
+  // Shorter cut sections need a tighter opening than 50 mm constructions.
+  // Keep the approved macro endpoint, with only a restrained pullback between
+  // products instead of exposing the full, several-turn display ribbon.
+  const minimum=.97*(1-Math.min(.3,Math.max(.02,cut*.006)));
+  return {...candidate,zoom:T.MathUtils.lerp(minimum,.97,T.MathUtils.clamp(candidate.zoom/.97,0,1))};
+}
 function resize(){
   const w=host.clientWidth,h=host.clientHeight;if(w===width&&h===height)return;
   width=w;height=h;renderer.setSize(w,h,false);camera.aspect=w/Math.max(1,h);camera.updateProjectionMatrix();needsPaint=true;
@@ -150,6 +161,8 @@ function render(now){
   // Match the film clock to elapsed time even on slower graphics hardware.
   const delta=capturing?Math.max(0,(now-captureRenderTime)/1000):last?Math.max(0,(now-last)/1000):0;last=now;
   if(capturing)captureRenderTime=now;
+  const ambient=offer&&!capturing&&!reduced.matches;
+  if(ambient){offerAmbientTime+=offerAmbientLast?Math.max(0,(now-offerAmbientLast)/1000):0;offerAmbientLast=now;updateLighting();needsPaint=true;}
   if(rotating){
     elapsed+=delta;
     if(touring){
@@ -188,10 +201,10 @@ function render(now){
     voltageCue.update(model,effectiveProduct,camera,reduced.matches?null:cueShot,width,height,powerMode);
     const cueStages=voltageCue.inspect().cueStages;
     factHighlight.update(cueStages?.highlightFacts,cueStages?.highlightLevel);
-    renderer.render(scene,camera);featureIcons.render(shot?.iconTime??0,reduced.matches||!touring,reduced.matches,cueStages?.featureEmphasis??0);painted++;needsPaint=false;
+    renderer.render(scene,camera);featureIcons.render(ambient?offerAmbientTime:shot?.iconTime??0,reduced.matches||(!touring&&!ambient),reduced.matches,cueStages?.featureEmphasis??0);painted++;needsPaint=false;
   }
   inRender=false;
-  if(!capturing&&(rotating||Math.abs(zoom-targetZoom)>.0001))raf=requestAnimationFrame(render);
+  if(!capturing&&(ambient||rotating||Math.abs(zoom-targetZoom)>.0001))raf=requestAnimationFrame(render);
 }
 function schedule(){needsPaint=true;if(!capturing&&!raf&&!inRender&&!document.hidden&&!disposed&&visible&&ready)raf=requestAnimationFrame(render);}
 function clearRebuild(){
@@ -239,8 +252,15 @@ function updateLighting(){
   let power=variantFlux(0)/reference;
   if(p.id==='deluxlow'||p.id==='slimlow'||p.id==='coblow')power*=.23;
   if(p.id==='3w1'&&shot)power=T.MathUtils.lerp(variantFlux(Math.max(0,powerMode-1)),variantFlux(powerMode),shot.powerBlend)/reference;
-  lightProgram=model.updateLightAnimation(local,{activeProduct:p,lightLevel:level,power,variant:colorVariant?.kelvin??p.color,previousVariant:previousVariant?.kelvin??p.color,variantBlend,variantProgress});
+  const ambient=offer&&!capturing&&!reduced.matches;
+  lightProgram=model.updateLightAnimation(local+(ambient?offerAmbientTime:0),{activeProduct:p,lightLevel:level,power,variant:colorVariant?.kelvin??p.color,previousVariant:previousVariant?.kelvin??p.color,variantBlend,variantProgress:ambient&&(p.control!=='MONO'||p.digital)?null:variantProgress});
   lit=level>0;
+  if(offer){
+    const state=model.inspect(),sample=state.digital?state.lightSamples?.[Math.floor((state.lightSamples?.length??0)/2)]:null;
+    const strength=T.MathUtils.clamp(sample?.intensity??state.lightLevel*state.lightPower,0,1);
+    host.style.setProperty('--offer-glow',state.lightColor);
+    host.style.setProperty('--offer-glow-strength',String(.3+.34*Math.sqrt(strength)));
+  }
   const block=document.querySelector('.color-block');
   block.dataset.lightProgram=lit?'active':'off';
   if(lightProgram?.color)block.style.setProperty('--light-swatch',lightProgram.color);
@@ -351,11 +371,11 @@ function revealFacts(part='all'){
 }
 const observer=new ResizeObserver(()=>{resize();schedule();});observer.observe(host);
 const visibilityObserver=new IntersectionObserver(([entry])=>{
-  visible=entry.isIntersecting;if(visible){last=0;schedule();}else{cancelAnimationFrame(raf);raf=0;last=0;}
+  visible=entry.isIntersecting;if(visible){last=offerAmbientLast=0;schedule();}else{cancelAnimationFrame(raf);raf=0;last=offerAmbientLast=0;}
 });visibilityObserver.observe(host);
-function visibility(){if(document.hidden){cancelAnimationFrame(raf);raf=0;last=0;}else schedule();}
+function visibility(){if(document.hidden){cancelAnimationFrame(raf);raf=0;last=offerAmbientLast=0;}else schedule();}
 document.addEventListener('visibilitychange',visibility);
-function motionChanged(){rotating=touring=!offer&&!reduced.matches;if(reduced.matches){numbers.finish();clearRebuild();model.setLight(false);lit=false;document.querySelectorAll('[data-reveal]').forEach(el=>el.getAnimations().forEach(a=>a.cancel()));}schedule();}reduced.addEventListener('change',motionChanged);
+function motionChanged(){rotating=touring=!offer&&!reduced.matches;offerAmbientLast=0;if(reduced.matches){numbers.finish();clearRebuild();model.setLight(false);lit=false;document.querySelectorAll('[data-reveal]').forEach(el=>el.getAnimations().forEach(a=>a.cancel()));}schedule();}reduced.addEventListener('change',motionChanged);
 renderer.domElement.addEventListener('webglcontextlost',e=>{e.preventDefault();cancelAnimationFrame(raf);raf=0;loading.hidden=false;loading.textContent='Podgląd 3D został wstrzymany. Odśwież stronę, aby go przywrócić.';disposed=true;});
 function dispose(){disposed=true;wcobDetail?.dispose();numbers.finish();cancelAnimationFrame(raf);observer.disconnect();visibilityObserver.disconnect();document.removeEventListener('visibilitychange',visibility);reduced.removeEventListener('change',motionChanged);rebuilds.forEach(r=>r?.dispose());models.forEach(m=>m?.dispose());featureIcons.dispose();factHighlight.dispose();voltageCue.dispose();environment.dispose();renderer.dispose();}
 addEventListener('pagehide',e=>{if(e.persisted){cancelAnimationFrame(raf);raf=0;last=0;}else dispose();});
@@ -375,7 +395,7 @@ function seek(seconds,{play=false}={}){
 }
 function seekReady(seconds,{play=false}={}){
   seeking=true;numbers.finish();
-  tourSeconds=Math.max(0,seconds);shot=samplePresentation(tourSeconds,products.length);
+  tourSeconds=Math.max(0,seconds);shot=offerShot(samplePresentation(tourSeconds,products.length));
   clearRebuild();selectModel(shot.model);
   if(products[modelIndex].id==='3w1')setPowerMode(shot.powerMode);
   updateColorVariant(shot.productTime);
@@ -402,7 +422,7 @@ function scrub(seconds){
 function scrubReady(seconds,candidate){
   seeking=true;numbers.finish();
   if(activeRebuild&&(!candidate.rebuild||activeRebuild!==rebuilds[candidate.rebuild.from]))clearRebuild();
-  tourSeconds=seconds;elapsed=seconds/PLAYBACK_RATE;shot=candidate;
+  tourSeconds=seconds;elapsed=seconds/PLAYBACK_RATE;shot=offerShot(candidate);
   if(shot.model!==modelIndex)selectModel(shot.model);
   if(products[modelIndex].id==='3w1'&&powerMode!==shot.powerMode)setPowerMode(shot.powerMode);
   updateColorVariant(shot.productTime);seeking=false;updateLighting();

@@ -1,0 +1,6 @@
+/* The same locally hosted Manrope family as the approved original offer. */
+@font-face{font-family:Manrope;src:url('../assets/privacy/fonts/52b571ea7cf9dfd24319.woff2') format('woff2');font-style:normal;font-weight:200 800;font-display:swap}
+@font-face{font-family:Manrope;src:url('../assets/privacy/fonts/a4a584830ac6d9119fc1.woff2') format('woff2');font-style:normal;font-weight:200 800;font-display:swap;unicode-range:U+0100-02FF,U+1E00-1EFF,U+2020,U+20A0-20AB}
+:root{--offer-font:Manrope,Arial,sans-serif;--offer-font-heading:var(--offer-font);--offer-weight-body:400;--offer-weight-heading:500;--offer-weight-label:600;font-family:var(--offer-font);font-synthesis:none}
+body,button,input,select,textarea{font-family:var(--offer-font)}
+h1,h2,h3,h4,h5,h6{font-family:var(--offer-font-heading)}
