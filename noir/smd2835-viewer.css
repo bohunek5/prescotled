@@ -149,6 +149,10 @@ h1 small{padding-left:8px;gap:16px}
 .film-preview-nav :disabled{opacity:.4;cursor:wait}
 /* Recording uses the same composition; only the preview controls disappear. */
 html[data-film=true] :is(.film-preview-nav,.theme-switch){display:none!important}
+.film-model-counter{display:none;position:fixed;right:3%;bottom:18px;z-index:5;width:180px;height:44px;align-items:center;justify-content:flex-end;gap:12px;padding-top:8px;border-top:1px solid var(--line);color:var(--text)}
+.film-model-counter>span{font-size:14px;line-height:32px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.film-model-counter strong{font-size:26px;line-height:32px;font-weight:500;letter-spacing:.03em;white-space:nowrap;font-variant-numeric:tabular-nums}
+html[data-film=true] .film-model-counter{display:flex}
 @media(min-width:761px){#stage{bottom:88px}}
 @media(max-width:760px){.film-preview-nav{right:4%;left:4%;bottom:12px;max-width:none;gap:4px;padding:7px 5px}.film-preview-nav select{flex:1;width:0;font-size:11px}.preview-caption{padding:0 5px}.film-preview-nav button{flex:0 0 28px}.color-block[data-extreme=true] .color-fact>.color-name{font-size:23px}main{padding-bottom:95px}}
 .product-facts{grid-template-columns:repeat(3,minmax(0,1fr));column-gap:22px}

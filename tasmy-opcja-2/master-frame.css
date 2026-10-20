@@ -2,4 +2,4 @@
 #stage{transform:translateY(24px)}
 .intro{height:calc(100svh - 84px)}
 html[data-overview-row=lower] .intro{top:70px;height:calc(100svh - 100px)}
-html[data-overview-family=delux] .film-preview-nav{right:18%}
+html[data-overview-family=delux] :is(.film-preview-nav,.film-model-counter){right:18%}

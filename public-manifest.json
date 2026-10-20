@@ -60,7 +60,7 @@
   "externalHero": false,
   "legacyOrigin": "https://zeglarstwomazury.pl",
   "fileCountExcludingManifest": 1144,
-  "bytesExcludingManifest": 308155492,
+  "bytesExcludingManifest": 308156664,
   "largest": [
     "assets/controllers/pr-rgb-12a.pdf",
     {
@@ -4842,8 +4842,8 @@
     },
     "model-smd-2835/index.html": {
       "source": "model-smd-2835/index.html",
-      "bytes": 5358,
-      "sha256": "146147bc89bb00ebb18b3cc061fb595ba236efe831fe010ac6fef692881aa42c"
+      "bytes": 5456,
+      "sha256": "b4e2bb29683232afe10ed1ec75748118fa7871e969db1e9d3b7d7a4f78b5c878"
     },
     "noir/catalog-strip-model.mjs": {
       "source": "noir/catalog-strip-model.mjs",
@@ -5617,13 +5617,13 @@
     },
     "noir/smd2835-viewer.css": {
       "source": "noir/smd2835-viewer.css",
-      "bytes": 27456,
-      "sha256": "ac38b0c333ebded6ae91c46c5ce05133f19e1876cd71aa33d2b0f47c577691fe"
+      "bytes": 27707,
+      "sha256": "1e4be8e40416dc6a10f56458287491c11605e11ee9a941595161603ece1a7a5a"
     },
     "noir/smd2835-viewer.mjs": {
       "source": "noir/smd2835-viewer.mjs",
-      "bytes": 33461,
-      "sha256": "d20e9868199cc88b83a17ce0628d20c7c95b5da3e6a7c1b83d886670f9426cb0"
+      "bytes": 34379,
+      "sha256": "d3fcc62145699c9777d092d4cdd187a9069f553c73e255b2064eb6fa30e21cd2"
     },
     "noir/strip-appearance.mjs": {
       "bytes": 1057,
@@ -5717,8 +5717,8 @@
     },
     "tasmy-opcja-2/index.html": {
       "source": "tasmy-opcja-2/index.html",
-      "bytes": 1252,
-      "sha256": "3f82b7ed34fa3400c72bb7a24504ede72cfca829214dae8a36978abefa47681f"
+      "bytes": 1231,
+      "sha256": "5b42217d4c81ca4df4b1d70f37fea4438e16557f54df88d927b8549b6028da0f"
     },
     "tasmy-opcja-2/mini-shot.mjs": {
       "bytes": 4904,
@@ -5732,8 +5732,8 @@
     },
     "tasmy-opcja-2/presentation.mjs": {
       "source": "tasmy-opcja-2/presentation.mjs",
-      "bytes": 5448,
-      "sha256": "da162bdfdd39385c4c956740c3b36453ce34e9d1ca13dab8f9e04a3f9cfc37c5"
+      "bytes": 5349,
+      "sha256": "914779ed1b25eb969172c5fbc462f595ac5336add3a4048b93ee579efce98a49"
     },
     "tasmy-opcja-2/product-details.mjs": {
       "bytes": 4553,
@@ -5787,8 +5787,8 @@
     },
     "tasmy-opcja-2/master-frame.css": {
       "source": "tasmy-opcja-2/master-frame.css",
-      "bytes": 279,
-      "sha256": "9b6e7455e9f43dc13581f8645d5bfb6aa23cdde16b559de64f4958df2ccbfbac"
+      "bytes": 304,
+      "sha256": "cfd51c5393ac99b7cc29b540e227bb9306d6c2ba0767b73aa97f8b28d94aef80"
     }
   }
 }

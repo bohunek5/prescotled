@@ -42,7 +42,7 @@ async function load(card){
   const url=new URL('../model-smd-2835/',location.href);
   url.searchParams.set('family',card.group);url.searchParams.set('embed','1');url.searchParams.set('autoplay','0');
   if(film)url.searchParams.set('film','1');
-  url.searchParams.set('scale',String(card.scale));url.searchParams.set('v','quad-master-3');
+  url.searchParams.set('scale',String(card.scale));url.searchParams.set('v','quad-master-4');
   card.frame.src=url.href;
  });
  // Apply the approved quadrant spacing only inside these embedded master frames.
@@ -51,7 +51,7 @@ async function load(card){
  frameDocument.documentElement.dataset.overviewRow=['cob','special'].includes(card.group)?'lower':'upper';
  await new Promise((resolve,reject)=>{
   const stylesheet=frameDocument.createElement('link');stylesheet.rel='stylesheet';
-  stylesheet.href=new URL('./master-frame.css?v=3',location.href).href;
+  stylesheet.href=new URL('./master-frame.css?v=4',location.href).href;
   stylesheet.onload=resolve;stylesheet.onerror=()=>reject(Error('Nie udało się wczytać układu podglądu.'));
   frameDocument.head.append(stylesheet);
  });
