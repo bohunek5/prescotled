@@ -10,7 +10,7 @@ const smooth=v=>{const x=clamp(v);return x*x*x*(x*(x*6-15)+10);};
 const productDuration=product=>(product.id==='3w1'?THREE_IN_ONE_SECONDS:product.id.startsWith('wcob')?43:SHOT_SECONDS)+(hasCopperDetail(product)?3:0);
 const canonicalStarts=[0];mainFilmProducts.forEach(product=>canonicalStarts.push(canonicalStarts.at(-1)+productDuration(product)));
 
-export function createPresentation(products,{canonicalMotion=false}={}){
+export function createPresentation(products,{canonicalMotion=false,cycleThreeInOneColors=false}={}){
  if(!products.length)throw new Error('Film wymaga co najmniej jednego modelu.');
  const starts=[0];products.forEach(product=>starts.push(starts.at(-1)+productDuration(product)));
  const chapterDuration=index=>productDuration(products[index]);
@@ -29,10 +29,11 @@ export function createPresentation(products,{canonicalMotion=false}={}){
   const approach=smooth((t-1)/3);
   const depart=smooth((t-detailEnd)/pullbackSeconds),zoom=.97*approach*(1-depart);
   const rebuild=clamp((t-rebuildStart)/(rebuildEnd-rebuildStart));
-  // Keep 3000 K throughout LOW / MEDIUM / HIGH so the power demonstration
-  // changes brightness without also changing the selected catalogue colour.
-  const variantStart=wcob?26:4;
-  const incoming=rebuild>=.5,productTime=incoming?(products[to].id==='3w1'?6:0):threeInOne?6:Math.min(17.999,Math.max(0,(t-variantStart)/(variantEnd-variantStart)*18));
+  // Compare LOW / MEDIUM / HIGH at 3000 K first. Interactive offers then
+  // show the three catalogue colours; existing film timelines stay unchanged.
+  const variantStart=wcob?26:threeInOne&&cycleThreeInOneColors?12.6:4;
+  const holdThreeInOneColor=threeInOne&&(!cycleThreeInOneColors||t<variantStart);
+  const incoming=rebuild>=.5,productTime=incoming?(products[to].id==='3w1'?6:0):holdThreeInOneColor?6:Math.min(17.999,Math.max(0,(t-variantStart)/(variantEnd-variantStart)*18));
   const fadeOut=1-smooth((t-detailEnd)/1.2);
   const lightLevel=smooth((t-(wcob?26:3.5))/1)*fadeOut;
   // Cue drawing still uses its original 6.2 / 6.7-second choreography. The

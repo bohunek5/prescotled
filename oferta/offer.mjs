@@ -1,5 +1,5 @@
 import {mainFilmProducts, mainFilmProductIds, filmProductsForFamily} from '../noir/strip-film-selection.mjs?v=detail-4';
-import {createPresentation, sampleVariant} from '../noir/strip-presentation.mjs?v=detail-8';
+import {createPresentation, sampleVariant} from '../noir/strip-presentation.mjs?v=detail-9';
 import {resolveFilmVariant} from '../noir/strip-product-variants.mjs?v=1';
 import {getProductDetails} from '../tasmy-opcja-2/product-details.mjs';
 import {formatStripSku} from '../noir/strip-display-sku.mjs';
@@ -8,7 +8,7 @@ import {describeStripFeature} from '../noir/strip-detail-cues.mjs?v=detail-9';
 const $=selector=>document.querySelector(selector);
 const products=mainFilmProducts;
 const families=[['delux','DELUX'],['premium','PREMIUM'],['cob','COB / WCOB'],['special','SPECIAL']].map(([id,name])=>({id,name,products:filmProductsForFamily(id).filter(p=>mainFilmProductIds.includes(p.id))}));
-const timeline=createPresentation(products);
+const timeline=createPresentation(products,{cycleThreeInOneColors:true});
 const pixelsPerSecond=64;
 const totalSeconds=timeline.presentationStart(products.length);
 const escape=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -106,6 +106,7 @@ function fitViewerLayout(){
   doc.documentElement.classList.toggle('offer-mobile',mobileLayout.matches);
   if(mobileLayout.matches)return;
   const intro=doc.querySelector('.intro');
+  intro.style.setProperty('--offer-ui-scale','1');
   const available=frame.contentWindow.innerHeight-intro.offsetTop*2;
   const scale=Math.min(1,available/Math.max(1,intro.scrollHeight));
   intro.style.setProperty('--offer-ui-scale',String(scale));
